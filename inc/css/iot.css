@@ -1,0 +1,95 @@
+@charset "utf-8";
+@font-face {
+  font-family: 'Nanum Barun Gothic';
+  font-style: normal;
+  font-weight: 400;
+  src: url('/inc/fonts/NanumBarunGothic/NanumBarunGothic.eot');
+  src: local('Nanum Barun Gothic'),
+       local('NanumBarunGothic'),
+       url('/inc/fonts/NanumBarunGothic/NanumBarunGothic.eot?#iefix') format('embedded-opentype'),
+       url('/inc/fonts/NanumBarunGothic/NanumBarunGothic.woff2') format('woff2'),
+       url('/inc/fonts/NanumBarunGothic/NanumBarunGothic.woff') format('woff'),
+       url('/inc/fonts/NanumBarunGothic/NanumBarunGothic.ttf') format('truetype');
+}
+
+html,body{height:100%;}
+body{
+	min-width:1024px;
+	color:#000000;
+	background-color:#f0f2f4;
+	font-family:'Nanum Barun Gothic';
+	font-size:14px;
+}
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{
+	padding:0px;margin:0px;
+}
+article, aside, canvas, details, figcaption, figure, footer, header, hgroup, nav, menu, nav, section { display: block; }
+h1,h2,h3,h4,h5,h6{font-weight:normal;}
+a{text-decoration:none;outline:0;color:#000000;}
+table {border-spacing:0px;}
+fieldset,img {border:0px;}
+ol,ul{list-style: none;margin:0px;padding:0px;}
+
+.blind{position:absolute;width:0px;height:0px;text-indent:-99999px;overflow:hidden;}
+.wall{
+	display:none;
+	position:absolute;left:0%;top:0%;z-index:110;width:100%;height:100%;background-color:#000000;
+	opacity:0.5;moz-opacity:0.5;
+	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
+	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+}
+
+
+/* layout */
+header,footer{display:block;width:100%;z-index:10;overflow:hidden;}
+header{position:fixed;top:0px;padding-bottom:8px;background:url(../../images/bg_nav_header.png) repeat-x bottom;}
+footer{position:absolute;bottom:0px;height:365px;background-color:#ffffff;}
+
+#container{position:relative;height:auto;min-height:100%;}
+#middle{position:relative;z-index:5;width:100%;height:auto;padding:50px 0px 365px 0px;margin:0px auto;border:1px solid red;}
+/* //layout */
+header #header{width:100%;height:100px;background-color:#ffffff;}
+header #header .wrap{position:relative;top:0%;left:0%;max-width:1000px;height:100%;margin:0px auto;}
+header #header .logo{display:block;position:absolute;top:30px;left:10px;width:132px;height:40px;background:url(../../images/logo.png) no-repeat;}
+header #header .member{display:block;position:absolute;top:30px;right:10px;width:100px;height:40px;}
+header #header .member a{display:block;height:20px;line-height:20px;color:#ffffff;font-size:11px;text-align:center;}
+header #header .member a.btn1{background-color:#007acc;}
+header #header .member a.btn2{background-color:#305c92;}
+
+header #header nav{width:670px;display:block;position:absolute;top:0%;left:0%;right:0%;margin-left:auto;margin-right:auto;}
+header #header nav ul{float:left;margin-top:40px;}
+header #header nav li{float:left;font-size:16px;text-align:center;}
+header #header nav li.item1{width:135px;}
+header #header nav li.item2{width:170px;}
+header #header nav li.item3{width:140px;}
+header #header nav li.item4{width:130px;}
+header #header nav li.item5{width:60px;margin-left:35px;}
+header #header nav li a:hover{color:#305c92;}
+header #header nav li a.active{color:#305c92;}
+header #header nav .nav_line{position:absolute;top:0%;left:0%;width:135px;height:5px;background-color:#305c92;overflow:hidden;}
+
+header #header.mini{width:100%;background-color:#959595;}
+header #header.mini .logo{top:5px;}
+header #header.mini .member{top:5px;}
+header #header.mini nav ul{margin-top:15px;}
+header #header.mini nav li a{color:#ffffff;}
+
+footer .wrap{position:relative;top:0%;left:0%;max-width:1000px;height:100%;margin:0px auto;overflow:hidden;}
+footer #nav{background-color:#dddddd;height:210px;}
+footer #nav nav{margin:40px 10px 0px 10px;}
+footer #nav .item{width:20%;float:left;}
+footer #nav .item h3{font-size:16px;font-weight:bold;}
+footer #nav .item ul{margin-top:25px;}
+footer #nav .item li{line-height:160%;font-size:14px;}
+footer #nav .item li a{color:#666666;}
+
+footer #copyright{background-color:#ffffff;height:155px;overflow:hidden;}
+footer #copyright .logo{display:block;position:absolute;top:55px;left:10px;width:132px;height:40px;background:url(../../images/logo.png) no-repeat;}
+footer #copyright .menu{margin:30px 10px 10px 205px;font-size:16px;}
+footer #copyright .menu a{font-weight:bold;}
+footer #copyright .menu .addr{margin-top:25px;font-size:14px;color:#666666;}
+footer #copyright .menu .copy{margin-top:10px;font-size:11px;color:#666666;}
+
+footer #copyright .bar{margin:0px 17px 0px 17px;color:#dadada;font-family:"Gulim";}
+
+

@@ -1,0 +1,35 @@
+<%Const withTemplate = True%>
+<!DOCTYPE html>
+<html lang="ko">
+<head runat="server">
+<meta http-equiv="X-UA-Compatible" content="IE=Edge">
+<meta charset="utf-8">
+<title>OPEN-IOT</title>
+<meta name="viewport" content="width=1024">
+<meta name="author" content="" />
+<meta name="description" content="" />
+<meta name="keywords" content="" />
+<meta name="application-name" content="OPEN-IOT" />
+<link href="inc/css/iot.css" rel="stylesheet" type="text/css" />
+<link rel="icon" href="images/ico/favicon.ico" type="image/png">
+<script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.3/jquery.xdomainrequest.min.js"></script>
+<!--[if lte ie 9]>
+<script src="http://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+<script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+</head>
+
+<body>
+<div id="container">
+	<%HeaderPlaceHolder()%>
+	<div id="middle">
+		<%ContentPlaceHolder()%>
+	</div>
+	<%FooterPlaceHolder()%>
+</div>
+
+<script type="text/javascript" src="inc/js/iot.js"></script>
+</body>
+</html>
