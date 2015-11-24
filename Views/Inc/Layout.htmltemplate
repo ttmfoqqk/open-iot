@@ -31,5 +31,7 @@
 </div>
 
 <script type="text/javascript" src="inc/js/iot.js"></script>
+<script type="text/javascript" src="inc/js/plugins/jquery.greensock-js/src/minified/TweenMax.min.js"></script>
+<script type="text/javascript" src="inc/js/plugins/jquery.backgroundSize/jquery.backgroundSize.js"></script>
 </body>
 </html>

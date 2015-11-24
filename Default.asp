@@ -6,7 +6,9 @@ Const defaultController = "Main"
 Const defaultAction = "Index"
 
 
-partial = Request.QueryString("partial")
+partial     = Request.QueryString("partial")
+controller  = Trim (CStr(Request.QueryString("controller")))
+action      = actionClean (Trim (CStr(Request.QueryString("action"))))
 
 If Not(IsEmpty(partial) or IsNull(partial))  Then
 	If not Route () then
@@ -54,7 +56,7 @@ Function Route ()
 	
 	Dim controllerName
 	controllerName = controller + "Controller"
-	if Not (Controllers.Exists(controllerName)) Then
+	if Not (Controllers.Exists(controllerName) ) Then
 		Response.Clear
 		Response.Status="401 Unauthorized"
 		Response.Write(response.Status)
@@ -112,7 +114,7 @@ Function CollectVariables
 End Function
 
 
-Function actionClean(strtoclean)
+Function actionClean( strtoclean )
 	Dim objRegExp, outputStr
 	Set objRegExp = New RegExp
 	outputStr = strtoclean

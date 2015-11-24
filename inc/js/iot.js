@@ -8,9 +8,11 @@ $(function(){
 	$(window).scroll(function(){
 		var d = $(window).scrollTop();
 		if(d > 50){
-			$('#header').addClass('mini').stop().animate({'height':'50px'},150);
+			$('#header').addClass('mini');
+			TweenMax.to($("#header"), 0.25, {height:50, ease:Sine.easeOut});
 		}else{
-			$('#header').removeClass('mini').stop().animate({'height':'100px'},150);
+			$('#header').removeClass('mini');
+			TweenMax.to($("#header"), 0.25, {height:100, ease:Sine.easeOut});
 		}
 	});
 	

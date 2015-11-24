@@ -2,7 +2,7 @@
 	<%SidePlaceHolder()%>
 	<div class="sub_contents">
 		<div class="inner">
-			<div style="height:1500px;">IoTOpenLab</div>
+			<div style="height:1500px;">DeveloperSupport</div>
 		</div>
 	</div>
 </div>
