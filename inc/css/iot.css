@@ -44,10 +44,11 @@ ol,ul{list-style: none;margin:0px;padding:0px;}
 header,footer{display:block;width:100%;z-index:10;overflow:hidden;}
 header{position:fixed;top:0px;padding-bottom:8px;background:url(../../images/bg_nav_header.png) repeat-x bottom;min-width:1024px;}
 footer{position:absolute;bottom:0px;height:365px;background-color:#ffffff;}
+aside{position:absolute;top:0%;left:0%;z-index:10;width:240px;height:100%;padding-right:8px;background:url(../../images/bg_nav_side.png) repeat-y right;}
 
 #container{position:relative;height:auto;min-height:100%;}
 #middle{position:relative;z-index:5;width:100%;height:auto;padding:50px 0px 365px 0px;margin:0px auto;}
-.max_width_wrap{position:relative;top:0%;left:0%;max-width:1350px;height:100%;margin:0px auto;overflow:hidden;}
+.max_width_wrap{position:relative;top:0%;left:0%;max-width:1000px;height:100%;margin:0px auto;overflow:hidden;}
 /* //layout */
 
 header #header{width:100%;height:100px;background-color:#ffffff;}
@@ -92,6 +93,26 @@ footer #copyright .menu .copy{margin-top:10px;font-size:11px;color:#666666;}
 
 footer #copyright .bar{margin:0px 17px 0px 17px;color:#dadada;font-family:"Gulim";}
 
+
+aside .inner{
+	width:100%;height:100%;
+	background-color:#ffffff;
+	font-size:18px;
+}
+aside .title{
+	display:block;
+	width:100%;height:150px;
+	padding-top:50px;
+	background-color:#305c92;
+	color:#ffffff;
+	font-weight:bold;
+	text-align:center;
+	line-height:150px;
+}
+aside ul{border-top:1px solid #f0f2f4;}
+aside li{line-height:78px;border-bottom:1px solid #f0f2f4;}
+aside li a{display:block;padding-left:40px;}
+
 /* main */
 .main_visual{position:relative;top:0%;left:0%;width:100%;height:350px;background:url(../../images/visual_main.jpg) no-repeat center;background-size:cover;}
 .main_visual .mask_dot{position:absolute;top:0%;left:0%;z-index:1;width:100%;height:100%;background:url(../../images/bg_visual_dot.png);}
@@ -115,5 +136,16 @@ footer #copyright .bar{margin:0px 17px 0px 17px;color:#dadada;font-family:"Gulim
 	margin-top:50px;
 }
 /* //main */
+
+/* side 메뉴 있는 내용 박스 */
+.sub_contents{
+	height:100%;
+	margin-left:240px;
+	overflow:hidden;
+	background-color:#ffffff;
+}
+.sub_contents .inner{
+	margin:90px 50px 0px 50px;
+}
 
 

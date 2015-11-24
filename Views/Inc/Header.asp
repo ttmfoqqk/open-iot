@@ -9,7 +9,7 @@
 			
 			<nav>
 				<ul>
-					<li class="item1"><a href="#">IoT OpenLab</a></li>
+					<li class="item1"><a href="?controller=IoTOpenLab">IoT OpenLab</a></li>
 					<li class="item2"><a href="#">Developer Support</a></li>
 					<li class="item3"><a href="#">Devices & Apps</a></li>
 					<li class="item4"><a href="#">Community</a></li>

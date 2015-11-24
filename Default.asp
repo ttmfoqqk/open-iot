@@ -23,10 +23,8 @@ Function ContentPlaceHolder()
 	End If
 End Function
 
-Function SidePlaceHolder(strAction)
-	if strAction = "IotOpenLab" then 
-		%> <!--#include file="Views/Inc/SideMenu.asp" --> <%
-	end if
+Function SidePlaceHolder()
+	%> <!--#include file="Views/Inc/SideMenu.asp" --> <%
 End Function
 
 Function HeaderPlaceHolder()
@@ -62,11 +60,6 @@ Function Route ()
 		Response.Write(response.Status)
 		Response.End
 	End if
-	
-	' 왼쪽 메뉴 호출
-	If IsEmpty (partial) or IsNull (partial) Then
-		SidePlaceHolder(controller)
-	end if
 	
 	Dim controllerInstance 
 	Set controllerInstance = Eval ( " new " +  controllerName)

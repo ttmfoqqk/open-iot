@@ -1,5 +1,5 @@
 <%
-class MainController
+class IoTOpenLabController
 	Dim Model
 	Dim ViewData
 
@@ -12,7 +12,7 @@ class MainController
 	end sub
 
 	public Sub Index()
-		%> <!--#include file="../Views/Main/Index.asp" --> <%
+		%> <!--#include file="../Views/IoTOpenLab/Index.asp" --> <%
 	End Sub
 
 End Class
