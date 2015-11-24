@@ -1,6 +1,6 @@
 	<footer>
 		<div id="nav">
-			<div class="wrap">
+			<div class="max_width_wrap">
 				<nav>
 					<div class="item">
 						<h3>IoT OpenLab</h3>
@@ -45,7 +45,7 @@
 			</div>
 		</div>
 		<div id="copyright">
-			<div class="wrap">
+			<div class="max_width_wrap">
 				<h1 class="logo"><span class="blind">OPEN-IOT</span></h1>
 				<div class="menu">
 					<a href="#">회사소개</a><span class="bar">|</span>

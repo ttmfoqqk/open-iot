@@ -13,7 +13,7 @@ If Not(IsEmpty(partial) or IsNull(partial))  Then
 		result = RouteDebug ()
 	End If
 else
-	%> <!--#include file="views/inc/Layout.htmltemplate" --> <%
+	%> <!--#include file="Views/Inc/Layout.htmltemplate" --> <%
 End If
 
 
@@ -25,16 +25,16 @@ End Function
 
 Function SidePlaceHolder(strAction)
 	if strAction = "IotOpenLab" then 
-		%> <!--#include file="views/inc/SideMenu.asp" --> <%
+		%> <!--#include file="Views/Inc/SideMenu.asp" --> <%
 	end if
 End Function
 
 Function HeaderPlaceHolder()
-	%> <!--#include file="views/inc/Header.asp" --> <%
+	%> <!--#include file="Views/Inc/Header.asp" --> <%
 End Function
 
 Function FooterPlaceHolder()
-	%> <!--#include file="views/inc/Footer.asp" --> <%
+	%> <!--#include file="Views/Inc/Footer.asp" --> <%
 End Function
 
 

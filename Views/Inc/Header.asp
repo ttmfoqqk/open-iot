@@ -1,6 +1,6 @@
 <header>
 	<div id="header">
-		<div class="wrap">
+		<div class="max_width_wrap">
 			<a href="/"><h1 class="logo"><span class="blind">OPEN-IOT</span></h1></a>
 			<div class="member">
 				<a href="#" class="btn1">Login</a>
