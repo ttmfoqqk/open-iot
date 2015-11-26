@@ -3,17 +3,17 @@
 		<%if controller = "IoTOpenLab" then %>
 		<div class="title">IoT OpenLab</div>
 		<ul>
-			<li><a href="#">About OpenLab</a></li>
-			<li><a href="#">Facility</a></li>
-			<li><a href="#">OpenLab Reservation</a></li>
+			<li><a href="?controller=IoTOpenLab&action=About">About OpenLab</a></li>
+			<li><a href="?controller=IoTOpenLab&action=Facility">Facility</a></li>
+			<li><a href="?controller=IoTOpenLab&action=Reservation">OpenLab Reservation</a></li>
 		</ul>
 		<%end if%>
 
 		<%if controller = "DeveloperSupport" then %>
 		<div class="title">Developer Support</div>
 		<ul>
-			<li><a href="#">Device Developer</a></li>
-			<li><a href="#">App Developer</a></li>
+			<li><a href="?controller=DeveloperSupport&action=Device">Device Developer</a></li>
+			<li><a href="?controller=DeveloperSupport&action=App">App Developer</a></li>
 		</ul>
 		<%end if%>
 

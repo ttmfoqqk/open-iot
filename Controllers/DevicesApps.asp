@@ -12,9 +12,20 @@ class DevicesAppsController
 	end sub
 
 	public Sub Index()
-		%> <!--#include file="../Views/DevicesApps/Index.asp" --> <%
+		List()
+	End Sub
+	
+	public Sub List()
+		%> <!--#include file="../Views/DevicesApps/List.asp" --> <%
+	End Sub
+	
+	public Sub Detail()
+		%> <!--#include file="../Views/DevicesApps/Detail.asp" --> <%
+	End Sub
+	
+	public Sub Registe()
+		%> <!--#include file="../Views/DevicesApps/Registe.asp" --> <%
 	End Sub
 
 End Class
 %>
-    

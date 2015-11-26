@@ -11,6 +11,8 @@
 <meta name="keywords" content="" />
 <meta name="application-name" content="OPEN-IOT" />
 <link href="inc/css/iot.css" rel="stylesheet" type="text/css" />
+<link href="inc/js/plugins/icheck-1.x/skins/all.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <link rel="icon" href="images/ico/favicon.ico" type="image/png">
 <script src="http://code.jquery.com/jquery-1.9.0.min.js"></script>
 <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.3/jquery.xdomainrequest.min.js"></script>
@@ -33,5 +35,6 @@
 <script type="text/javascript" src="inc/js/iot.js"></script>
 <script type="text/javascript" src="inc/js/plugins/jquery.greensock-js/src/minified/TweenMax.min.js"></script>
 <script type="text/javascript" src="inc/js/plugins/jquery.backgroundSize/jquery.backgroundSize.js"></script>
+<script type="text/javascript" src="inc/js/plugins/icheck-1.x/icheck.min.js"></script>
 </body>
 </html>

@@ -12,9 +12,20 @@ class IoTOpenLabController
 	end sub
 
 	public Sub Index()
+		About()
+	End Sub
+	
+	public Sub About()
 		%> <!--#include file="../Views/IoTOpenLab/Index.asp" --> <%
+	End Sub
+	
+	public Sub Facility()
+		%> <!--#include file="../Views/IoTOpenLab/Facility.asp" --> <%
+	End Sub
+	
+	public Sub Reservation()
+		%> <!--#include file="../Views/IoTOpenLab/Reservation.asp" --> <%
 	End Sub
 
 End Class
 %>
-    

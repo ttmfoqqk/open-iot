@@ -12,7 +12,15 @@ class DeveloperSupportController
 	end sub
 
 	public Sub Index()
-		%> <!--#include file="../Views/DeveloperSupport/Index.asp" --> <%
+		Device()
+	End Sub
+	
+	public Sub Device()
+		%> <!--#include file="../Views/DeveloperSupport/Device.asp" --> <%
+	End Sub
+	
+	public Sub App()
+		%> <!--#include file="../Views/DeveloperSupport/App.asp" --> <%
 	End Sub
 
 End Class
