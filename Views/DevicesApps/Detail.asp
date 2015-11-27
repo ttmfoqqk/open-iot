@@ -3,7 +3,7 @@
 	<div class="sub_contents_full">
 		<div class="inner">
 
-			<div class="DevicesApps_Detail">
+			<div class="Detail_full">
 				<div class="rows">
 					<div class="area_images">
 						<div class="big_img">
@@ -152,21 +152,41 @@
 							</div>
 							
 							<div class="bbs_list">
-								<a href="#">
-									<div class="rows">
+								<div class="rows">
+									<a href="#">
 										<label class="notice"><span class="blind">Notice</span></label>
 										<span class="title">제목</span>
 										<span class="icon">2015.09.01</span>
+									</a>
+									<div id="bbs_detail">
+										<div class="detail">
+											내용
+										</div>
+										<div class="area_files">
+											<div class="rows">
+												<label>File</label><span class="file">file.exe</span><button class="white">Download</button>
+											</div>
+										</div>
 									</div>
-								</a>
+								</div>
 								
-								<a href="#">
-									<div class="rows">
+								<div class="rows">
+									<a href="#">
 										<label class="notice"><span class="blind">Notice</span></label>
 										<span class="title">제목</span>
 										<span class="icon">2015.09.01</span>
+									</a>
+									<div id="bbs_detail">
+										<div class="detail">
+											내용
+										</div>
+										<div class="area_files">
+											<div class="rows">
+												<label>File</label><span class="file">file.exe</span><button class="white">Download</button>
+											</div>
+										</div>
 									</div>
-								</a>
+								</div>
 								
 								<div class="more">
 									<a href="#">MORE</a>

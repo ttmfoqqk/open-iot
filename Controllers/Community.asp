@@ -12,7 +12,19 @@ class CommunityController
 	end sub
 
 	public Sub Index()
-		%> <!--#include file="../Views/Community/Index.asp" --> <%
+		List()
+	End Sub
+	
+	public Sub List()
+		%> <!--#include file="../Views/Community/List.asp" --> <%
+	End Sub
+	
+	public Sub Registe()
+		%> <!--#include file="../Views/Community/Registe.asp" --> <%
+	End Sub
+	
+	public Sub Proc()
+		'
 	End Sub
 
 End Class

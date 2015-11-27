@@ -3,7 +3,7 @@
 	<div class="sub_contents_full">
 		<div class="inner">
 
-			<div class="DevicesApps_Detail">
+			<div class="Detail_full">
 				
 				
 				

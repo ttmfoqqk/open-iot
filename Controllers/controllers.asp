@@ -4,6 +4,8 @@
 <!--#include file="DevicesApps.asp" -->
 <!--#include file="Community.asp" -->
 <!--#include file="Oid.asp" -->
+<!--#include file="Member.asp" -->
+<!--#include file="Mypage.asp" -->
 
 <%
 Public Controllers : Set Controllers = Server.CreateObject("Scripting.Dictionary")
@@ -13,4 +15,6 @@ Public Controllers : Set Controllers = Server.CreateObject("Scripting.Dictionary
 	Controllers.Add "DevicesAppsController", ""
 	Controllers.Add "CommunityController", ""
 	Controllers.Add "OidController", ""
+	Controllers.Add "MemberController", ""
+	Controllers.Add "MypageController", ""
 %>

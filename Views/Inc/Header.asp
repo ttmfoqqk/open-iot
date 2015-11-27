@@ -3,8 +3,8 @@
 		<div class="max_width_wrap">
 			<a href="/"><h1 class="logo"><span class="blind">OPEN-IOT</span></h1></a>
 			<div class="member">
-				<a href="#" class="btn1">Login</a>
-				<a href="#" class="btn2">Join</a>
+				<a href="?controller=Member&action=Login" class="btn1">Login</a>
+				<a href="?controller=Member&action=Registe" class="btn2">Join</a>
 			</div>
 			
 			<nav>
