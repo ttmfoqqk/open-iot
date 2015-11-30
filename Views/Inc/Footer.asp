@@ -5,40 +5,40 @@
 					<div class="item">
 						<h3>IoT OpenLab</h3>
 						<ul>
-							<li><a href="#">About OpenLab</a></li>
-							<li><a href="#">facility</a></li>
-							<li><a href="#">OpenLab Reservation</a></li>
+							<li><a href="?controller=IoTOpenLab&action=About">About OpenLab</a></li>
+							<li><a href="?controller=IoTOpenLab&action=facility">facility</a></li>
+							<li><a href="?controller=IoTOpenLab&action=Reservation">OpenLab Reservation</a></li>
 						</ul>
 					</div>
 					<div class="item">
 						<h3>Developer Support</h3>
 						<ul>
-							<li><a href="#">Device Developer</a></li>
-							<li><a href="#">App Developer</a></li>
+							<li><a href="?controller=DeveloperSupport&action=Device">Device Developer</a></li>
+							<li><a href="?controller=DeveloperSupport&action=App">App Developer</a></li>
 						</ul>
 					</div>
 					<div class="item">
 						<h3>Devices & Apps</h3>
 						<ul>
-							<li><a href="#">ALL</a></li>
-							<li><a href="#">Devices</a></li>
-							<li><a href="#">Apps</a></li>
+							<li><a href="?controller=DevicesApps">ALL</a></li>
+							<li><a href="?controller=DevicesApps">Devices</a></li>
+							<li><a href="?controller=DevicesApps">Apps</a></li>
 						</ul>
 					</div>
 					<div class="item">
 						<h3>Community</h3>
 						<ul>
-							<li><a href="#">Notice</a></li>
-							<li><a href="#">1:1 Inquiry</a></li>
-							<li><a href="#">News</a></li>
-							<li><a href="#">Forum</a></li>
+							<li><a href="?controller=Community">Notice</a></li>
+							<li><a href="?controller=Community">1:1 Inquiry</a></li>
+							<li><a href="?controller=Community">News</a></li>
+							<li><a href="?controller=Community">Forum</a></li>
 						</ul>
 					</div>
 					<div class="item">
 						<h3>OID</h3>
 						<ul>
-							<li><a href="#">About OID</a></li>
-							<li><a href="#">Get OID</a></li>
+							<li><a href="?controller=Oid&action=About">About OID</a></li>
+							<li><a href="?controller=Oid&action=Registe">Get OID</a></li>
 						</ul>
 					</div>
 				</nav>

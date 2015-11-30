@@ -85,7 +85,7 @@ header #header nav li.item1{width:135px;}
 header #header nav li.item2{width:170px;}
 header #header nav li.item3{width:140px;}
 header #header nav li.item4{width:130px;}
-header #header nav li.item5{width:60px;margin-left:35px;}
+header #header nav li.item5{width:60px;/*margin-left:35px;*/}
 header #header nav li a:hover{color:#305c92;}
 header #header nav li a.active{color:#305c92;}
 header #header nav .nav_line{position:absolute;top:0%;left:0%;width:135px;height:5px;background-color:#305c92;overflow:hidden;}

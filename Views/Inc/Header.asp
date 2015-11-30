@@ -9,13 +9,13 @@
 			
 			<nav>
 				<ul>
-					<li class="item1"><a href="?controller=IoTOpenLab">IoT OpenLab</a></li>
-					<li class="item2"><a href="?controller=DeveloperSupport">Developer Support</a></li>
-					<li class="item3"><a href="?controller=DevicesApps">Devices & Apps</a></li>
-					<li class="item4"><a href="?controller=Community">Community</a></li>
-					<li class="item5"><a href="?controller=Oid">OID</a></li>
+					<li class="item item1"><a href="?controller=IoTOpenLab">IoT OpenLab</a></li>
+					<li class="item item2"><a href="?controller=DeveloperSupport">Developer Support</a></li>
+					<li class="item item3"><a href="?controller=DevicesApps">Devices & Apps</a></li>
+					<li class="item item4"><a href="?controller=Community">Community</a></li>
+					<li class="item item5"><a href="?controller=Oid" class="active">OID</a></li>
 				</ul>
-				<div class="nav_line"></div>
+				<div id="top_nav_line" class="nav_line"></div>
 			</nav>
 			
 		</div>
