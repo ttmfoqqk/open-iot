@@ -27,8 +27,8 @@
 								내용
 							</div>
 							<div class="area_files">
-								<div class="rows">
-									<label>File</label><span class="file">file.exe</span><button class="white">Download</button>
+								<div class="row">
+									<label>File</label><span class="file">KETI_API자료(일반)_140915.xls [14.05 MB]</span><button class="white">다운로드</button>
 								</div>
 							</div>
 						</div>
@@ -46,8 +46,8 @@
 								내용
 							</div>
 							<div class="area_files">
-								<div class="rows">
-									<label>File</label><span class="file">file.exe</span><button class="white">Download</button>
+								<div class="row">
+									<label>File</label><span class="file">KETI_API자료(일반)_140915.xls [14.05 MB]</span><button class="white">다운로드</button>
 								</div>
 							</div>
 						</div>

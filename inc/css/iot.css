@@ -38,12 +38,12 @@ ol,ul{list-style: none;margin:0px;padding:0px;}
 	filter:progid:DXImageTransform.Microsoft.Alpha(Opacity=50);
 	-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
 }
-img.trick{height:100%;width:0px;overflow:hidden;}
+img.trick{height:100%;width:0px;overflow:hidden;vertical-align:middle;}
 
 select{min-width:200px;padding:5px 10px 5px 10px;font-size:16px;border:1px solid #b7b7b7;color:#010101;}
-input[type="text"],textarea{min-width:100%;padding:8px 10px 8px 10px;font-size:16px;border:1px solid #b7b7b7;color:#010101;}
+input[type="text"],textarea{min-width:100%;padding:9px 10px 10px 9px;font-size:16px;border:1px solid #b7b7b7;color:#010101;vertical-align:middle;}
 button.white{
-	min-width:192px;height:42px;
+	width:200px;height:50px;
 	border:4px solid #007acc;
 	color:#007acc;
 	background-color:#ffffff;
@@ -52,13 +52,21 @@ button.white{
 	cursor:pointer;
 }
 button.blue{
-	min-width:200px;height:42px;
+	width:200px;height:50px;
 	border:0px;
 	color:#ffffff;
 	background-color:#007acc;
 	font-size:18px;
 	font-family:'Nanum Barun Gothic';
 	cursor:pointer;
+}
+button.gray{
+	width:120px;height:40px;
+	border:2px solid #b7b7b7;
+	background-color:#ffffff;
+	font-size:16px;
+	cursor:pointer;
+	font-family:'Nanum Barun Gothic';
 }
 /* layout */
 header,footer{display:block;width:100%;z-index:10;overflow:hidden;}
@@ -79,7 +87,7 @@ header #header .member a.btn1{background-color:#007acc;}
 header #header .member a.btn2{background-color:#305c92;}
 
 header #header nav{width:670px;display:block;position:absolute;top:0%;left:0%;right:0%;margin-left:auto;margin-right:auto;}
-header #header nav ul{float:left;margin-top:40px;}
+header #header nav ul{float:left;width:100%;margin-top:40px;margin-left:35px;}
 header #header nav li{float:left;font-size:16px;text-align:center;}
 header #header nav li.item1{width:135px;}
 header #header nav li.item2{width:170px;}
@@ -234,10 +242,10 @@ table.form .input_wrap{margin-right:30px;}
 #bbs_detail{display:none;}
 
 .area_files{margin:50px 0px 50px 0px;position:relative;top:0%;left:0%;border-top:1px dotted #000000;}
-.area_files .rows{position:relative;top:0%;left:0%;border-bottom:1px dotted #000000;padding:30px 0px 30px 0px;font-size:16px;}
-.area_files .rows label{position:absolute;top:30px;left:0%;}
-.area_files .rows button{position:absolute;top:25px;right:0%;min-width:150px;height:26px;font-size:16px;font-weight:bold;border:2px solid #305c92;color:#305c92;}
-.area_files .rows .file{display:block;margin:0px 170px 0px 100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;}
+.area_files .row{position:relative;top:0%;left:0%;border-bottom:1px dotted #000000;padding:30px 0px 30px 0px;font-size:16px;}
+.area_files .row label{position:absolute;top:30px;left:0%;display:none;}/*margin-left:100px .file*/
+.area_files .row button{position:absolute;top:25px;right:0%;width:150px;min-width:150px;height:26px;font-size:16px;font-weight:bold;border:2px solid #305c92;color:#305c92;}
+.area_files .row .file{display:block;margin:0px 150px 0px 0px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;}
 
 
 .facility_tab{position:relative;top:0%;left:0%;height:70px;text-align:center;border-left:1px solid #b7b7b7;border-bottom:1px solid #b7b7b7;margin-bottom:30px;}
@@ -302,6 +310,10 @@ table.form .input_wrap{margin-right:30px;}
 .Detail_full .area_description .title{display:block;font-size:30px;margin-bottom:30px;}
 .Detail_full .area_description .caption{display:block;width:100%;font-size:16px;overflow-x:auto;overflow-y:hidden;}
 
+.Detail_full .area_registe .upload_img{float:left;width:120px;margin-right:30px;}
+.Detail_full .area_registe .upload_img.no_margin{margin-right:0px;}
+.Detail_full .area_registe .upload_img .mask{height:118px;margin-bottom:20px;background:url(../../images/bg_no_image.png) no-repeat center center;border:1px solid #b7b7b7;text-align:center;}
+.Detail_full .area_registe .upload_img .mask img{max-width:100%;max-height:100%;vertical-align:middle;}
 
 
 .Detail_full .area_files{margin:50px 100px 50px 100px;position:relative;top:0%;left:0%;border-top:1px dotted #000000;}

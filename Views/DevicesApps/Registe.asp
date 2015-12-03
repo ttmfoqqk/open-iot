@@ -36,7 +36,39 @@
 						</tr>
 						<tr>
 							<td class="title">디바이스 이미지</td>
-							<td>sss</td>
+							<td>
+								
+									
+								<div class="upload_img">
+									<div class="mask">
+										<img class="trick">
+									</div>
+									<button class="gray">사진등록</button>
+								</div>
+								
+								<div class="upload_img">
+									<div class="mask">
+										<img class="trick">
+									</div>
+									<button class="gray">사진등록</button>
+								</div>
+								
+								<div class="upload_img">
+									<div class="mask">
+										<img class="trick">
+									</div>
+									<button class="gray">사진등록</button>
+								</div>
+								
+								<div class="upload_img no_margin">
+									<div class="mask">
+										<img class="trick">
+									</div>
+									<button class="gray">사진등록</button>
+								</div>
+									
+								
+							</td>
 						</tr>
 						<tr>
 							<td class="title">디바이스 상세설명</td>
@@ -69,7 +101,7 @@
 						</tr>
 					</table>
 					<div style="text-align:right;">
-						<button class="white">디바이스 등록</botton>
+						<button class="white">디바이스 등록</button>
 					</div>
 				</div>
 				

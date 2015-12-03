@@ -61,3 +61,6 @@
 			</div>
 		</div>
 	</footer>
+	
+	<div style="position:fixed;top:50%;left:50%;z-index:120;width:900px;height:auto;background-color:#ffffff;margin-left:-450px;">달력</div>
+	<div class="wall" style="display:block;">1</div>

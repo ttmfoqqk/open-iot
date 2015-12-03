@@ -34,6 +34,12 @@
 							<div class="input_wrap"><input type="text"></div>
 						</td>
 					</tr>
+					<tr>
+						<td class="title"><span class="red">＊</span>핸드폰 뒷자리 번호 4개</td>
+						<td>
+							<div class="input_wrap"><input type="text"></div>
+						</td>
+					</tr>
 				</table>
 				<div style="text-align:right;">
 					<button class="white">수정</button>

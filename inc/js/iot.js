@@ -48,6 +48,14 @@ $(function(){
 			//
 		}
 	);
+	$('#header nav').hover(
+			function(){
+				//
+			},function(){
+				var t = $('#header ul li .active').parent();
+				TweenMax.to($("#top_nav_line"), 0.25, {width:t.width(), x:t.position().left , ease:Sine.easeOut});
+			}
+		);
 	/**
 	 * 초기 top line
 	 */

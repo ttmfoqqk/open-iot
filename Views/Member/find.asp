@@ -33,6 +33,12 @@
 									<div class="input_wrap"><input type="text"></div>
 								</td>
 							</tr>
+							<tr>
+								<td class="title"><span class="red">＊</span>핸드폰 뒷자리 번호 4개</td>
+								<td>
+									<div class="input_wrap"><input type="text"></div>
+								</td>
+							</tr>
 						</table>
 						<center>
 							<button class="white">취소</button>&nbsp;

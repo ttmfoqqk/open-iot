@@ -11,51 +11,69 @@
 				
 				<table class="form">
 					<tr>
-						<td class="title">구분</td>
+						<td class="title">이름</td>
 						<td>
-							<input type="radio" name="iCheck" id="iCheck1" checked><label for="iCheck1">판교</label> 
-							
-							<input type="radio" name="iCheck" id="iCheck2"><label for="iCheck2">송도</label> 
+							d
 						</td>
 					</tr>
 					<tr>
-						<td class="title">시설명</td>
+						<td class="title"><span class="red">＊</span>핸드폰</td>
 						<td>
-							<select>
-								<option>선택</option>
-								<option>선택1</option>
-								<option>선택2</option>
-								<option>선택3</option>
-							</select>
+							<input type="text" style="width:110px;min-width:110px;" maxlength="4"> - 
+							<input type="text" style="width:110px;min-width:110px;" maxlength="4"> - 
+							<input type="text" style="width:110px;min-width:110px;" maxlength="4"> 
 						</td>
 					</tr>
 					<tr>
-						<td class="title">성명</td>
-						<td>sss</td>
-					</tr>
-					<tr>
-						<td class="title">핸드폰</td>
-						<td>sss</td>
-					</tr>
-					<tr>
-						<td class="title">이메일</td>
-						<td>sss</td>
-					</tr>
-					<tr>
-						<td class="title">사용 희망일</td>
+						<td class="title"><span class="red">＊</span>기업명</td>
 						<td>
-							<div class="input_wrap"><input type="text" class="datepicker" readonly></div>
+							<div class="input_wrap">
+								<input type="text" style="width:270px;min-width:270px;"> &nbsp;
+								<button class="gray">중복확인</button>
+							</div>
 						</td>
 					</tr>
 					<tr>
-						<td class="title">이용목적</td>
+						<td class="title"><span class="red">＊</span>회사메일</td>
 						<td>
-							<div class="input_wrap"><textarea rows="10"></textarea></div>
+							<div class="input_wrap"><input type="text"></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="title"><span class="red">＊</span>주소</td>
+						<td>
+							<div class="input_wrap"><input type="text"></div>
+						</td>
+					</tr>
+					<tr>
+						<td class="title"><span class="red">＊</span>회사연락처</td>
+						<td>
+							<input type="text" style="width:110px;min-width:110px;" maxlength="4"> - 
+							<input type="text" style="width:110px;min-width:110px;" maxlength="4"> - 
+							<input type="text" style="width:110px;min-width:110px;" maxlength="4"> 
+						</td>
+					</tr>
+					<tr>
+						<td class="title"><span class="red">＊</span>회사로고</td>
+						<td>
+							<div class="input_wrap">
+								<input type="text" style="width:270px;min-width:270px;background-color:#ffffff;" readonly disabled> &nbsp;
+								<button class="gray">파일첨부</button>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td class="title"><span class="red">＊</span>사업자 등록증</td>
+						<td>
+							<div class="input_wrap">
+								<input type="text" style="width:270px;min-width:270px;background-color:#ffffff;" readonly disabled> &nbsp;
+								<button class="gray">파일첨부</button>
+							</div>
 						</td>
 					</tr>
 				</table>
 				<div style="text-align:right;">
-					<button class="white">등록</botton>
+					<button class="white">발급신청</button>
 				</div>
 				
 

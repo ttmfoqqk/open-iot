@@ -35,7 +35,11 @@
 					</tr>
 					<tr>
 						<td class="title">핸드폰</td>
-						<td>sss</td>
+						<td>
+							<input type="text" style="width:100px;min-width:100px;" maxlength="4"> - 
+							<input type="text" style="width:100px;min-width:100px;" maxlength="4"> - 
+							<input type="text" style="width:100px;min-width:100px;" maxlength="4"> 
+						</td>
 					</tr>
 					<tr>
 						<td class="title">이메일</td>
@@ -55,7 +59,7 @@
 					</tr>
 				</table>
 				<div style="text-align:right;">
-					<button class="white">등록</botton>
+					<button class="white">등록</button>
 				</div>
 				
 

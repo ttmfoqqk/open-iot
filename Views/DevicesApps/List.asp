@@ -23,7 +23,7 @@
 						<option>선택</option>
 					</select>
 					
-					<button class="white">Device 등록</button>
+					<button class="white" onclick="location.href='?controller=DevicesApps&action=Registe';">Device 등록</button>
 				</div>
 			</div>
 			

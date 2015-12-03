@@ -46,11 +46,18 @@
 								</td>
 							</tr>
 							<tr>
+								<td class="title"><span class="red">＊</span>핸드폰 뒷자리 번호 4개</td>
+								<td>
+									<div class="input_wrap"><input type="text"></div>
+								</td>
+							</tr>
+							<tr>
 								<td class="title"><span class="red">＊</span>보안코드</td>
 								<td>
 									아래 그림에 표시된 문자를 입력하십시오.<br>
-									<div style="border:1px solid red;width:300px;">보안문자</div>
-									<div class="input_wrap" style="width:280px;"><input type="text"></div>
+									<img src="./Utils/captcha/captcha.asp" id="imgCaptcha" style="border:1px solid #000000;vertical-align:top;"/>
+									&nbsp;<a href="javascript:void(0);" onclick="RefreshImage('imgCaptcha');" style="vertical-align:top;"><img src="./images/captcha_RefreshImage.gif"/></a><br />
+									<div class="input_wrap" style="width:280px;margin-top:5px;"><input type="text" maxlength="8" style="ime-mode:disabled;" onkeyup="this.value=this.value.replace(/[^a-zA-Z0-9]/g,'');"></div>
 								</td>
 							</tr>
 						</table>
@@ -68,3 +75,15 @@
 		</div>
 	</div>
 </div>
+
+
+<script type="text/javascript" language="javascript">
+	function RefreshImage(valImageId) {
+		var objImage = document.getElementById(valImageId)
+		if (objImage == undefined) {
+			return;
+		}
+		var now = new Date();
+		objImage.src = objImage.src.split('?')[0] + '?x=' + now.toUTCString();
+	}
+</script>
