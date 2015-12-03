@@ -62,5 +62,70 @@
 		</div>
 	</footer>
 	
-	<div style="position:fixed;top:50%;left:50%;z-index:120;width:900px;height:auto;background-color:#ffffff;margin-left:-450px;">달력</div>
-	<div class="wall" style="display:block;">1</div>
+	
+	<!-- 팝업 작성중 -->
+	<!-- div class="pop">
+		<a href="#" class="close"><span class="blind">닫기</span></a>
+	
+		<div style="position:absolute;top:35px;left:604px;z-index:5;width:120px;height:30px;">
+			<button style="float:left;width:50%;height:100%;background-color:#007acc;color:#ffffff;font-size:16px;">판교</button>
+			<button style="float:left;width:50%;height:100%;background-color:#b2b2b2;color:#ffffff;font-size:16px;">송도</button>
+		</div>
+		<table style="width:920px;height:100%;">
+			<tr>
+				<td style="position:relative;width:704px;">
+					<div id="test_ccc" style="width:692px;"></div>
+				</td>
+				<td style="padding-top:64px;vertical-align:top">
+					<div style="border:1px solid #e1e1e1;margin-left:10px;height:510px;background-color:#f0f2f4;overflow-x:hidden;overflow-y:auto;">
+						<div style="margin:10px;">
+							<h4 style="text-align:center;font-weight:bold;font-size:16px;margin-bottom:10px;">2015.09.14 <판교></h4>
+							<ul style="line-height:160%;font-size:14px;">
+								<li style="margin-bottom:10px;">
+									Connecting the dots<br>
+									<span style="color:#007acc;">14:00 ~ 18:00</span>
+								</li>
+								<li style="margin-bottom:10px;">
+									Connecting the dots<br>
+									<span style="color:#007acc;">14:00 ~ 18:00</span>
+								</li>
+								<li style="margin-bottom:10px;">
+									Connecting the dots<br>
+									<span style="color:#007acc;">14:00 ~ 18:00</span>
+								</li>
+								<li style="margin-bottom:10px;">
+									Connecting the dots<br>
+									<span style="color:#007acc;">14:00 ~ 18:00</span>
+								</li>
+								<li style="margin-bottom:10px;">
+									Connecting the dots<br>
+									<span style="color:#007acc;">14:00 ~ 18:00</span>
+								</li>
+								<li style="margin-bottom:10px;">
+									Connecting the dots<br>
+									<span style="color:#007acc;">14:00 ~ 18:00</span>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div -->
+	
+	<div class="pop">
+		<a href="#" class="close"><span class="blind">닫기</span></a>
+	
+		<div style="border:1px solid #e1e1e1;background-color:#f0f2f4;padding:10px 20px 10px 20px;margin-top:60px;">
+			<button style="background-color:#007acc;width:200px;height:50px;color:#ffffff;font-size:18px;margin-bottom:10px;">Device 등록</button><br>
+			<button style="background-color:#b2b2b2;width:200px;height:50px;color:#ffffff;font-size:18px;">App 등록</button>
+		</div>
+	</div>
+	
+	
+	<div class="wall" style="display:block;"></div>
+	
+	<!-- 팝업 작성중 -->
+	
+	
+	

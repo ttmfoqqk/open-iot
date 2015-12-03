@@ -73,6 +73,35 @@ $(function(){
 		beforeShowDay: noBefore
 	});
 	
+	$('#test_ccc').fullCalendar({
+		header: {
+			left  : '',
+			center: 'prev title next',
+			right : ''
+		},
+		editable: false,		
+		events: [
+			{
+				title: '시설 : 2건',
+				start: '2015-12-03',
+				url  : 'javascript:void(alert("준비"));',
+				color: 'transparent'
+			},
+			{
+				title: '시설 : 2건',
+				start: '2015-12-04',
+				url  : 'javascript:void(alert("준비"));',
+				color: 'transparent'
+			}
+		]
+	});
+	
+	$('.pop').css({
+		'margin-left':'-'+$('.pop').width()/2  + 'px',
+		'margin-top' :'-'+$('.pop').height()/2 + 'px'
+	});
+	
+	
 });
 
 // 이전 날짜들은 선택막기

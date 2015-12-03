@@ -46,7 +46,9 @@ body .fc { /* extra precedence to overcome jqui */
 }
 
 .fc-unthemed .fc-today {
-	background: #fcf8e3;
+	/*background: #fcf8e3;*/
+	/*  */
+	background-color:#fcf8e3;
 }
 
 .fc-highlight { /* when user is selecting cells */
@@ -380,6 +382,9 @@ hr.fc-divider {
 
 .fc th {
 	text-align: center;
+	/* sw */
+	line-height:38px;
+	background-color:#f0f2f4;font-size:16px;font-weight:normal;
 }
 
 .fc th,
@@ -545,6 +550,7 @@ temporary rendered events).
 .fc-event .fc-content {
 	position: relative;
 	z-index: 2;
+	
 }
 
 .fc-event .fc-resizer {
@@ -624,6 +630,9 @@ be a descendant of the grid when it is being dragged.
 .fc-day-grid-event .fc-content { /* force events to be one-line tall */
 	white-space: nowrap;
 	overflow: hidden;
+	/* sw */
+	color:#007acc;
+	font-size:14px;
 }
 
 .fc-day-grid-event .fc-time {
@@ -677,7 +686,9 @@ a.fc-more:hover {
 
 .fc-toolbar {
 	text-align: center;
-	margin-bottom: 1em;
+	/*margin-bottom: 1em;*/
+	/* sw */
+	margin-bottom:30px;
 }
 
 .fc-toolbar .fc-left {
@@ -690,6 +701,7 @@ a.fc-more:hover {
 
 .fc-toolbar .fc-center {
 	display: inline-block;
+	
 }
 
 /* the things within each left/right/center section */
@@ -707,7 +719,13 @@ a.fc-more:hover {
 
 .fc-toolbar h2 {
 	margin: 0;
+	/* sw */
+	font-size:30px;font-weight:bold;
+	line-height:30px;
 }
+/* sw */
+.fc-sun{color:red;}
+.fc-sat{color:blue;}
 
 /* button layering (for border precedence) */
 
@@ -806,7 +824,10 @@ a.fc-more:hover {
 }
 
 .fc-ltr .fc-basic-view .fc-day-number {
-	text-align: right;
+	/*text-align: right;*/
+	/* sw */
+	text-align:left;
+	font-size:16px;
 }
 
 .fc-rtl .fc-basic-view .fc-day-number {
