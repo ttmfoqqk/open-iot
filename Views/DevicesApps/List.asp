@@ -5,8 +5,8 @@
 
 			<div class="DevicesApps_search">
 				<div class="tab">
-					<a href="#" class="item active">ALL</a>
-					<a href="#" class="item">Devices</a>
+					
+					<a href="#" class="item active">Devices</a>
 					<a href="#" class="item">Apps</a>
 					<div class="search">
 						<div class="input_wrap">
@@ -30,7 +30,7 @@
 			<div class="DevicesApps_list">
 				<ul>
 					<li>
-						<a href="?controller=DevicesApps&action=Detail">
+						<a href="?controller=DevicesApps&action=Detail&id=1">
 							<div class="item pLeft">
 								<div class="photo"><img class="trick"><img src="images/sample_product_m.png" ></div>
 								<div class="label">
@@ -44,7 +44,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="?controller=DevicesApps&action=Detail">
+						<a href="?controller=DevicesApps&action=Detail&id=2">
 							<div class="item pCenter">
 								<div class="photo"><img class="trick"><img src="images/sample_product_m.png" ></div>
 								<div class="label">
@@ -58,7 +58,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="?controller=DevicesApps&action=Detail">
+						<a href="?controller=DevicesApps&action=Detail&id=3">
 							<div class="item pRight">
 								<div class="photo"><img class="trick"><img src="images/sample_product_m.png" ></div>
 								<div class="label">
@@ -72,7 +72,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="?controller=DevicesApps&action=Detail">
+						<a href="?controller=DevicesApps&action=Detail&id=4">
 							<div class="item pLeft">
 								<div class="photo"><img class="trick"><img src="images/sample_product_m.png" ></div>
 								<div class="label">
@@ -86,7 +86,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="?controller=DevicesApps&action=Detail">
+						<a href="?controller=DevicesApps&action=Detail&id=5">
 							<div class="item pCenter">
 								<div class="photo"><img class="trick"><img src="images/sample_product_m.png" ></div>
 								<div class="label">
@@ -100,7 +100,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="?controller=DevicesApps&action=Detail">
+						<a href="?controller=DevicesApps&action=Detail&id=6">
 							<div class="item pRight">
 								<div class="photo"><img class="trick"><img src="images/sample_product_m.png" ></div>
 								<div class="label">

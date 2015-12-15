@@ -19,7 +19,7 @@ class DevicesAppsController
 		%> <!--#include file="../Views/DevicesApps/List.asp" --> <%
 	End Sub
 	
-	public Sub Detail()
+	public Sub Detail(vars)
 		%> <!--#include file="../Views/DevicesApps/Detail.asp" --> <%
 	End Sub
 	

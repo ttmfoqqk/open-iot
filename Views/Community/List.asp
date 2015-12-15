@@ -53,6 +53,10 @@
 						</div>
 					</div>
 					
+					<div style="margin-top:30px;text-align:right;">
+						<button class="blue mini" onclick="location.href='?controller=Community&action=Registe';">질문하기</button>
+					</div>
+					
 					<div class="more">
 						<a href="#">MORE</a>
 						<span><b>1</b>/2</span>

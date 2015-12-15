@@ -18,6 +18,22 @@
 						<h2 class="title">IoT 가스락</h2>
 						<div class="caption">스마트폰으로 가스밸브를 확인하고 바로 잠글 수 있는 IoT 가스락으로 안심하세요</div>
 					</div>
+					
+					<!-- oid 발급기업 정보 -->
+					<div class="area_oid_box">
+						<div class="inner">
+							<div class="img">
+								<img class="trick"><img src="./images/sample_logo.gif">
+							</div>
+							<div class="text">
+								<p>
+								LISOTEK<br>
+								iot@openiot.net<br>
+								+82-10-555-5555<br>
+								</p>
+							</div>
+						</div>
+					</div>
 				</div>
 				
 				<div class="rows">
@@ -72,7 +88,7 @@
 								<div class="list">
 									<ul>
 										<li>
-											<a href="?controller=DevicesApps&action=Detail">
+											<a href="?controller=DevicesApps&action=Detail&id=1">
 												<div class="item pRight">
 													<div class="photo"><img class="trick"><img src="images/sample_product_m.png" ></div>
 													<div class="label">
@@ -86,7 +102,7 @@
 											</a>
 										</li>
 										<li>
-											<a href="?controller=DevicesApps&action=Detail">
+											<a href="?controller=DevicesApps&action=Detail&id=2">
 												<div class="item pRight">
 													<div class="photo"><img class="trick"><img src="images/sample_product_m.png" ></div>
 													<div class="label">
@@ -100,7 +116,7 @@
 											</a>
 										</li>
 										<li>
-											<a href="?controller=DevicesApps&action=Detail">
+											<a href="?controller=DevicesApps&action=Detail&id=3">
 												<div class="item pRight">
 													<div class="photo"><img class="trick"><img src="images/sample_product_m.png" ></div>
 													<div class="label">
@@ -114,7 +130,7 @@
 											</a>
 										</li>
 										<li>
-											<a href="?controller=DevicesApps&action=Detail">
+											<a href="?controller=DevicesApps&action=Detail&id=4">
 												<div class="item pRight">
 													<div class="photo"><img class="trick"><img src="images/sample_product_m.png" ></div>
 													<div class="label">

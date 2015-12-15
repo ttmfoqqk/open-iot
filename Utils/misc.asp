@@ -86,6 +86,27 @@ Function detectInjection(strtoclean)
 End Function
 
 
+Sub checkLogin(url)
+	If session("userNo")="" or IsNull(session("userNo"))=True Then 
+		response.redirect "?controller=Member&action=Login&goUrl="&server.urlencode(url &  "?" & Request.ServerVariables("QUERY_STRING") )
+	End If
+End Sub
 
+Sub alerts(pMsg, pBack) 
+	response.write "<script Language='JavaScript'>"
+	response.write "	alert('" & toJS(pMsg) & "');"
+	if (pBack="") then 
+		response.write "	history.back();"
+	else
+		response.write "	location.href='" & pBack & "';"
+	end if
+	response.write "</script>"
+	response.end
+End Sub
+
+Function toJS(pStr)
+	Dim str : str= replace(replace(replace(pStr,"\","\\"), "'","\'"), vbCrLf,"\n")
+	toJS = str
+End Function
 
 %>

@@ -13,27 +13,36 @@
 					<tr>
 						<td class="title"><span class="red">＊</span>제목</td>
 						<td>
-							ㅇㅇㅇ
+							<div class="input_wrap"><input type="text"></div>
 						</td>
 					</tr>
 					<tr>
 						<td class="title"><span class="red">＊</span>내용</td>
 						<td>
 							<div class="input_wrap"><textarea rows="20"></textarea></div>
+							
 						</td>
 					</tr>
 					<tr>
-						<td class="title"><span class="red">＊</span>파일</td>
+						<td class="title">파일</td>
 						<td>
-							<div class="input_wrap">
-								<input type="text" style="width:270px;min-width:270px;background-color:#ffffff;" readonly disabled> &nbsp;
+							<div class="input_wrap" style="margin-right:0px">
+								<input type="text" style="width:300px;min-width:300px;background-color:#ffffff;" readonly disabled> &nbsp;
 								<button class="gray">파일첨부</button>
 							</div>
 						</td>
 					</tr>
 				</table>
+				
 				<div style="text-align:right;">
-					<button class="white">수정</button>
+					<button class="white mini" style="float:left;">목록</button>
+					
+					<button class="white mini">수정</button>
+					<button class="blue mini">삭제</button>
+				</div>
+				<br>
+				<div style="text-align:right;">
+					<button class="white mini">저장</button>
 				</div>
 				
 

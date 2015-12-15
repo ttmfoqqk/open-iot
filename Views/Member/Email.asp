@@ -12,16 +12,16 @@
 						<div style="border:1px solid #e1e1e1;padding:40px;margin-bottom:20px;text-align:center;font-size:18px;">
 							등록하신 이메일을 인증하시면, 이 ID로 로그인하실 수 있습니다.<br>
 							아래 이메일 주소로 발송된 Open-IoT계정 이메일의 ‘계정 사용하기’ 링크를 클릭해 주세요.<br><br>
-							사용자 ID : <span style="color:#305c92;">test@naver.com</span>
+							사용자 ID : <span style="color:#305c92;"><%=Model.Id%></span>
 						</div>
 						
 						<p style="line-height:200%;margin-bottom:40px;">
-						※ 이메일을 잘못 입력하셨다면, <a href="#" class="line">여기</a>를 클릭하세요.<br>
-						※ 인증 메일을 받지 못하셨다면 <a href="#" class="line">재발송</a>을 클릭하세요.<br>
+						※ 이메일을 잘못 입력하셨다면, <a href="<%=ViewData("ActionChange")%>" class="line">여기</a>를 클릭하세요.<br>
+						※ 인증 메일을 받지 못하셨다면 <a href="<%=ViewData("ActionReSend")%>" class="line">재발송</a>을 클릭하세요.<br>
 						<p>
 						<center>
-							<button class="white">취소</button>&nbsp;
-							<button class="blue">이메일 확인</button>
+							<!--button class="white">취소</button>&nbsp;-->
+							<button class="blue" onclick="window.open('<%=ViewData("ActionSite")%>');">이메일 확인</button>
 						</center>
 						
 						

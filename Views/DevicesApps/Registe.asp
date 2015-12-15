@@ -2,6 +2,8 @@
 	
 	<div class="sub_contents_full">
 		<div class="inner">
+			<h2 class="sub_title_black">Device Update</h2>
+			<div class="sub_title_img"></div>
 
 			<div class="Detail_full">
 				
@@ -85,18 +87,36 @@
 						<tr>
 							<td class="title">파일</td>
 							<td>
-								<div class="input_wrap"><input type="file"></div>
+								<div class="input_wrap">
+									<input type="text" style="width:300px;min-width:300px;background-color:#ffffff;" readonly disabled> &nbsp;
+									<button class="gray">파일첨부</button>
+									
+									<div style="position:absolute;top:0px;right:-20px;">
+										<button class="gray" style="width:40px;">+</button>
+										<button class="gray" style="width:40px;">-</button>
+									</div>
+								</div>
 							</td>
 						</tr>
 						<tr>
 							<td class="title">관련 어플리케이션</td>
 							<td>
-								<select>
-									<option>선택</option>
-									<option>선택1</option>
-									<option>선택2</option>
-									<option>선택3</option>
-								</select>
+								<div class="input_wrap">
+									<div style="margin-right:100px;">
+										<select style="width:100%;margin-top:1px;">
+											<option>선택</option>
+											<option>선택1</option>
+											<option>선택2</option>
+											<option>선택3</option>
+										</select>
+									</div>
+									
+									<div style="position:absolute;top:0px;right:-20px;">
+										<button class="gray" style="width:40px;">+</button>
+										<button class="gray" style="width:40px;">-</button>
+									</div>
+								</div>
+								
 							</td>
 						</tr>
 					</table>

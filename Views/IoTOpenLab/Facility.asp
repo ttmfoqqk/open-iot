@@ -11,7 +11,7 @@
 				<div class="facility_tab">
 					<a href="#" class="item active">판교</a>
 					<a href="#" class="item">송도</a>
-					<a href="#" class="reservation">예약현황</a>
+					<a href="javascript:;" onclick="call_pop_calendar();" class="reservation">예약현황</a>
 				</div>
 				
 				

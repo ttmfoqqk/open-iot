@@ -1,3 +1,9 @@
+<%@Language="VBScript" CODEPAGE="65001" %>
+<%
+Response.CharSet="utf-8"
+Session.codepage="65001"
+Response.codepage="65001"
+%>
 <!--#include file="utils/utils.asp" -->
 <!--#include file="models/models.asp" -->
 <!--#include file="controllers/controllers.asp" -->
@@ -8,7 +14,7 @@ Const defaultAction = "Index"
 
 partial     = Request.QueryString("partial")
 controller  = Trim (CStr(Request.QueryString("controller")))
-action      = actionClean (Trim (CStr(Request.QueryString("action"))))
+action      = Trim (CStr(Request.QueryString("action")))
 
 If Not(IsEmpty(partial) or IsNull(partial))  Then
 	If not Route () then
@@ -40,10 +46,11 @@ End Function
 
 Function Route ()
 
-	Dim controller, action , vars
+	Dim controller, action
 	controller  = Trim (CStr(Request.QueryString("controller")))
 	action      = actionClean (Trim (CStr(Request.QueryString("action"))))
-	set vars    = CollectVariables()
+	'Dim vars
+	'set vars    = CollectVariables()
 	Route = False
 	
 	If IsEmpty(controller) or IsNull(controller) or (controller="") then
@@ -66,13 +73,16 @@ Function Route ()
 	Dim controllerInstance 
 	Set controllerInstance = Eval ( " new " +  controllerName)
 	Dim actionCallString 
-	If (Instr(1,action,"Post",1)>0) then
-		actionCallString = " controllerInstance." + action + "(Request.Form)"
-	ElseIf Not (IsNothing(vars)) then
-		actionCallString = " controllerInstance." + action + "(vars)"
-	Else
-		actionCallString = " controllerInstance." + action + "()"
-	End If
+	
+	'If (Instr(1,action,"Post",1)>0) then
+	'	actionCallString = " controllerInstance." + action + "(Request.Form)"
+	'ElseIf Not (IsNothing(vars)) then
+	'	actionCallString = " controllerInstance." + action + "(vars)"
+	'Else
+	'	actionCallString = " controllerInstance." + action + "()"
+	'End If
+	actionCallString = " controllerInstance." + action + "()"
+	
 	Eval (actionCallString)
 	Route = true
 End Function
@@ -95,6 +105,7 @@ Function RouteDebug ()
 		End If
 	next
 end function
+
 
 Function CollectVariables
 	dim key, keyValue

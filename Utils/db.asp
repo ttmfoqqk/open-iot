@@ -76,6 +76,8 @@ Function DBSafeValue(param, value)
                 DBSafeValue = CDbl(value)
             case 11:
                 DBSafeValue = CBool(value)
+            case 204:
+                DBSafeValue = CStr(value)
             case else:
               Err.Raise 8, "db utilites: DBSafeAssign ", "unsupported type(" & param.Type & ") of database field"
         End select

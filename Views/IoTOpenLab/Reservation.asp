@@ -59,7 +59,7 @@
 					</tr>
 				</table>
 				<div style="text-align:right;">
-					<button class="white">등록</button>
+					<button class="white">예약신청</button>
 				</div>
 				
 

@@ -19,6 +19,10 @@ class CommunityController
 		%> <!--#include file="../Views/Community/List.asp" --> <%
 	End Sub
 	
+	public Sub Gallery()
+		%> <!--#include file="../Views/Community/List_Gallery.asp" --> <%
+	End Sub
+	
 	public Sub Registe()
 		%> <!--#include file="../Views/Community/Registe.asp" --> <%
 	End Sub
