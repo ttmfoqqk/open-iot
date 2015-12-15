@@ -146,6 +146,43 @@ class UserHelper
 		End If
  
 	end function 
+	
+	public function EmailComplete(No)
+		Dim strSQL
+		strSQL= "Update [User] set [State]=0 Where No = ? " 
+		set objCommand=Server.CreateObject("ADODB.command") 
+		objCommand.ActiveConnection=DbOpenConnection()
+		objCommand.NamedParameters = False
+		objCommand.CommandText = strSQL
+		objCommand.CommandType = adCmdText
+
+		if DbAddParameters(objCommand, Array(No)) then
+			objCommand.Execute
+			EmailComplete = true
+		Else
+			EmailComplete = false
+		End If
+ 
+	end function 
+	
+	
+	public function ChangeId(obj)
+		Dim strSQL
+		strSQL= "Update [User] set [Id]=? Where [No] = ? " 
+		set objCommand=Server.CreateObject("ADODB.command") 
+		objCommand.ActiveConnection=DbOpenConnection()
+		objCommand.NamedParameters = False
+		objCommand.CommandText = strSQL
+		objCommand.CommandType = adCmdText
+
+		if DbAddParameters(objCommand, Array(obj.Id, obj.No)) then
+			objCommand.Execute
+			ChangeId = true
+		Else
+			ChangeId = false
+		End If
+ 
+	end function
   
 	' Delete the User
 	public function Delete(Id)

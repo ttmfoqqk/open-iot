@@ -16,24 +16,26 @@
 						
 						<h2 class="sub_caption"><label></label>변경내용</h2>
 						
+						<form name="mForm" id="mForm" method="POST" action="<%=ViewData("ActionForm")%>">
 						<table class="form">
 							<tr>
 								<td class="title"><span class="red">＊</span>Email ID</td>
 								<td>
-									<div class="input_wrap"><input type="text"></div>
+									<div class="input_wrap"><input type="text" name="Id" id="Id"></div>
 								</td>
 							</tr>
 							<tr>
 								<td class="title"><span class="red">＊</span>Email 확인</td>
 								<td>
-									<div class="input_wrap"><input type="text"></div>
+									<div class="input_wrap"><input type="text" name="IdConfirm" id="IdConfirm"></div>
 								</td>
 							</tr>
 						</table>
 						<center>
-							<button class="white">취소</button> &nbsp;
-							<button class="blue">확인</button>
+							<button class="white" type="button" onclick="history.go(-1);">취소</button> &nbsp;
+							<button class="blue" type="submit">확인</button>
 						</center>
+						</form>
 						
 						
 						

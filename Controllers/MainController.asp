@@ -4,6 +4,7 @@ class MainController
 	Dim ViewData
 
 	private sub Class_Initialize()
+		call checkEmailConfirm()
 		Set ViewData = Server.CreateObject("Scripting.Dictionary")
 	end sub
 	

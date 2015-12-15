@@ -41,7 +41,7 @@
 							</tr>
 						</table>
 						<center>
-							<button class="white">취소</button>&nbsp;
+							<button class="white" onclick="history.go(-1);">취소</button>&nbsp;
 							<button class="blue">확인</button>
 						</center>
 						

@@ -57,7 +57,8 @@ class MemberController
 			Response.Cookies("saveId").expires = date - 1
 		end if
 		
-		session("userNo") = Model.No
+		session("userNo")    = Model.No
+		session("userState") = Model.State
 		
 		if Trim(args("goUrl")) = "" then
 			Response.Redirect("/")
@@ -153,52 +154,175 @@ class MemberController
 		
 		Dim result : result = u.Insert(obj)
 		' 세션 생성 
-		session("userNo") = obj.No
-		Response.Redirect("?controller=Member&action=Email")
+		session("userNo")    = obj.No
+		session("userState") = 1
+		Response.Redirect("?controller=Member&action=EmailPost&partial=True")
 	End Sub
 	
 	public Sub Email()
 		call checkLogin("")
-		
+
 		Dim u : set u = new UserHelper
 		set Model = u.SelectByField("No",session("userNo"))
+		
+		if Model.State = "0" then
+			response.redirect "?controller=Mypage&action=Modify"
+		end if
 		
 		dim ActionSite : ActionSite = split( Model.Id , "@" )
 		
 		ViewData.add "ActionSite"  ,"http://" & ActionSite(1)
 		ViewData.add "ActionChange","?controller=Member&action=IdChange"
-		ViewData.add "ActionReSend","?controller=Member&action=Email&m=re"
-		' 이메일 발송
-		
-		Dim ReSend : ReSend = Trim(Request("m"))
-		if ReSend = "re" then
-			' 재발송 요청
-			' 쿠키 삭제
-		end if
-		
-		if Model.State = 1 then
-			' 이메일 미인증만 , 쿠키 없을때
-			' 발송
-			'	base64( no * len(id) , id )
-			' 쿠키 생성
-		end if
-		
+		ViewData.add "ActionReSend","?controller=Member&action=EmailPost&partial=True&m=re"
+
 		%> <!--#include file="../Views/Member/Email.asp" --> <%
 	End Sub
 	
+	public Sub EmailPost()
+		call checkLogin("")
+
+		Dim u : set u = new UserHelper
+		set Model = u.SelectByField("No",session("userNo"))
+		
+		if Model.State = "0" then
+			response.redirect "?controller=Mypage&action=Modify"
+		end if
+		
+		' 발송
+		'	base64( no * len(id) , id )
+		dim code : code = Base64encode( (Model.No * len(Model.Id)) & "," & Model.Id )
+		
+		dim strSubject : strSubject = Model.Name & "님 요청하신 인증번호 입니다."
+		dim strBody : strBody = "이메일 인증하기<br><br><a href="""& g_host &"?controller=Member&action=Registered&code="& code &""">인증하기</a>"
+		dim strTo : strTo = Model.Id
+		dim strFrom : strFrom = "OPEN-IOT<no-reply@open-iot.net>"
+		
+		dim result : result = MailSend(strSubject, strBody, strTo, strFrom, "")
+		
+		
+		if Trim( Request("m") ) = "re" then
+			call alerts ("재발송 되었습니다.","?controller=Member&action=Email")
+		else
+			Response.Redirect("?controller=Member&action=Email")
+		end if
+	End Sub
+	
+	' 회원가입후 이미엘 인증 받기전 아이디 변경
 	public Sub IdChange()
-		' 회원가입후 이미엘 인증 받기전 아이디 변경
+		call checkLogin("")
+		
+		Dim u : set u = new UserHelper
+		set Model = u.SelectByField("No",session("userNo"))
+		
+		if Model.State = "0" then
+			response.redirect "?controller=Mypage&action=Modify"
+		end if
+		
+		ViewData.add "ActionForm"  ,"?controller=Member&action=IdChangePost&partial=True"
+		
 		%> <!--#include file="../Views/Member/IdChange.asp" --> <%
 	End Sub
 	
+	public Sub IdChangePost()
+		call checkLogin("?controller=Member&action=IdChange")
+		
+		Dim u : set u = new UserHelper
+		set Model = u.SelectByField("No",session("userNo"))
+		
+		if Model.State = "0" then
+			response.redirect "?controller=Mypage&action=Modify"
+		end if
+		
+		Dim args : Set args = Request.Form
+		
+		if Trim(args("Id")) = "" Then
+			call alerts ("아이디를 입력해주세요.","")
+		end if
+		if Trim(args("IdConfirm")) = "" Then
+			call alerts ("아이디 확인을 입력해주세요.","")
+		end if
+		
+		if Trim(args("Id")) <> Trim(args("IdConfirm")) Then
+			call alerts ("아이디를 확인해주세요.","")
+		end if
+		
+		Dim check : set check = u.SelectByField("Id", args("Id"))
+
+		if Not(IsNothing (check)) Then
+			call alerts ("이미 사용중인 아이디 입니다.","")
+		end if
+		
+		Dim obj
+		set obj = new User
+		
+		obj.Id = Trim(args("Id"))
+		obj.No = session("userNo")
+		
+		if u.ChangeId(obj) then
+			'call alerts ("변경 되었습니다.","?controller=Member&action=EmailPost&partial=True")
+			call alerts ("변경 되었습니다. 다시 로그인 해주세요.","?controller=Member&action=Logout&partial=True")
+		else
+			call alerts ("error : 아이디 변경이 실패 했습니다. 관리자에게 문의바랍니다.","")
+		end if
+		
+
+	End Sub
+	
+	' 이메일 인증 확인 , 회원 가입 완료
 	public Sub Registered()
-		' 이메일 인증 확인 페이지 생성
+		dim code : code = Trim( request("code") )
+		
+		dim complete_code : complete_code = Base64decode( code )
+		dim temp_array : temp_array = split(complete_code,",")
+		dim result : result = false
+		
+		If ( UBound(temp_array) > 0 ) Then
+		
+			No = trim(temp_array(0))
+			Id = trim(temp_array(1))
+			No = No / len(Id)
+
+			Dim u : set u = new UserHelper
+			Dim user : set user = u.SelectByField("No", No)
+
+			if Not(IsNothing (user)) Then
+				if user.Id = Id then 
+					if user.State = "0" then
+						result = true
+					else
+						if u.EmailComplete(No) then
+							result = true
+						end if
+					end if
+					
+					session("userState") = 0
+				end if
+			end if
+
+		End if
+		
+		ViewData.add "Result" , result
+		ViewData.add "ActionUrl" , "?controller=Member&action=Login"
 		%> <!--#include file="../Views/Member/Registered.asp" --> <%
 	End Sub
 	
 	public Sub Find()
-		' 처리 페이지 id 출력 , 임시비밀번호 이메일 발송 
-		%> <!--#include file="../Views/Member/find.asp" --> <%
+		%> <!--#include file="../Views/Member/Find.asp" --> <%
+	End Sub
+	
+	' 아이디 찾기 결과
+	public Sub FindResultId()
+		%> <!--#include file="../Views/Member/FindResultId.asp" --> <%
+	End Sub
+	
+	' 비밀번호 찾기 결과
+	public Sub FindResultPwd()
+		%> <!--#include file="../Views/Member/FindResultPwd.asp" --> <%
+	End Sub
+	
+	' 임시비밀번호 생성, 이메일 발송
+	public Sub FindPwdPost()
+		'
 	End Sub
 
 End Class
