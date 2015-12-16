@@ -51,7 +51,7 @@
 								<tr>
 									<td class="title"><span class="red">＊</span>핸드폰 뒷자리 번호 4개</td>
 									<td>
-										<div class="input_wrap"><input type="text" id="Phone3" name="Phone3"></div>
+										<div class="input_wrap"><input type="text" id="Phone3" name="Phone3" maxlength="4"></div>
 									</td>
 								</tr>
 								<tr>

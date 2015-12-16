@@ -128,24 +128,6 @@ class UserHelper
 		Insert = true
 	end  function
 
-	' Update the User
-	public function Update(obj)
-		Dim strSQL
-		strSQL= "Update [User] set [Id]=?  , [Name]=?  , [Phone3]=? Where Id = ? " 
-		set objCommand=Server.CreateObject("ADODB.command") 
-		objCommand.ActiveConnection=DbOpenConnection()
-		objCommand.NamedParameters = False
-		objCommand.CommandText = strSQL
-		objCommand.CommandType = adCmdText
-
-		if DbAddParameters(objCommand, Array(obj.Id, obj.Name, obj.Phone3 , obj.Id)) then
-			objCommand.Execute
-			Update = true
-		Else
-			Update = false
-		End If
- 
-	end function 
 	
 	public function EmailComplete(No)
 		Dim strSQL
@@ -183,17 +165,54 @@ class UserHelper
 		End If
  
 	end function
+	
+	public function updatePwd(obj)
+		Dim strSQL
+		strSQL= "Update [User] set [Pwd] = pwdencrypt(?) Where [No] = ? " 
+		set objCommand=Server.CreateObject("ADODB.command") 
+		objCommand.ActiveConnection=DbOpenConnection()
+		objCommand.NamedParameters = False
+		objCommand.CommandText = strSQL
+		objCommand.CommandType = adCmdText
+
+		if DbAddParameters(objCommand, Array(obj.Pwd, obj.No)) then
+			objCommand.Execute
+			updatePwd = true
+		Else
+			updatePwd = false
+		End If
+ 
+	end function
+	
+	
+	public function Update(obj)
+		Dim strSQL
+		strSQL= "Update [User] set [Pwd] = pwdencrypt(?) , [Phone3] = ? Where [No] = ? " 
+		set objCommand=Server.CreateObject("ADODB.command") 
+		objCommand.ActiveConnection=DbOpenConnection()
+		objCommand.NamedParameters = False
+		objCommand.CommandText = strSQL
+		objCommand.CommandType = adCmdText
+
+		if DbAddParameters(objCommand, Array(obj.Pwd, obj.Phone3, obj.No)) then
+			objCommand.Execute
+			Update = true
+		Else
+			Update = false
+		End If
+ 
+	end function
   
 	' Delete the User
-	public function Delete(Id)
+	public function Delete(No)
 		Dim strSQL
-		strSQL= "DELETE FROM [User] WHERE Id = ?"
+		strSQL= "Update [User] set [DelFg] = 1 WHERE No = ?"
 		set objCommand=Server.CreateObject("ADODB.command")
 		objCommand.ActiveConnection=DbOpenConnection()
 		objCommand.NamedParameters = False
 		objCommand.CommandText = strSQL
 		objCommand.CommandType = adCmdText
-		if DbAddParameters(objCommand, array(Id)) Then
+		if DbAddParameters(objCommand, array(No)) Then
 			objCommand.Execute
 			Delete = true
 		else
@@ -206,7 +225,7 @@ class UserHelper
 		set objCommand=Server.CreateObject("ADODB.command")
 		objCommand.ActiveConnection=DbOpenConnection()
 		objCommand.NamedParameters = False
-		objCommand.CommandText = selectSQL + " Where " & fieldName & "=? and DelFg = 0 "
+		objCommand.CommandText = selectSQL + " Where " & fieldName & "=? and DelFg = 0 order by No desc"
 		objCommand.CommandType = adCmdText
 
 		If DbAddParameters(objCommand, array(value)) Then
@@ -218,6 +237,38 @@ class UserHelper
 			Set SelectByField = Nothing
 		End If
 	end function
+	
+	
+	public function SelectAll(sql , objs)
+		Dim records
+		set objCommand=Server.CreateObject("ADODB.command")
+		objCommand.ActiveConnection=DbOpenConnection()
+		objCommand.NamedParameters = False
+		objCommand.CommandText = selectSQL & sql
+		objCommand.CommandType = adCmdText
+  		
+  		If DbAddParameters(objCommand, objs) Then
+			set records = objCommand.Execute
+
+			if records.eof then
+				Set SelectAll = Nothing
+			else
+				Dim results, obj, record
+				Set results = Server.CreateObject("Scripting.Dictionary")
+				while not records.eof
+					set obj = PopulateObjectFromRecord(records)
+					results.Add obj.Id, obj
+					records.movenext
+				wend
+				set SelectAll = results
+				records.Close
+			End If
+			set records = nothing
+		Else
+			Set SelectAll = Nothing
+		End If
+      end function
+	
 	
 	public function Login(obj)
 		Dim record

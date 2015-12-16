@@ -269,6 +269,28 @@ Const sBASE_64_CHARACTERS = _
 End Function
 
 
+Function RandomNumber(NumberLength,NumberString)
+
+	Const DefaultString = "ABCDEFGHIJKLMNOPQRSTUVXYZ1234567890"
+	Dim nCount,RanNum,nNumber,nLength
+
+	Randomize
+	If NumberString = "" Then 
+		NumberString = DefaultString
+	End If
+
+	nLength = Len(NumberString)
+
+	For nCount = 1 To NumberLength
+	nNumber = Int((nLength * Rnd)+1)
+	RanNum = RanNum & Mid(NumberString,nNumber,1)
+	Next
+
+	RandomNumber = RanNum
+End Function
+
+
+
 Function isValidEmail(myEmail)
 	dim isValidE
 	dim regEx

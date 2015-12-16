@@ -307,24 +307,85 @@ class MemberController
 	End Sub
 	
 	public Sub Find()
+		ViewData.add "ActionForm"  ,"?controller=Member&action=FindPost"
 		%> <!--#include file="../Views/Member/Find.asp" --> <%
 	End Sub
 	
-	' 아이디 찾기 결과
-	public Sub FindResultId()
-		%> <!--#include file="../Views/Member/FindResultId.asp" --> <%
+	public Sub FindPost()
+		Dim args : Set args = Request.Form
+		
+		Dim Mode   : Mode   = Trim(args("Mode"))
+		Dim Id     : Id     = Trim(args("Id"))
+		Dim Name   : Name   = Trim(args("Name"))
+		Dim Phone3 : Phone3 = Trim(args("Phone3"))
+		
+		Dim u : set u = new UserHelper
+		' id 찾기
+		if Mode = "findId" Then
+			if Name = "" Then
+				call alerts ("이름을 입력해주세요.","")
+			end if
+			if Phone3 = "" Then
+				call alerts ("핸드폰 뒷자리 번호 4개를 입력해주세요.","")
+			end if
+			
+			set Model = u.SelectAll( " where Name = ? and Phone3 = ? and DelFg = 0 order by No desc " , array(Name,Phone3) )
+			
+			ViewData.add "ActionLogin" , "?controller=Member&action=Login"
+			%> <!--#include file="../Views/Member/FindResultId.asp" --> <%
+		
+		' pwd 찾기
+		elseif Mode = "findPwd" Then
+			if Id = "" Then
+				call alerts ("아이디를 입력해주세요.","")
+			end if
+			if Name = "" Then
+				call alerts ("이름을 입력해주세요.","")
+			end if
+			if Phone3 = "" Then
+				call alerts ("핸드폰 뒷자리 번호 4개르 입력해주세요.","")
+			end if
+			
+			dim result : result = false
+			set Model = u.SelectByField("Id", Id)
+			
+			if Not(IsNothing(Model)) then
+				if Model.Name = Name and Model.Phone3 = Phone3 then
+				
+					Dim obj
+					set obj = new User
+					
+					obj.Pwd = RandomNumber(10,"")
+					obj.No  = Model.No
+					'update
+					if u.updatePwd(obj) then 
+						'메일 발송
+						
+						dim strSubject : strSubject = Model.Name & "님 요청하신 임시 비밀번호 입니다."
+						dim strBody : strBody = "임시 비밀번호 : " & obj.Pwd
+						dim strTo : strTo = Model.Id
+						dim strFrom : strFrom = "OPEN-IOT<no-reply@open-iot.net>"
+						
+						dim result_mail : result_mail = MailSend(strSubject, strBody, strTo, strFrom, "")
+						
+						result = true
+					else
+						call alerts ("error : 임시 비밀번호 생성이 실패 했습니다. 관리자에게 문의바랍니다.","")
+					end if
+					
+					result = true
+				end if
+			end if
+			
+			' 메일 발송 
+			ViewData.add "Result" , result
+			ViewData.add "ActionLogin" , "?controller=Member&action=Login"
+			%> <!--#include file="../Views/Member/FindResultPwd.asp" --> <%
+		else
+			call alerts ("잘못된 접근 입니다.","")
+		end if
 	End Sub
-	
-	' 비밀번호 찾기 결과
-	public Sub FindResultPwd()
-		%> <!--#include file="../Views/Member/FindResultPwd.asp" --> <%
-	End Sub
-	
-	' 임시비밀번호 생성, 이메일 발송
-	public Sub FindPwdPost()
-		'
-	End Sub
-
+	 
 End Class
 %>
     

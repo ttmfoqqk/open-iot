@@ -61,23 +61,26 @@
 				
 				<center>탈퇴하시려면 비밀번호를 한번 더 입력한 후 [탈퇴하기]를 선택해 주시기 바랍니다.</center>
 				<br>
+				
+				<form name="mForm" id="mForm" method="POST" action="<%=ViewData("ActionForm")%>">
 				<table class="form">
 					<tr>
 						<td class="title">아이디(ID)</td>
 						<td>
-							id
+							<%=Model.Id%>
 						</td>
 					</tr>
 					<tr>
 						<td class="title">비빌번호</td>
 						<td>
-							<div class="input_wrap"><input type="text"></div>
+							<div class="input_wrap"><input type="password" name="Pwd" id="Pwd"></div>
 						</td>
 					</tr>
 				</table>
 				<div style="text-align:center;">
-					<button class="blue">탈퇴신청</button>
+					<button type="submit" class="blue">탈퇴신청</button>
 				</div>
+				</form>
 				
 
 			</div>
