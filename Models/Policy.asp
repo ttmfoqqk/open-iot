@@ -1,5 +1,5 @@
 <%
-class Policy
+class Policys
 
 	private mMetadata
 
@@ -37,7 +37,7 @@ class Policy
 		metadata = mMetadata
 	end property
 
-end class 'Policy
+end class
 
 class PolicyHelper
 
@@ -90,7 +90,7 @@ class PolicyHelper
 			Set PopulateObjectFromRecord = Nothing
 	    else
 			Dim obj
-			set obj = new Policy
+			set obj = new Policys
 	        
 			obj.Policy1 = record("Policy1")
 			obj.Policy2 = record("Policy2")

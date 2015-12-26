@@ -92,8 +92,11 @@ End Function
 
 
 Sub checkLogin(url)
+	if url = "" then
+		url = "?" & Request.ServerVariables("QUERY_STRING")
+	end if 
 	If session("userNo")="" or IsNull(session("userNo"))=True Then 
-		response.redirect "?controller=Member&action=Login&goUrl="&server.urlencode(url &  "?" & Request.ServerVariables("QUERY_STRING") )
+		response.redirect "?controller=Member&action=Login&goUrl=" & server.urlencode(url)
 	End If
 End Sub
 

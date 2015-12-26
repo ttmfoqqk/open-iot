@@ -1,8 +1,5 @@
+<!--METADATA TYPE="typelib" NAME=" ADODB Type Library" UUID="00000205-0000-0010-8000-00AA006D2EA4" -->
 <%
-const adCmdText =1
-const adCmdStoredProc = 4
-const adCmdUnknown = 8
-
 dim oConn 
 set oConn = Nothing
 

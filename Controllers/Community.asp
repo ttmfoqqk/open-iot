@@ -16,6 +16,16 @@ class CommunityController
 	End Sub
 	
 	public Sub List()
+		dim BoardHelper : set BoardHelper = new BoardHelper
+		dim obj : set obj = new Board
+
+		obj.Code = 22
+		obj.UserNo = 0
+		obj.Title = "Title"
+		obj.ContentsNoHtml = "ContentsNoHtml"
+		
+		
+		set Model = BoardHelper.SelectAll(obj,pageNo,rows)
 		%> <!--#include file="../Views/Community/List.asp" --> <%
 	End Sub
 	
