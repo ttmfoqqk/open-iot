@@ -17,9 +17,9 @@
 						<div class="row">
 						
 						
-						<div class="col-lg-12">
+							<div class="col-lg-12">
 								<!-- col-lg-12 start here -->
-								<div class="panel panel-primary toggle">
+								<div class="panel panel-primary">
 									<!-- Start .panel -->
 									<div class="panel-heading">
 										<h4 class="panel-title">
@@ -28,7 +28,10 @@
 									</div>
 									<div class="panel-body">
 										<!-- 검색 -->
-										<form id="qu" class="form-horizontal" method="get" role="form" action="<?echo $search_url?>">
+										<form class="form-horizontal" method="GET">
+										<input type="hidden" name="controller" value="<%=controller%>">
+										<input type="hidden" name="action" value="<%=action%>">
+										
 											<div class="form-group col-lg-12 col-md-12">
 												<label class="col-lg-2 col-md-2 control-label" for="">등록기간</label>
 												<div class="col-lg-6 col-md-6">
@@ -79,35 +82,37 @@
 																<label for="masterCheck"></label>
 															</div>
 														</th>
-														<th>ID</th>
+														<th>아이디</th>
 														<th>이름</th>
-														<th class="per10">등록일자</th>
+														<th class="per15">등록일자</th>
 													</tr>
 												</thead>
 												<tbody>
-													<!-- 리스트 -->
-												<?php
-													foreach ( $list as $lt ) {
-														$anchor = $anchor_url.'&no='.$lt['no'];
-													?>
+
+												<%if IsNothing(Model) then %>
+													<tr>
+														<td colspan="4">등록된 내용이 없습니다.</td>
+													</tr>
+												<%else
+													Dim obj,anchor
+													For each obj in Model.Items
+													
+													anchor = ViewData("ActionRegiste") & "&No=" & obj.No
+												%>
 													<tr>
 														<td>
 															<div class="checkbox-custom">
-																<input id="no" name="no[]" class="check" type="checkbox" value="<?echo $lt['no'];?>">
+																<input id="no" name="no" class="check" type="checkbox" value="<%=obj.No%>">
 																<label for="check"></label>
 															</div>
 														</td>
-														<td><a href="<?echo $anchor;?>" class="text-normal"><?php echo $lt['order'];?></a></td>
-														<td><a href="<?echo $anchor;?>" class="text-normal"><?php echo $lt['name'];?></a></td>
-														<td><a href="<?echo $anchor;?>" class="text-normal"><?php echo $lt['mobile'];?></a></td>
+														<td><a href="<%=anchor%>" class="text-normal"><%=obj.Id%></a></td>
+														<td><a href="<%=anchor%>" class="text-normal"><%=obj.Name%></a></td>
+														<td><a href="<%=anchor%>" class="text-normal"><%=obj.Indate%></a></td>
 													</tr>
-												<?php }?>
-												<!-- 리스트 -->
-												<?if (count ( $list ) <= 0) {?>
-												<tr>
-													<td colspan="4">등록된 내용이 없습니다.</td>
-												</tr>
-											<?}?>
+												<%
+													Next
+												end if%>
 												
 											</tbody>
 											</table>
@@ -115,7 +120,7 @@
 											<div class="panel-body" style="text-align: center;">pagination</div>
 											<div class="panel-body text-center">
 												<button type="button" class="btn btn-primary btn-lg btn-alt" onclick="location.href='<%=ViewData("ActionRegiste")%>';"> 등 록 </button>
-												<button type="button" class="btn btn-danger btn-lg btn-alt"> 삭 제 </button>
+												<button type="button" class="btn btn-danger btn-lg btn-alt" onclick="alert('준비중')"> 삭 제 </button>
 											</div>
 										</form>
 									</div>

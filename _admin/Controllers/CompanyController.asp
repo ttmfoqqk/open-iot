@@ -59,6 +59,7 @@ class CompanyController
 		param.Name = iif( Request("Name")="","",Request("Name") )
 		
 		set Model = AdminHelper.SelectAll(param,pageNo,rows)
+		
 		ViewData.add "ActionRegiste","?controller=Company&action=Member&mode=Registe"
 		
 		%> <!--#include file="../Views/Company/MemberList.asp" --> <%
@@ -67,7 +68,9 @@ class CompanyController
 	private Sub MemberRegiste()
 		Dim PolicyHelper : set PolicyHelper = new PolicyHelper
 		set Model = PolicyHelper.SelectAll()
-		ViewData.add "ActionForm","?controller=Company&action=PolicyPost&partial=True"
+		
+		ViewData.add "ActionList","?controller=Company&action=Member&mode=List"
+		ViewData.add "ActionForm","?controller=Company&action=Member&mode=Registe&&partial=True"
 		%> <!--#include file="../Views/Company/MemberRegiste.asp" --> <%
 	End Sub
 

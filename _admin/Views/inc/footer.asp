@@ -49,6 +49,8 @@
         <script src="./Views/plugins/forms/validation/jquery.validate.js"></script>
         <script src="./Views/plugins/forms/validation/additional-methods.min.js"></script>
         <script src="./Views/plugins/charts/sparklines/jquery.sparkline.js"></script>
+        <script src="./Views/plugins/forms/checkall/jquery.checkAll.js"></script>
+        
         <script src="./Views/js/jquery.dynamic.js"></script>
         <script src="./Views/js/main.js"></script>
 
