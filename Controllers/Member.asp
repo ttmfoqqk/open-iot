@@ -329,7 +329,7 @@ class MemberController
 				call alerts ("핸드폰 뒷자리 번호 4개를 입력해주세요.","")
 			end if
 			
-			set Model = u.SelectAll( " where Name = ? and Phone3 = ? and DelFg = 0 order by No desc " , array(Name,Phone3) )
+			set Model = u.SelectCustom( " where Name = ? and Phone3 = ? and DelFg = 0 order by No desc " , array(Name,Phone3) )
 			
 			ViewData.add "ActionLogin" , "?controller=Member&action=Login"
 			%> <!--#include file="../Views/Member/FindResultId.asp" --> <%

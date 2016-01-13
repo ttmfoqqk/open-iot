@@ -33,6 +33,8 @@
         <link rel="icon" href="./Views/img/ico/favicon.ico" type="image/png">
         <!-- Windows8 touch icon ( http://www.buildmypinnedsite.com/ )-->
         <meta name="msapplication-TileColor" content="#3399cc" />
+        
+        <script type="text/javascript" src="../Utils/SE2.8.2.O12056/js/HuskyEZCreator.js" charset="utf-8"></script>
     </head>
     <body>
         <!--[if lt IE 9]>

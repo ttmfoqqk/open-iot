@@ -33,32 +33,32 @@
 										<input type="hidden" name="action" value="<%=action%>">
 										
 											<div class="form-group col-lg-12 col-md-12">
-												<label class="col-lg-2 col-md-2 control-label" for="">등록기간</label>
+												<label class="col-lg-2 col-md-2 control-label" for="">등록일</label>
 												<div class="col-lg-6 col-md-6">
 													<div class="input-daterange input-group">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-														<input type="text" class="form-control" name="sData" id="sData" value="" />
+														<input type="text" class="form-control" name="sDate" id="sDate" value="<%=Request("sDate")%>" />
 														<span class="input-group-addon">to</span>
-														<input type="text" class="form-control" name="eData" id="eData" value=""/>
+														<input type="text" class="form-control" name="eDate" id="eDate" value="<%=Request("eDate")%>"/>
 													</div>
 												</div>
 												<div class="col-lg-4 col-md-4 hidden-xs hidden-sm">
-													<button type="button" class="btn btn-sm btn-primary btn-alt" id="sToday">오늘</button>
-													<button type="button" class="btn btn-sm btn-primary btn-alt" id="sWeek">7일</button>
-													<button type="button" class="btn btn-sm btn-primary btn-alt" id="sMonth">30일</button>
-													<button type="button" class="btn btn-sm btn-primary btn-alt" id="sReset">날짜초기화</button>
+													<button type="button" class="btn btn-sm btn-primary btn-alt" onclick="set_btn_datepicker($('#sDate'),$('#eDate'),0);">오늘</button>
+													<button type="button" class="btn btn-sm btn-primary btn-alt" onclick="set_btn_datepicker($('#sDate'),$('#eDate'),-7);">7일</button>
+													<button type="button" class="btn btn-sm btn-primary btn-alt" onclick="set_btn_datepicker($('#sDate'),$('#eDate'),-30);">30일</button>
+													<button type="button" class="btn btn-sm btn-primary btn-alt" onclick="set_btn_datepicker($('#sDate'),$('#eDate'),null);">날짜초기화</button>
 												</div>
 											</div>
 											
 											<div class="form-group col-lg-12 col-md-12">
 												<label class="col-lg-2 col-md-2 control-label" for="">아이디</label>
 												<div class="col-lg-3 col-md-3">
-													<input type="text" class="form-control" id="name" name="name" placeholder="이름" value="">
+													<input type="text" class="form-control" id="Id" name="Id" placeholder="아이디" value="<%=Request("Id")%>">
 												</div>
 			
 												<label class="col-lg-2 col-md-2 control-label" for="">이름</label>
 												<div class="col-lg-3 col-md-3">
-													<input type="text" class="form-control" id="phone" name="phone" placeholder="휴대폰번호" value="">
+													<input type="text" class="form-control" id="Name" name="Name" placeholder="이름" value="<%=Request("Name")%>">
 												</div>
 												
 												<div class="col-lg-2 col-md-2">
@@ -69,9 +69,9 @@
 										</form>
 										<!-- 검색 -->
 			
-										<form id="member-form-list" action="<?echo $action_url;?>" method="post" class="form-horizontal group-border stripped" role="form">
-										<input type="hidden" name="action_type" id="action_type" value="">
-										<input type="hidden" name="parameters" id="parameters" value="<?echo $parameters;?>">
+										<form id="mForm" action="<%=ViewData("ActionForm")%>" method="post" class="form-horizontal group-border stripped" role="form">
+										<input type="hidden" id="ActionType" name="ActionType" value="<%=ViewData("ActionType")%>">
+                                        <input type="hidden" id="Params" name="Params" value="<%=ViewData("Params")%>">
 											
 											<table class="table table-bordered" id="tabletools">
 												<thead>
@@ -102,7 +102,7 @@
 													<tr>
 														<td>
 															<div class="checkbox-custom">
-																<input id="no" name="no" class="check" type="checkbox" value="<%=obj.No%>">
+																<input id="No" name="No" class="check" type="checkbox" value="<%=obj.No%>">
 																<label for="check"></label>
 															</div>
 														</td>
@@ -117,10 +117,10 @@
 											</tbody>
 											</table>
 			
-											<div class="panel-body" style="text-align: center;">pagination</div>
+											<div class="panel-body" style="text-align: center;"><%=ViewData("pagination")%></div>
 											<div class="panel-body text-center">
 												<button type="button" class="btn btn-primary btn-lg btn-alt" onclick="location.href='<%=ViewData("ActionRegiste")%>';"> 등 록 </button>
-												<button type="button" class="btn btn-danger btn-lg btn-alt" onclick="alert('준비중')"> 삭 제 </button>
+												<button type="button" class="btn btn-danger btn-lg btn-alt" onclick="del_fm()"> 삭 제 </button>
 											</div>
 										</form>
 									</div>
@@ -142,4 +142,14 @@
 			</div>
 			<!-- / page-content -->
         </div>
+<script type="text/javascript">
+function del_fm(){
+	var fm = $('#mForm');
+	if( $(":checkbox[name='No']:checked").length==0 ){
+		alert("삭제할 항목을 하나이상 체크해주세요.");
+		return;
+	}
+	fm.submit();
+}
+</script>
 <!--#include file="../inc/footer.asp" -->

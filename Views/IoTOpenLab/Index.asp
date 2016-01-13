@@ -7,7 +7,8 @@
 			<span class="sub_navigation">IoT OpenLab <span class="bar">></span> <b>About OpenLab</b></span>
 			
 			<div class="sub_description">
-				<h2 class="sub_caption"><label></label>개발자 오프라인 커뮤니티 공간 제공</h2>
+				<%=Model.Contents%>
+				<!--h2 class="sub_caption"><label></label>개발자 오프라인 커뮤니티 공간 제공</h2>
 				
 				오픈랩은 IoT 개발자들을 위해 다음과 같이 개발자 지원 서비스를 제공합니다.
 				<br><br>
@@ -24,9 +25,7 @@
 					<li>IoT 서비스 제공하기 위한 IoT Adapter와 Thing(센서류) 장치 제공</li>
 					<li>앱 개발 환경 지원: iOS, 안드로이드 환경의 테스트 스마트 기기 제공</li>
 					<li>앱 테스트 지원: 개발한 앱을 기존 IoT 서비스와 연동하여 테스트할 수 있는 <br>환경 및 장비 제공 </li>
-				</ul>
-				
-
+				</ul-->
 			</div>
 			
 		</div>

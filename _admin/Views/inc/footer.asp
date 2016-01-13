@@ -51,6 +51,10 @@
         <script src="./Views/plugins/charts/sparklines/jquery.sparkline.js"></script>
         <script src="./Views/plugins/forms/checkall/jquery.checkAll.js"></script>
         
+        <script src="./Views/plugins/forms/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+		<script src="./Views/plugins/forms/bootstrap-datepicker/bootstrap-datepicker.js"></script>
+		<script	src="./Views/plugins/forms/bootstrap-datepicker/locales/bootstrap-datepicker.kr.js"></script>
+        
         <script src="./Views/js/jquery.dynamic.js"></script>
         <script src="./Views/js/main.js"></script>
 

@@ -16,6 +16,8 @@ class OidController
 	End Sub
 	
 	public Sub About()
+		Dim PageHelper : set PageHelper = new PageHelper
+		set Model = PageHelper.SelectByField("Name", "AboutOID")
 		%> <!--#include file="../Views/Oid/Index.asp" --> <%
 	End Sub
 	

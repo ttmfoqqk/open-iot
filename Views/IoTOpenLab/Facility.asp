@@ -34,8 +34,11 @@
 					}).render();
 				</script>
 				
+				<%=Model.Contents%>
 				
-				<h2 class="sub_caption"><label></label>운영안내</h2>
+				
+				
+				<!--h2 class="sub_caption"><label></label>운영안내</h2>
 				<ul class="blue_dot">
 					<li>운영시간 : 09:00 ~ 18:00 (점심시간 12:00 ~ 13:00)</li>
 					<li>운 영 일 : 매주 월요일 ~ 금요일</li>
@@ -84,7 +87,7 @@
 							<div class="label">다용도 공간</div>
 						</div>
 					</li>
-				</ul>
+				</ul-->
 				
 
 			</div>

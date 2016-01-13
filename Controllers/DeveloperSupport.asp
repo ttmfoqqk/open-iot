@@ -16,10 +16,14 @@ class DeveloperSupportController
 	End Sub
 	
 	public Sub Device()
+		Dim PageHelper : set PageHelper = new PageHelper
+		set Model = PageHelper.SelectByField("Name", "DeviceDeveloper")
 		%> <!--#include file="../Views/DeveloperSupport/Device.asp" --> <%
 	End Sub
 	
 	public Sub App()
+		Dim PageHelper : set PageHelper = new PageHelper
+		set Model = PageHelper.SelectByField("Name", "AppDeveloper")
 		%> <!--#include file="../Views/DeveloperSupport/App.asp" --> <%
 	End Sub
 

@@ -5,6 +5,8 @@ class User
 
 	'=============================
 	'Private properties
+	private mRowNum
+	private mtcount
 	private mNo
 	private mId
 	private mPwd
@@ -15,7 +17,7 @@ class User
 	private mDelFg
 
 	private sub Class_Initialize()
-		mMetadata = Array( "No" , "Id" , "Pwd" , "Name" , "Phone3" , "Indate" , "State" , "DelFg" )
+		mMetadata = Array( "RowNum" , "tcount", "No" , "Id" , "Pwd" , "Name" , "Phone3" , "Indate" , "State" , "DelFg" )
 	end sub
 
 	private sub Class_Terminate()
@@ -23,6 +25,23 @@ class User
 
 	'=============================
 	'public properties
+	
+	public property get RowNum()
+		RowNum = mRowNum
+	end property
+
+	public property let RowNum(val)
+		mRowNum = val
+	end property
+	
+	public property get tcount()
+		tcount = mtcount
+	end property
+
+	public property let tcount(val)
+		mtcount = val
+	end property
+	
 	public property get No()
 		No = mNo
 	end property
@@ -98,7 +117,7 @@ class UserHelper
 	Dim selectSQL
 
 	private sub Class_Initialize()
-		selectSQL = " SELECT * FROM [User] "
+		selectSQL = " SELECT ROW_NUMBER() OVER (order by [No] DESC) AS [RowNum],count(*) over () as [tcount], * FROM [User] "
 	end sub
 
 	private sub Class_Terminate()
@@ -239,7 +258,7 @@ class UserHelper
 	end function
 	
 	
-	public function SelectAll(sql , objs)
+	public function SelectCustom(sql , objs)
 		Dim records
 		set objCommand=Server.CreateObject("ADODB.command")
 		objCommand.ActiveConnection=DbOpenConnection()
@@ -251,7 +270,7 @@ class UserHelper
 			set records = objCommand.Execute
 
 			if records.eof then
-				Set SelectAll = Nothing
+				Set SelectCustom = Nothing
 			else
 				Dim results, obj, record
 				Set results = Server.CreateObject("Scripting.Dictionary")
@@ -260,14 +279,87 @@ class UserHelper
 					results.Add obj.Id, obj
 					records.movenext
 				wend
-				set SelectAll = results
+				set SelectCustom = results
 				records.Close
 			End If
 			set records = nothing
 		Else
-			Set SelectAll = Nothing
+			Set SelectCustom = Nothing
 		End If
 	end function
+	
+	
+	
+	
+	public function SelectAll(objs,pageNo,rows)
+		Dim records,selectSQL
+		dim whereSql : whereSql = ""
+
+		pageNo = iif( pageNo ="" ,1  ,pageNo )
+		rows   = iif( rows   ="" ,10 ,rows )
+
+		if objs.Id <> "" then
+			whereSql = whereSql & " and [Id] like '%'+@Id+'%' "
+		end if
+		
+		if objs.Name <> "" then
+			whereSql = whereSql & " and [Name] like '%'+@Name+'%' "
+		end if
+		
+		if objs.Phone3 <> "" then
+			whereSql = whereSql & " and [Phone3] like '%'+@Phone3+'%' "
+		end if
+
+		selectSQL = "" &_
+		" SET NOCOUNT ON;  " &_
+		" DECLARE @Id VARCHAR(320) ,@Name VARCHAR(320),@Phone3 VARCHAR(4); " &_
+		
+		" SET @Id = ?; " &_
+		" SET @Name = ?; " &_
+		" SET @Phone3 = ?; " &_
+
+		" SELECT * FROM ( " &_
+				" SELECT " &_
+				"  ROW_NUMBER() OVER (order by [No] DESC) AS RowNum " &_
+				" ,count(*) over () as [tcount] " &_
+				" ,* " &_
+			" FROM [User] " &_
+			" WHERE [DelFg] = 0 " &_
+			whereSql &_
+		" ) AS List " &_
+		" WHERE RowNum BETWEEN " & ((pageNo - 1) * rows) + 1 & " AND " & ((pageNo - 1) * rows) + rows & " "
+		
+		set objCommand=Server.CreateObject("ADODB.command")
+		With objCommand
+			.ActiveConnection=DbOpenConnection()
+			.prepared = true
+			.CommandType = adCmdText
+			.CommandText = selectSQL
+			.Parameters.Append .CreateParameter( "@Id"     ,adVarChar , adParamInput , 320 , objs.Id )
+			.Parameters.Append .CreateParameter( "@Name"   ,adVarChar , adParamInput , 320 , objs.Name )
+			.Parameters.Append .CreateParameter( "@Phone3" ,adVarChar , adParamInput , 4   , objs.Phone3 )
+		End With
+  		
+  		set records = objCommand.Execute
+  		if records.eof then
+			Set SelectAll = Nothing
+		else
+			Dim results, obj, record
+			Set results = Server.CreateObject("Scripting.Dictionary")
+			while not records.eof
+				set obj = PopulateObjectFromRecord(records)
+				results.Add obj.No, obj
+				records.movenext
+			wend
+			set SelectAll = results
+			records.Close
+		End If
+		set records = nothing
+	end function
+	
+	
+	
+	
 	
 	
 	public function Login(obj)
@@ -296,7 +388,9 @@ class UserHelper
 	    else
 			Dim obj
 			set obj = new User
-
+			
+			obj.RowNum = record("RowNum")
+			obj.tcount = record("tcount")
 			obj.No     = record("No")
 			obj.Id     = record("Id")
 			obj.Pwd    = record("Pwd")

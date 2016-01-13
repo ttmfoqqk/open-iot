@@ -7,8 +7,9 @@
 			<span class="sub_navigation">Developer Support <span class="bar">></span> <b>Device Developer</b></span>
 			
 			<div class="sub_description">
-				<h2 class="sub_caption"><label></label>titletitletitle</h2>
-				내용
+				<%=Model.Contents%>
+				<!--h2 class="sub_caption"><label></label>titletitletitle</h2-->
+				
 			</div>
 			
 		</div>

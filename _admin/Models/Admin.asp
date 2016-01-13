@@ -2,24 +2,42 @@
 class Admin
 
 	private mMetadata
+	private mRowNum
+	private mtcount
 	private mNo
 	private mId
 	private mPwd
 	private mName
 	private mIndate
 	private mDelFg
+	
+	private mSdate
+	private mEdate
 
 	private sub Class_Initialize()
-		mMetadata = Array( "No" , "Id" , "Pwd" , "Name" , "Indate" , "DelFg" )
+		mMetadata = Array("RowNum","tcount","No","Id","Pwd","Name","Indate","DelFg")
 	end sub
 
 	private sub Class_Terminate()
 	end sub
+	
+	public property get RowNum()
+		RowNum = mRowNum
+	end property
+	public property let RowNum(val)
+		mRowNum = val
+	end property
+	
+	public property get tcount()
+		tcount = mtcount
+	end property
+	public property let tcount(val)
+		mtcount = val
+	end property
 
 	public property get No()
 		No = mNo
 	end property
-
 	public property let No(val)
 		mNo = val
 	end property
@@ -27,7 +45,6 @@ class Admin
 	public property get Id()
 		Id = mId
 	end property
-
 	public property let Id(val)
 		mId = val
 	end property
@@ -35,7 +52,6 @@ class Admin
 	public property get Pwd()
 		Pwd = mPwd
 	end property
-
 	public property let Pwd(val)
 		mPwd = val
 	end property
@@ -43,7 +59,6 @@ class Admin
 	public property get Name()
 		Name = mName
 	end property
-
 	public property let Name(val)
 		mName = val
 	end property
@@ -51,18 +66,30 @@ class Admin
 	public property get Indate()
 		Indate = mIndate
 	end property
-
 	public property let Indate(val)
 		mIndate = val
 	end property
-	
 
 	public property get DelFg()
 		DelFg = mDelFg
 	end property
-
 	public property let DelFg(val)
 		mDelFg = val
+	end property
+	
+	' 검색용 추가
+	public property get Sdate()
+		Sdate = mSdate
+	end property
+	public property let Sdate(val)
+		mSdate = val
+	end property
+	
+	public property get Edate()
+		Edate = mEdate
+	end property
+	public property let Edate(val)
+		mEdate = val
 	end property
 
 	public property get metadata()
@@ -76,7 +103,7 @@ class AdminHelper
 	Dim selectSQL
 
 	private sub Class_Initialize()
-		selectSQL = " SELECT * FROM [Admin] "
+		selectSQL = " SELECT ROW_NUMBER() OVER (order by [No] DESC) AS [RowNum],count(*) over () as [tcount],* FROM [Admin] "
 	end sub
 
 	private sub Class_Terminate()
@@ -125,18 +152,38 @@ class AdminHelper
  
 	public function Delete(No)
 		Dim strSQL
-		strSQL= "Update [Admin] set [DelFg] = 1 WHERE No = ? "
-		set objCommand=Server.CreateObject("ADODB.command")
-		objCommand.ActiveConnection=DbOpenConnection()
-		objCommand.NamedParameters = False
-		objCommand.CommandText = strSQL
-		objCommand.CommandType = adCmdText
-		if DbAddParameters(objCommand, array(No)) Then
-			objCommand.Execute
-			Delete = true
-		else
-			Delete = false
-		End If
+		strSQL = "" &_
+		" SET NOCOUNT ON;  " &_
+		
+		" DECLARE @No VARCHAR(MAX); " &_
+		" SET @No = ?; " &_
+		
+		" DECLARE @S VARCHAR (MAX); " &_
+		" DECLARE @T TABLE(T_INT INT); " &_
+		" SET @S = @No; " &_
+		
+		" WHILE CHARINDEX(',',@S)<>0 " &_
+		"	BEGIN " &_
+		"	INSERT INTO @T(T_INT) VALUES( SUBSTRING(@S,1,CHARINDEX(',',@S)-1) ) " &_
+		"	SET @S=SUBSTRING(@S,CHARINDEX(',',@S)+1,LEN(@S))  " &_
+		" END " &_
+		" IF CHARINDEX(',',@S)=0 " &_
+		"	BEGIN " &_
+		"	INSERT INTO @T(T_INT) VALUES( SUBSTRING(@S,1,LEN(@S)) ) " &_
+		" END " &_
+		
+		" Update [Admin] set [DelFg] = 1 WHERE No in(SELECT T_INT FROM @T); "
+		
+		set objCommand=Server.CreateObject("ADODB.command") 
+		With objCommand
+			.ActiveConnection=DbOpenConnection()
+			.prepared = true
+			.CommandType = adCmdText
+			.CommandText = strSQL
+			.Parameters.Append .CreateParameter( "@No" ,adVarChar , adParamInput , 8000 , No )
+			.Execute
+		End With
+		Delete = true
 	end function
 
 	public function SelectByField(fieldName, value)
@@ -144,7 +191,7 @@ class AdminHelper
 		set objCommand=Server.CreateObject("ADODB.command")
 		objCommand.ActiveConnection=DbOpenConnection()
 		objCommand.NamedParameters = False
-		objCommand.CommandText = selectSQL + " Where " & fieldName & "=? and DelFg = 0 order by No desc"
+		objCommand.CommandText = selectSQL + " Where " & fieldName & "= ?; "
 		objCommand.CommandType = adCmdText
 
 		If DbAddParameters(objCommand, array(value)) Then
@@ -172,13 +219,24 @@ class AdminHelper
 		if objs.Name <> "" then
 			whereSql = whereSql & " and [Name] like '%'+@Name+'%' "
 		end if
+		
+		if objs.Sdate <> "" then
+			whereSql = whereSql & " and [Indate] >= @Sdate "
+		end if
+		
+		if objs.Edate <> "" then
+			whereSql = whereSql & " and [Indate] <= @Edate "
+		end if
 
 		selectSQL = "" &_
 		" SET NOCOUNT ON;  " &_
 		" DECLARE @Id VARCHAR(320) ,@Name VARCHAR(320); " &_
+		" DECLARE @Sdate VARCHAR(10) ,@Edate VARCHAR(10); " &_
 		
 		" SET @Id = ?; " &_
 		" SET @Name = ?; " &_
+		" SET @Sdate = ?; " &_
+		" SET @Edate = ?; " &_
 
 		" SELECT * FROM ( " &_
 				" SELECT " &_
@@ -199,6 +257,8 @@ class AdminHelper
 			.CommandText = selectSQL
 			.Parameters.Append .CreateParameter( "@Id"   ,adVarChar , adParamInput , 320 , objs.Id )
 			.Parameters.Append .CreateParameter( "@Name" ,adVarChar , adParamInput , 320 , objs.Name )
+			.Parameters.Append .CreateParameter( "@Sdate" ,adVarChar , adParamInput , 10 , objs.Sdate )
+			.Parameters.Append .CreateParameter( "@Edate" ,adVarChar , adParamInput , 10 , objs.Edate )
 		End With
   		
   		set records = objCommand.Execute
@@ -245,12 +305,14 @@ class AdminHelper
 			Dim obj
 			set obj = new Admin
 
-			obj.No     = record("No")
-			obj.Id     = record("Id")
-			obj.Pwd    = record("Pwd")
-			obj.Name   = record("Name")
-			obj.Indate = record("Indate")
-			obj.DelFg  = record("DelFg")
+			obj.RowNum  = record("RowNum")
+			obj.tcount  = record("tcount")
+			obj.No      = record("No")
+			obj.Id      = record("Id")
+			obj.Pwd     = record("Pwd")
+			obj.Name    = record("Name")
+			obj.Indate  = record("Indate")
+			obj.DelFg   = record("DelFg")
 			set PopulateObjectFromRecord = obj
 		end if
 	end function

@@ -7,7 +7,8 @@
 			<span class="sub_navigation">OID <span class="bar">></span> <b>About OID</b></span>
 			
 			<div class="sub_description">
-				<h2 class="sub_caption"><label></label>OID로도 중앙SUNDAY를 볼 수 있습니다.</h2>
+				<%=Model.Contents%>
+				<!--h2 class="sub_caption"><label></label>OID로도 중앙SUNDAY를 볼 수 있습니다.</h2>
 				
 				OID는 개발자들을 위해 다음과 같이 개발자 지원 서비스를 제공합니다.<br><br>
 				<div><img src="./images/sample_img_04_01.jpg"></div><br>
@@ -30,7 +31,7 @@
 				못할 것이다. 그러나 만약 정체성 제공자가 강력한 인증을 사용한다면, OpenID 는 모든 종류의 거래에 사용될<br>
 				수 있다.<br>
 				<br>
-				</div>
+				</div-->
 				
 
 			</div>

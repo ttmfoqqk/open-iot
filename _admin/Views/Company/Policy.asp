@@ -20,7 +20,7 @@
                             <div class="col-lg-12">
                             	
                             	
-                            	<form id="validate" method="POST" action="<%=ViewData("ActionForm")%>" class="form-horizontal group-border stripped" role="form">
+                            	<form id="mForm" method="POST" action="<%=ViewData("ActionForm")%>" class="form-horizontal group-border stripped" role="form">
                                 <div class="panel panel-primary">
                                     <!-- Start .panel -->
                                     <div class="panel-heading">
@@ -47,7 +47,7 @@
                                         </div>
                                         <div class="form-group">
                                             <div class="col-lg-12 text-center">
-                                                <button class="btn btn-primary btn-lg btn-alt" type="submit"> 등 록 </button>
+                                                <button class="btn btn-primary btn-lg btn-alt" type="button" onclick="form_submit()"> 등 록 </button>
                                             </div>
                                         </div>
                                     </div>
@@ -67,4 +67,51 @@
             </div>
             <!-- / page-content -->
         </div>
+<script type="text/javascript">
+var oEditors = [];
+
+nhn.husky.EZCreator.createInIFrame({
+	oAppRef: oEditors,
+	elPlaceHolder: "Policy1",
+	sSkinURI: "../Utils/SE2.8.2.O12056/SmartEditor2Skin.html",	
+	htParams : {
+		bUseToolbar : true,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+		bUseVerticalResizer : true,		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+		bUseModeChanger : true,			// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+		fOnBeforeUnload : function(){
+			//alert("완료!");
+		}
+	}, //boolean
+	fOnAppLoad : function(){
+		//
+	},
+	fCreator: "createSEditor2"
+});
+
+
+nhn.husky.EZCreator.createInIFrame({
+	oAppRef: oEditors,
+	elPlaceHolder: "Policy2",
+	sSkinURI: "../Utils/SE2.8.2.O12056/SmartEditor2Skin.html",	
+	htParams : {
+		bUseToolbar : true,				// 툴바 사용 여부 (true:사용/ false:사용하지 않음)
+		bUseVerticalResizer : true,		// 입력창 크기 조절바 사용 여부 (true:사용/ false:사용하지 않음)
+		bUseModeChanger : true,			// 모드 탭(Editor | HTML | TEXT) 사용 여부 (true:사용/ false:사용하지 않음)
+		fOnBeforeUnload : function(){
+			//alert("완료!");
+		}
+	}, //boolean
+	fOnAppLoad : function(){
+		//
+	},
+	fCreator: "createSEditor2"
+});
+
+function form_submit(){
+	oEditors.getById["Policy1"].exec("UPDATE_CONTENTS_FIELD", []);
+	oEditors.getById["Policy2"].exec("UPDATE_CONTENTS_FIELD", []);
+	
+	$('#mForm').submit();
+}
+</script>
 <!--#include file="../inc/footer.asp" -->

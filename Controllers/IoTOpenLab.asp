@@ -16,10 +16,14 @@ class IoTOpenLabController
 	End Sub
 	
 	public Sub About()
+		Dim PageHelper : set PageHelper = new PageHelper
+		set Model = PageHelper.SelectByField("Name", "AboutOpenLab")
 		%> <!--#include file="../Views/IoTOpenLab/Index.asp" --> <%
 	End Sub
 	
 	public Sub Facility()
+		Dim PageHelper : set PageHelper = new PageHelper
+		set Model = PageHelper.SelectByField("Name", "Facility")
 		%> <!--#include file="../Views/IoTOpenLab/Facility.asp" --> <%
 	End Sub
 	

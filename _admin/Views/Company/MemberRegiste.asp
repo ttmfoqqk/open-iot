@@ -27,33 +27,38 @@
                                         </h4>
                                     </div>
                                     <div class="panel-body pt0 pb0">
-                                        <form class="form-horizontal group-border stripped" method="POST">
+                                        <form Id="mForm" class="form-horizontal group-border stripped" action="<%=ViewData("ActionForm")%>" method="POST">
+                                        <input type="hidden" id="ActionType" name="ActionType" value="<%=ViewData("ActionType")%>">
+                                        <input type="hidden" id="Params" name="Params" value="<%=ViewData("Params")%>">
+                                        <input type="hidden" id="No" name="No" value="<%=Model.No%>">
+                                        
+                                        
                                             <div class="form-group">
                                                 <label class="col-lg-2 col-md-3 control-label" for="">아이디</label>
                                                 <div class="col-lg-10 col-md-9">
-                                                    <input type="text" class="form-control" name="default">
+                                                    <input type="text" class="form-control" id="Id" name="Id" value="<%=Model.Id%>" <%=iif(ViewData("ActionType")="UPDATE","readonly","")%> placeholder="아이디">
                                                 </div>
                                             </div>
                                             <!-- End .form-group  -->
                                             <div class="form-group">
                                                 <label class="col-lg-2 col-md-3  control-label" for="">비밀번호</label>
                                                 <div class="col-lg-10 col-md-9">
-                                                    <input type="password" class="form-control" id="passwordfield" placeholder="">
+                                                    <input type="text" class="form-control" id="Pwd" name="Pwd" value="<%=Model.Pwd%>" placeholder="비밀번호">
                                                 </div>
                                             </div>
                                             <!-- End .form-group  -->
                                             <div class="form-group">
                                                 <label class="col-lg-2 col-md-3 control-label" for="">이름</label>
                                                 <div class="col-lg-10 col-md-9">
-                                                    <input type="text" class="form-control" name="default">
+                                                    <input type="text" class="form-control" id="Name" name="Name" value="<%=Model.Name%>" placeholder="이름">
                                                 </div>
                                             </div>
                                             
                                             <div class="panel-body text-center">
                                             	<button type="button" class="btn btn-default btn-lg btn-alt pull-left" onclick="location.href='<%=ViewData("ActionList")%>';"> 목록 </button>
                                             	
-												<button type="submit" class="btn btn-primary btn-lg btn-alt"> 등 록 </button>
-												<button type="button" class="btn btn-danger btn-lg btn-alt"> 삭 제 </button>
+												<button type="button" class="btn btn-primary btn-lg btn-alt" onclick="reg_fm()"> 등 록 </button>
+												<button type="button" class="btn btn-danger btn-lg btn-alt" onclick="del_fm()"> 삭 제 </button>
 											</div>
                                         </form>
                                     </div>
@@ -75,4 +80,24 @@
 			</div>
 			<!-- / page-content -->
         </div>
+<script type="text/javascript">
+function reg_fm(){
+	if( !$.trim( $('#Id').val() ) ){
+		alert('아이디를 입력해주세요');return false;
+	}
+	if( !$.trim( $('#Pwd').val() ) ){
+		alert('비밀번호를 입력해주세요');return false;
+	}
+	if( !$.trim( $('#Name').val() ) ){
+		alert('이름을 입력해주세요');return false;
+	}
+	$('#mForm').submit();
+}
+function del_fm(){
+	if( confirm('삭제 하시겠습니까?') ){
+		$('#ActionType').val('DELETE');
+		$('#mForm').submit();
+	}
+}
+</script>
 <!--#include file="../inc/footer.asp" -->
