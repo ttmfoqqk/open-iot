@@ -37,28 +37,48 @@
 												<div class="col-lg-6 col-md-6">
 													<div class="input-daterange input-group">
 														<span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-														<input type="text" class="form-control" name="sData" id="sData" value="" />
+														<input type="text" class="form-control" name="sDate" id="sDate" value="<%=Request("sDate")%>" />
 														<span class="input-group-addon">to</span>
-														<input type="text" class="form-control" name="eData" id="eData" value=""/>
+														<input type="text" class="form-control" name="eDate" id="eDate" value="<%=Request("eDate")%>"/>
 													</div>
 												</div>
 												<div class="col-lg-4 col-md-4 hidden-xs hidden-sm">
-													<button type="button" class="btn btn-sm btn-primary btn-alt" id="sToday">오늘</button>
-													<button type="button" class="btn btn-sm btn-primary btn-alt" id="sWeek">7일</button>
-													<button type="button" class="btn btn-sm btn-primary btn-alt" id="sMonth">30일</button>
-													<button type="button" class="btn btn-sm btn-primary btn-alt" id="sReset">날짜초기화</button>
+													<button type="button" class="btn btn-sm btn-primary btn-alt" onclick="set_btn_datepicker($('#sDate'),$('#eDate'),0);">오늘</button>
+													<button type="button" class="btn btn-sm btn-primary btn-alt" onclick="set_btn_datepicker($('#sDate'),$('#eDate'),-7);">7일</button>
+													<button type="button" class="btn btn-sm btn-primary btn-alt" onclick="set_btn_datepicker($('#sDate'),$('#eDate'),-30);">30일</button>
+													<button type="button" class="btn btn-sm btn-primary btn-alt" onclick="set_btn_datepicker($('#sDate'),$('#eDate'),null);">날짜초기화</button>
 												</div>
 											</div>
+											
+											
 											
 											<div class="form-group col-lg-12 col-md-12">
 												<label class="col-lg-2 col-md-2 control-label" for="">아이디</label>
 												<div class="col-lg-3 col-md-3">
-													<input type="text" class="form-control" id="name" name="name" placeholder="아이디" value="">
+													<input type="text" class="form-control" id="Id" name="Id" placeholder="아이디" value="<%=Request("Id")%>">
 												</div>
 			
 												<label class="col-lg-2 col-md-2 control-label" for="">이름</label>
 												<div class="col-lg-3 col-md-3">
-													<input type="text" class="form-control" id="phone" name="phone" placeholder="이름" value="">
+													<input type="text" class="form-control" id="Name" name="Name" placeholder="이름" value="<%=Request("Name")%>">
+												</div>
+												
+												
+											</div>
+											
+											<div class="form-group col-lg-12 col-md-12">
+												<label class="col-lg-2 col-md-2 control-label" for="">이메일 인증</label>
+												<div class="col-lg-3 col-md-3">
+													<select class="form-control" id="State" name="State">
+                                                    	<option value="">선택</option>
+                                                    	<option value="0">인증</option>
+                                                    	<option value="1">미인증</option>
+                                                    </select>
+												</div>
+			
+												<label class="col-lg-2 col-md-2 control-label" for="">핸드폰 뒷자리</label>
+												<div class="col-lg-3 col-md-3">
+													<input type="text" class="form-control" id="Phone3" name="Phone3" placeholder="핸드폰 뒷자리" value="<%=Request("Phone3")%>" maxlength="4">
 												</div>
 												
 												<div class="col-lg-2 col-md-2">
@@ -69,9 +89,9 @@
 										</form>
 										<!-- 검색 -->
 			
-										<form id="member-form-list" action="<?echo $action_url;?>" method="post" class="form-horizontal group-border stripped" role="form">
-										<input type="hidden" name="action_type" id="action_type" value="">
-										<input type="hidden" name="parameters" id="parameters" value="<?echo $parameters;?>">
+										<form id="mForm" action="<%=ViewData("ActionForm")%>" method="post" class="form-horizontal group-border stripped" role="form">
+										<input type="hidden" id="ActionType" name="ActionType" value="<%=ViewData("ActionType")%>">
+                                        <input type="hidden" id="Params" name="Params" value="<%=ViewData("Params")%>">
 											
 											<table class="table table-bordered" id="tabletools">
 												<thead>
@@ -93,7 +113,7 @@
 
 												<%if IsNothing(Model) then %>
 													<tr>
-														<td colspan="4">등록된 내용이 없습니다.</td>
+														<td colspan="6">등록된 내용이 없습니다.</td>
 													</tr>
 												<%else
 													Dim obj,anchor
@@ -123,8 +143,8 @@
 			
 											<div class="panel-body" style="text-align: center;"><%=ViewData("pagination")%></div>
 											<div class="panel-body text-center">
-												<button type="button" class="btn btn-primary btn-lg btn-alt" onclick="location.href='<%=ViewData("ActionRegiste")%>';"> 등 록 </button>
-												<button type="button" class="btn btn-danger btn-lg btn-alt" onclick="alert('준비중')"> 삭 제 </button>
+												<!--button type="button" class="btn btn-primary btn-lg btn-alt" onclick="location.href='<%=ViewData("ActionRegiste")%>';"> 등 록 </button-->
+												<button type="button" class="btn btn-danger btn-lg btn-alt" onclick="del_fm()"> 삭 제 </button>
 											</div>
 										</form>
 									</div>
@@ -146,4 +166,14 @@
 			</div>
 			<!-- / page-content -->
         </div>
+<script type="text/javascript">
+function del_fm(){
+	var fm = $('#mForm');
+	if( $(":checkbox[name='No']:checked").length==0 ){
+		alert("삭제할 항목을 하나이상 체크해주세요.");
+		return;
+	}
+	fm.submit();
+}
+</script>
 <!--#include file="../inc/footer.asp" -->

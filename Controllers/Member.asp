@@ -151,6 +151,7 @@ class MemberController
 		obj.Pwd    = Trim(args("Pwd"))
 		obj.Name   = Trim(args("Name"))
 		obj.Phone3 = Trim(args("Phone3"))
+		obj.State  = 1
 		
 		Dim result : result = u.Insert(obj)
 		' 세션 생성 

@@ -15,6 +15,9 @@ class User
 	private mIndate
 	private mState
 	private mDelFg
+	
+	private mSdate
+	private mEdate
 
 	private sub Class_Initialize()
 		mMetadata = Array( "RowNum" , "tcount", "No" , "Id" , "Pwd" , "Name" , "Phone3" , "Indate" , "State" , "DelFg" )
@@ -29,7 +32,6 @@ class User
 	public property get RowNum()
 		RowNum = mRowNum
 	end property
-
 	public property let RowNum(val)
 		mRowNum = val
 	end property
@@ -37,7 +39,6 @@ class User
 	public property get tcount()
 		tcount = mtcount
 	end property
-
 	public property let tcount(val)
 		mtcount = val
 	end property
@@ -45,7 +46,6 @@ class User
 	public property get No()
 		No = mNo
 	end property
-
 	public property let No(val)
 		mNo = val
 	end property
@@ -53,7 +53,6 @@ class User
 	public property get Id()
 		Id = mId
 	end property
-
 	public property let Id(val)
 		mId = val
 	end property
@@ -61,7 +60,6 @@ class User
 	public property get Pwd()
 		Pwd = mPwd
 	end property
-
 	public property let Pwd(val)
 		mPwd = val
 	end property
@@ -69,7 +67,6 @@ class User
 	public property get Name()
 		Name = mName
 	end property
-
 	public property let Name(val)
 		mName = val
 	end property
@@ -77,7 +74,6 @@ class User
 	public property get Phone3()
 		Phone3 = mPhone3
 	end property
-
 	public property let Phone3(val)
 		mPhone3 = val
 	end property
@@ -93,7 +89,6 @@ class User
 	public property get State()
 		State = mState
 	end property
-
 	public property let State(val)
 		mState = val
 	end property
@@ -101,9 +96,23 @@ class User
 	public property get DelFg()
 		DelFg = mDelFg
 	end property
-
 	public property let DelFg(val)
 		mDelFg = val
+	end property
+	
+	' 검색용 추가
+	public property get Sdate()
+		Sdate = mSdate
+	end property
+	public property let Sdate(val)
+		mSdate = val
+	end property
+	
+	public property get Edate()
+		Edate = mEdate
+	end property
+	public property let Edate(val)
+		mEdate = val
 	end property
 
 	public property get metadata()
@@ -123,15 +132,10 @@ class UserHelper
 	private sub Class_Terminate()
 	end sub
 
-	'=============================
-	'public Functions
-
-	' Create a new User.
-	' true - if successful, false otherwise
 	public function Insert(ByRef obj)
 		Dim strSQL , execResult
 		strSQL=   " Insert into [dbo].[User] ( [Id] , [Pwd] , [Name] , [Phone3] , [Indate] , [State] , [DelFg] )" & _
-		" Values (?  , pwdencrypt(?) , ? , ? , GETDATE() , 1 , 0 ); " & _
+		" Values (?  , pwdencrypt(?) , ? , ? , GETDATE() , ? , 0 ); " & _
 		" SELECT SCOPE_IDENTITY()  "
 		set objCommand=Server.CreateObject("ADODB.command")
 		objCommand.ActiveConnection = DbOpenConnection()
@@ -139,13 +143,13 @@ class UserHelper
 		objCommand.CommandText = strSQL
 		objCommand.CommandType = adCmdText
 
-		if DbAddParameters(objCommand, Array( obj.Id , obj.Pwd , obj.Name , obj.Phone3 )) then
+		if DbAddParameters(objCommand, Array( obj.Id , obj.Pwd , obj.Name , obj.Phone3 , obj.State )) then
 			Set execResult = objCommand.Execute
 			Set execResult = execResult.NextRecordSet() ' ---- Fix for having a second command in the SQL batch
 		End If
 		obj.No = CInt(execResult(0))
 		Insert = true
-	end  function
+	end function
 
 	
 	public function EmailComplete(No)
@@ -309,14 +313,30 @@ class UserHelper
 		if objs.Phone3 <> "" then
 			whereSql = whereSql & " and [Phone3] like '%'+@Phone3+'%' "
 		end if
+		
+		if objs.State <> "" then
+			whereSql = whereSql & " and [State] = @State "
+		end if
+		
+		if objs.Sdate <> "" then
+			whereSql = whereSql & " and [Indate] >= @Sdate "
+		end if
+		
+		if objs.Edate <> "" then
+			whereSql = whereSql & " and [Indate] <= @Edate "
+		end if
 
 		selectSQL = "" &_
 		" SET NOCOUNT ON;  " &_
-		" DECLARE @Id VARCHAR(320) ,@Name VARCHAR(320),@Phone3 VARCHAR(4); " &_
+		" DECLARE @Id VARCHAR(320) ,@Name VARCHAR(320),@Phone3 VARCHAR(4),@State INT; " &_
+		" DECLARE @Sdate VARCHAR(10) ,@Edate VARCHAR(10); " &_
 		
 		" SET @Id = ?; " &_
 		" SET @Name = ?; " &_
 		" SET @Phone3 = ?; " &_
+		" SET @State = ?; " &_
+		" SET @Sdate = ?; " &_
+		" SET @Edate = ?; " &_
 
 		" SELECT * FROM ( " &_
 				" SELECT " &_
@@ -335,9 +355,12 @@ class UserHelper
 			.prepared = true
 			.CommandType = adCmdText
 			.CommandText = selectSQL
-			.Parameters.Append .CreateParameter( "@Id"     ,adVarChar , adParamInput , 320 , objs.Id )
-			.Parameters.Append .CreateParameter( "@Name"   ,adVarChar , adParamInput , 320 , objs.Name )
-			.Parameters.Append .CreateParameter( "@Phone3" ,adVarChar , adParamInput , 4   , objs.Phone3 )
+			.Parameters.Append .CreateParameter( "@Id"    ,adVarChar , adParamInput , 320 , objs.Id )
+			.Parameters.Append .CreateParameter( "@Name"  ,adVarChar , adParamInput , 320 , objs.Name )
+			.Parameters.Append .CreateParameter( "@Phone3",adVarChar , adParamInput , 4   , objs.Phone3 )
+			.Parameters.Append .CreateParameter( "@State" ,adVarChar , adParamInput , 10  , objs.State )
+			.Parameters.Append .CreateParameter( "@Sdate" ,adVarChar , adParamInput , 10  , objs.Sdate )
+			.Parameters.Append .CreateParameter( "@Edate" ,adVarChar , adParamInput , 10  , objs.Edate )
 		End With
   		
   		set records = objCommand.Execute
@@ -356,9 +379,6 @@ class UserHelper
 		End If
 		set records = nothing
 	end function
-	
-	
-	
 	
 	
 	
