@@ -18,7 +18,7 @@ class MemberController
 	public Sub Login()
 		ViewData.add "ActionForm"    , "?controller=Member&action=LoginPost&partial=True"
 		ViewData.add "ActionRegeste" , "?controller=Member&action=Registe"
-		ViewData.add "ActionFind"    , "?controller=Member&action=Find"
+		ViewData.add "ActionFind"    , "?controller=Member&action=Find&mode=id"
 		ViewData.add "GoUrl"  , request("goUrl")
 		ViewData.add "SaveId" , Request.Cookies("saveId")
 		ViewData.add "SaveIdChecked" , iif( Request.Cookies("saveId")="","","checked" )
@@ -85,7 +85,8 @@ class MemberController
 	
 	' 회원 가입 - 검증 , 등록
 	public Sub RegistePost()
-		Dim RedirectUrl : RedirectUrl = "?controller=Member&action=Registe"
+		'Dim RedirectUrl : RedirectUrl = "?controller=Member&action=Registe"
+		Dim RedirectUrl : RedirectUrl = ""
 		Dim args : Set args = Request.Form
 
 		' 보안 문자 검증
@@ -147,9 +148,13 @@ class MemberController
 		Dim obj
 		set obj = new User
 		
+		Name = args("Name")
+		Name = replace(Name," ","")
+		Name = replace(Name,".","")
+		
 		obj.Id     = Trim(args("Id"))
 		obj.Pwd    = Trim(args("Pwd"))
-		obj.Name   = Trim(args("Name"))
+		obj.Name   = Name
 		obj.Phone3 = Trim(args("Phone3"))
 		obj.State  = 1
 		
@@ -157,6 +162,21 @@ class MemberController
 		' 세션 생성 
 		session("userNo")    = obj.No
 		session("userState") = 1
+		
+		
+		Dim strFile : strFile = server.mapPath("/Utils/email/userRegiste.html")
+		dim strSubject : strSubject = "회원가입을 축하드립니다."
+		dim strBody : strBody = ReadFile(strFile)
+		dim strTo : strTo = obj.Id
+		dim strFrom : strFrom = "OPEN-IOT<no-reply@open-iot.net>"
+		
+		strBody = replace(strBody, "#ID#" , obj.Id )
+		strBody = replace(strBody, "#DATE#" , NOW() )
+		strBody = replace(strBody, "#URL#" , g_host & "/Utils/email/" )
+		
+		dim Mresult : Mresult = MailSend(strSubject, strBody, strTo, strFrom, "")
+		
+		
 		Response.Redirect("?controller=Member&action=EmailPost&partial=True")
 	End Sub
 	
@@ -192,13 +212,17 @@ class MemberController
 		' 발송
 		'	base64( no * len(id) , id )
 		dim code : code = Base64encode( (Model.No * len(Model.Id)) & "," & Model.Id )
-		
-		dim strSubject : strSubject = Model.Name & "님 요청하신 인증번호 입니다."
-		dim strBody : strBody = "이메일 인증하기<br><br><a href="""& g_host &"?controller=Member&action=Registered&code="& code &""">인증하기</a>"
+
+		Dim strFile : strFile = server.mapPath("/Utils/email/confirm.html")
+		dim strSubject : strSubject = "계정 인증이 필요합니다."
+		dim strBody : strBody = ReadFile(strFile)
 		dim strTo : strTo = Model.Id
 		dim strFrom : strFrom = "OPEN-IOT<no-reply@open-iot.net>"
 		
-		dim result : result = MailSend(strSubject, strBody, strTo, strFrom, "")
+		strBody = replace(strBody, "#CONFIRM#" , g_host & "?controller=Member&action=Registered&code=" & code )
+		strBody = replace(strBody, "#URL#" , g_host & "/Utils/email/" )
+		
+		dim Mresult : Mresult = MailSend(strSubject, strBody, strTo, strFrom, "")
 		
 		
 		if Trim( Request("m") ) = "re" then
@@ -308,6 +332,7 @@ class MemberController
 	End Sub
 	
 	public Sub Find()
+		Dim mode : mode = iif( Request("mode")="","id",Request("mode") )
 		ViewData.add "ActionForm"  ,"?controller=Member&action=FindPost"
 		%> <!--#include file="../Views/Member/Find.asp" --> <%
 	End Sub
@@ -361,13 +386,18 @@ class MemberController
 					'update
 					if u.updatePwd(obj) then 
 						'메일 발송
-						
-						dim strSubject : strSubject = Model.Name & "님 요청하신 임시 비밀번호 입니다."
-						dim strBody : strBody = "임시 비밀번호 : " & obj.Pwd
+
+						Dim strFile : strFile = server.mapPath("/Utils/email/pwdReset.html")
+						dim strSubject : strSubject = "요청하신 회원님의 임시 비밀번호가 발급되었습니다."
+						dim strBody : strBody = ReadFile(strFile)
 						dim strTo : strTo = Model.Id
 						dim strFrom : strFrom = "OPEN-IOT<no-reply@open-iot.net>"
 						
-						dim result_mail : result_mail = MailSend(strSubject, strBody, strTo, strFrom, "")
+						strBody = replace(strBody, "#ID#" , Model.Id )
+						strBody = replace(strBody, "#PWD#" , obj.Pwd )
+						strBody = replace(strBody, "#URL#" , g_host & "/Utils/email/" )
+						
+						dim Mresult : Mresult = MailSend(strSubject, strBody, strTo, strFrom, "")
 						
 						result = true
 					else

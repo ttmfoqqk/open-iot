@@ -29,7 +29,7 @@
                                     <div class="panel-body pt0 pb0">
                                         <div class="form-group">
                                             <div class="col-lg-12 col-md-12">
-                                                <textarea class="form-control" name="Policy1" id="Policy1" rows="10"><%=Model.Policy1%></textarea>
+                                                <textarea class="form-control" name="Policy1" id="Policy1" rows="10" style="width:100%;"><%=Model.Policy1%></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -42,7 +42,7 @@
                                     <div class="panel-body pt0 pb0">
                                         <div class="form-group">
                                             <div class="col-lg-12 col-md-12">
-                                                <textarea class="form-control" name="Policy2" id="Policy2" rows="10"><%=Model.Policy2%></textarea>
+                                                <textarea class="form-control" name="Policy2" id="Policy2" rows="10" style="width:100%;"><%=Model.Policy2%></textarea>
                                             </div>
                                         </div>
                                         <div class="form-group">

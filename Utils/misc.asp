@@ -1,7 +1,8 @@
 <%
 Dim g_uip	: g_uip		= Request.ServerVariables("REMOTE_ADDR")
 Dim g_port	: g_port	= Request.ServerVariables("SERVER_PORT")
-Dim g_host	: g_host	= "http://" & Request.ServerVariables("SERVER_NAME") & iif(g_port="80","",":" & g_port)
+'Dim g_host	: g_host	= "http://" & Request.ServerVariables("SERVER_NAME") & iif(g_port="80","",":" & g_port)
+Dim g_host	: g_host	= "http://" & Request.ServerVariables("SERVER_NAME")
 Dim g_url	: g_url		= Request.ServerVariables("PATH_INFO")
 Dim ref_url	: ref_url	= Request.ServerVariables("HTTP_REFERER")
 
@@ -91,12 +92,19 @@ Function detectInjection(strtoclean)
 End Function
 
 
+Sub admin_checkLogin()
+	If session("adminNo")="" or IsNull(session("adminNo"))=True Then 
+		response.redirect "?controller=Login"
+	End If
+End Sub
+
 Sub checkLogin(url)
 	if url = "" then
 		url = "?" & Request.ServerVariables("QUERY_STRING")
 	end if 
 	If session("userNo")="" or IsNull(session("userNo"))=True Then 
 		response.redirect "?controller=Member&action=Login&goUrl=" & server.urlencode(url)
+		'response.redirect "?controller=Member&action=Login"
 	End If
 End Sub
 
@@ -142,7 +150,7 @@ function MailSend(strSubject, strBody, strTo, strFrom, attachPath)
 	on error resume Next
 	
 	Const cdoSendUsingMethod		= "http://schemas.microsoft.com/cdo/configuration/sendusing" 
-	Const cdoSendUsingPort			= 1  ' 1:로컬, 1:외부
+	Const cdoSendUsingPort			= 2  ' 1:로컬, 1:외부
 	Const cdoSMTPServer				= "http://schemas.microsoft.com/cdo/configuration/smtpserver" 
 	Const cdoSMTPServerPort			= "http://schemas.microsoft.com/cdo/configuration/smtpserverport"
 	Const cdoSMTPConnectionTimeout	= "http://schemas.microsoft.com/cdo/configuration/smtpconnectiontimeout" 
@@ -158,12 +166,13 @@ function MailSend(strSubject, strBody, strTo, strFrom, attachPath)
 	Set Flds = objConfig.Fields 
 	With Flds 
 		.Item(cdoSendUsingMethod) = cdoSendUsingPort 
-		.Item(cdoSMTPServer) = "127.0.0.1"  ' 로컬호스트 
+		'.Item(cdoSMTPServer) = "127.0.0.1"  ' 로컬호스트
+		.Item(cdoSMTPServer) = "mw-002.cafe24.com"  
 		.Item(cdoSMTPServerPort) = 25 
 		.Item(cdoSMTPAuthenticate) = cdoBasic 
 		.Item(cdoSMTPPickupDirectory) = "C:\Inetpub\mailroot\Pickup"  ' 픽업 디렉토리 경로 지정
-		'.Item(cdoSendUserName) = "계정 id"
-		'.Item(cdoSendPassword) = "계정 pwd"
+		.Item(cdoSendUserName) = "SPADMIN@spweb.cafe24.com"
+		.Item(cdoSendPassword) = "smile5138"
 		.Update
 	End With 
 	
@@ -193,6 +202,20 @@ function MailSend(strSubject, strBody, strTo, strFrom, attachPath)
 
 	MailSend = result
 end function
+
+'** ---------------------------------------------------------------------------
+' 함 수 명 : ReadFile(strFileName)
+' 인  자 : 1. strFileName : 파일명
+' 목    적 : 파일 읽기
+'** ---------------------------------------------------------------------------
+function ReadFile(strFileName)
+	Dim objStream
+	Set objStream = CreateObject("ADODB.Stream")
+	objStream.CharSet = "utf-8"
+	objStream.Open
+	objStream.LoadFromFile(strFileName)
+	ReadFile = objStream.ReadText()
+end Function
 
 
 
@@ -272,6 +295,81 @@ Const sBASE_64_CHARACTERS = _
 End Function
 
 
+ '------------------------HtmlTagRemover -- HTML 테그 제거 함수 -------by Andy---------
+ ' 파라미터 설명 : (처리할문자열, 자를길이)
+ ' cutlen = 0 일경우 전체 문자열
+ '---------------------------------------------------------------------------------------
+ function HtmlTagRemover(content, cutlen)
+  j=1
+  tmpb=2
+  length = len(content)
+  htmlRemovedContent = content
+
+  Do while length > 0
+   k = mid(htmlRemovedContent,j,1)
+
+   if k="<" then
+    tmpb = 0
+   elseif k = ">" then
+    tmpb = 1
+   end if
+
+   if tmpb = 0 then
+    htmlRemovedContent = left(htmlRemovedContent,j-1) & mid(htmlRemovedContent,j+1)
+   elseif tmpb = 1 then
+    htmlRemovedContent = left(htmlRemovedContent,j-1) & mid(htmlRemovedContent,j+1)
+    tmpb = 2
+   else
+    j=j+1
+   end if
+ 
+   length = length -1
+  Loop
+
+  if cutlen <> 0 then
+'---------------------------------
+' 문자열 한글 영문 숫자 길이변환
+'---------------------------------
+  dim intPos, chrTemp, strCut, intLength
+    '문자열 길이 초기화
+    intLength = 0
+    intPos = 1
+
+    '문자열 길이만큼 돈다
+    do while ( intPos <= Len( htmlRemovedContent ))
+
+       '문자열을 한문자씩 비교한다
+        chrTemp = ASC(Mid( htmlRemovedContent, intPos, 1))
+
+        if chrTemp < 0 then '음수값(-)이 나오면 한글임
+          strCut = strCut & Mid( htmlRemovedContent, intPos, 1 ) 
+          intLength = intLength + 2  '한글일 경우 문자열 길이를 2를 더한다 
+        else
+          strCut = strCut & Mid( htmlRemovedContent, intPos, 1 )            
+          intLength = intLength + 1  '한글이 아닌경우 문자열 길이를 1을 더한다
+        end If
+
+        if intLength >= cutlen  then
+           exit do
+        end if
+
+        intPos = intPos + 1
+  
+    Loop
+   
+  
+   'htmlRemovedContent = left(htmlRemovedContent, cutlen)&".."
+   htmlRemovedContent = strCut
+   if intLength >= cutlen  then
+		htmlRemovedContent = htmlRemovedContent &".."
+	end if
+  end if
+
+  HtmlTagRemover = htmlRemovedContent
+
+ end Function
+
+
 Function RandomNumber(NumberLength,NumberString)
 
 	Const DefaultString = "ABCDEFGHIJKLMNOPQRSTUVXYZ1234567890"
@@ -310,6 +408,37 @@ Function isValidEmail(myEmail)
 End Function
 
 
+'----------------------------------------------------------------------------------------------
+' 스크립트 방지
+'----------------------------------------------------------------------------------------------
+Function TagEncode(ByVal Contans)
+	Dim temp
+	temp = replace(Contans,"&","&amp;")
+	temp = replace(temp,"/","&#47;")
+	temp = replace(temp,"""","&quot;")
+	temp = replace(temp,"'","&#39;")
+	temp = replace(temp,"<","&lt;")
+	temp = replace(temp,">","&gt;")
+	temp = Replace(temp,VbCrlf,"<br>")
+	TagEncode = temp
+End Function 
+
+'----------------------------------------------------------------------------------------------
+' 스크립트 복구
+'----------------------------------------------------------------------------------------------
+Function TagDecode(ByVal Contans)
+	Dim temp
+	temp = replace(Contans,"&amp;","&")
+	temp = replace(temp,"&#47;","/")
+	temp = replace(temp,"&quot;","""")
+	temp = replace(temp,"&#39;","'")
+	temp = replace(temp,"&lt;","<")
+	temp = replace(temp,"&gt;",">")
+	temp = Replace(temp,"<br>",VbCrlf)
+	TagDecode = temp
+End Function 
+
+
 
 
 '------------------------------------------------------------------------------------
@@ -317,7 +446,10 @@ End Function
 '------------------------------------------------------------------------------------
 Function printPageList(pTotCount, pPageNo, pRows, url)
 	if pTotCount = 0 then 
-		printPageList = "<a class=""prev_off""><span class=""blind"">이전</span></a><a class=""on"">1</a><a class=""next_off""><span class=""blind"">다음</span></a>"	: Exit Function
+		printPageList = "<ul class=""pagination"">" &_
+		"<li class=""disabled""><a href=""#"" class=""btn btn-primary disabled"">1</a></li>"&_
+		"</ul>"
+		Exit Function
 	end if
 	
 	' 하단에 보여줄 페이지 건수...
@@ -341,18 +473,19 @@ Function printPageList(pTotCount, pPageNo, pRows, url)
 	
 	' 한단계 앞으로....
 	if ( tCurRange > 0) then
-		tmpStr = tmpStr & "<a href=""" & replace(url,"__PAGE__",(tCurRange-tPrintCount+1)) & """ class=""prev""><span class=""blind"">이전</span></a>"
+		'tmpStr = tmpStr & "<a href=""" & replace(url,"__PAGE__",(tCurRange-tPrintCount+1)) & """ class=""prev""><span class=""blind"">이전</span></a>"
+		tmpStr = tmpStr & "<li class=""previous disabled""><a href=href=""" & replace(url,"__PAGE__",(tCurRange-tPrintCount+1)) & """><i class=""fa fa-angle-left""></i></a></li>"
 	else
-		tmpStr = tmpStr & "<a class=""prev_off""><span class=""blind"">이전</span></a>"
+		tmpStr = tmpStr & "<li class=""previous disabled""><a href=""#""><i class=""fa fa-angle-left""></i></a></li>"
 	end if
 
 	while (tCount <= tPrintCount AND (tCurRange+tCount) <= tPageCount )
 		tPageNo = tCurRange+tCount
 
 		if (tPageNo = pPageNo)	then
-			tmpStr = tmpStr & "<a class=""on"">" & tPageNo & "</a>"
+			tmpStr = tmpStr & "<li class=""disabled""><a href=""#"" class=""btn btn-primary disabled"">" & tPageNo & "</a></li>"
 		else
-			tmpStr = tmpStr & "<a href='" & replace(url,"__PAGE__",tPageNo) & "'>" & tPageNo & "</a>"
+			tmpStr = tmpStr & "<li><a href='" & replace(url,"__PAGE__",tPageNo) & "'>" & tPageNo & "</a></li>"
 		end if
 		
 		tCount = tCount + 1
@@ -360,9 +493,11 @@ Function printPageList(pTotCount, pPageNo, pRows, url)
 	
 	' 한단계 뒤로....
 	if ( FIX((tPageCount-1)/tPrintCount) > FIX(tCurRange/tPrintCount) )	then
-		tmpStr = tmpStr & "<a href=""" & replace(url,"__PAGE__",(tCurRange+tPrintCount+1)) & """ class=""next""><span class=""blind"">다음</span></a>"
+		'tmpStr = tmpStr & "<a href=""" & replace(url,"__PAGE__",(tCurRange+tPrintCount+1)) & """ class=""next""><span class=""blind"">다음</span></a>"
+		tmpStr = tmpStr & "<li class=""next disabled""><a href=""" & replace(url,"__PAGE__",(tCurRange+tPrintCount+1)) & """><i class=""fa fa-angle-right""></i></a></li>"
 	else
-		tmpStr = tmpStr & "<a class=""next_off""><span class=""blind"">다음</span></a>"
+		'tmpStr = tmpStr & "<a class=""next_off""><span class=""blind"">다음</span></a>"
+		tmpStr = tmpStr & "<li class=""next disabled""><a href=""#""><i class=""fa fa-angle-right""></i></a></li>"
 	end if
 	
 	' 두단계 뒤로....
@@ -372,7 +507,7 @@ Function printPageList(pTotCount, pPageNo, pRows, url)
 		tmpStr = tmpStr & ""
 	end if
 	
-	printPageList = "test(utils.asp - printPageList() ) " & tmpStr
+	printPageList = "<ul class=""pagination"">" & tmpStr & "</ul>"
 	
 End Function
 

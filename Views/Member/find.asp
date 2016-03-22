@@ -9,10 +9,11 @@
 				<div class="area_member">
 					<div class="sub_description">
 						<div class="tab" id="find_tabs">
-							<a href="#tab_id" class="item active">ID 찾기</a>
-							<a href="#tab_pwd" class="item">비밀번호 찾기</a>
+							<a href="?controller=Member&action=Find&mode=id" class="item <%=iif(mode="id","active","")%>">ID 찾기</a>
+							<a href="?controller=Member&action=Find&mode=pwd" class="item <%=iif(mode="pwd","active","")%>">비밀번호 찾기</a>
 						</div>
 						
+						<%if mode = "id" then%>
 						<div class="form_tab" id="tab_id">
 							<div style="border:1px solid #e1e1e1;padding:40px;margin-bottom:50px;text-align:center;font-size:18px;">
 								ID를 잊으셨나요?<br>
@@ -31,7 +32,7 @@
 								<tr>
 									<td class="title"><span class="red">＊</span>핸드폰 뒷자리 번호 4개</td>
 									<td>
-										<div class="input_wrap"><input type="text" name="Phone3" id="Phone3" maxlength="4"></div>
+										<div class="input_wrap"><input type="text" name="Phone3" id="Phone3" maxlength="4" onkeyup="this.value=number_filter(this.value);"></div>
 									</td>
 								</tr>
 							</table>
@@ -43,9 +44,8 @@
 						</div>
 						
 						
-						
-						
-						<div class="form_tab" id="tab_pwd" style="display:none;">
+						<%elseif mode="pwd" then %>
+						<div class="form_tab" id="tab_pwd">
 							<div style="border:1px solid #e1e1e1;padding:40px;margin-bottom:50px;text-align:center;font-size:18px;">
 								비밀번호를 잃어버리셨나요?<br>
 								아래의 정보를 입력하고 [확인]을 누르십시오.
@@ -69,7 +69,7 @@
 								<tr>
 									<td class="title"><span class="red">＊</span>핸드폰 뒷자리 번호 4개</td>
 									<td>
-										<div class="input_wrap"><input type="text" name="Phone3" id="Phone3" maxlength="4"></div>
+										<div class="input_wrap"><input type="text" name="Phone3" id="Phone3" maxlength="4" onkeyup="this.value=number_filter(this.value);"></div>
 									</td>
 								</tr>
 							</table>
@@ -79,6 +79,7 @@
 							</center>
 							</form>
 						</div>
+						<%end if%>
 						
 						
 						
@@ -92,6 +93,7 @@
 	</div>
 </div>
 <script type="text/javascript">
+/*
 	$tab = $('#find_tabs').find('a');
 	$form = $('.form_tab');
 	$tab.click(function(e){
@@ -103,4 +105,5 @@
 		$form.hide();
 		$(target).show();
 	});
+*/
 </script>

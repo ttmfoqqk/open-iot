@@ -43,7 +43,7 @@
         <!-- .page-navbar -->
         <div id="header" class="page-navbar">
             <!-- .navbar-brand -->
-            <a href="index.html" class="navbar-brand hidden-xs hidden-sm">
+            <a href="?controller=Company&action=Policy" class="navbar-brand hidden-xs hidden-sm">
                 <img src="./Views/img/logo.png" class="logo hidden-xs" alt="Dynamic logo">
                 <img src="./Views/img/logosm.png" class="logo-sm hidden-lg hidden-md" alt="Dynamic logo">
             </a>

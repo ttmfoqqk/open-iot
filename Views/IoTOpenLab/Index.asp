@@ -3,11 +3,13 @@
 	<div class="sub_contents">
 		<div class="inner">
 			<h2 class="sub_title_blue">About OpenLab</h2>
-			<div class="sub_title_description">오픈IoT의 <b>오픈랩 소개</b></div>
+			<div class="sub_title_description"><b>오픈랩 소개</b></div>
 			<span class="sub_navigation">IoT OpenLab <span class="bar">></span> <b>About OpenLab</b></span>
 			
 			<div class="sub_description">
 				<%=Model.Contents%>
+				
+				
 				<!--h2 class="sub_caption"><label></label>개발자 오프라인 커뮤니티 공간 제공</h2>
 				
 				오픈랩은 IoT 개발자들을 위해 다음과 같이 개발자 지원 서비스를 제공합니다.
@@ -27,6 +29,19 @@
 					<li>앱 테스트 지원: 개발한 앱을 기존 IoT 서비스와 연동하여 테스트할 수 있는 <br>환경 및 장비 제공 </li>
 				</ul-->
 			</div>
+			
+			<%if Not(IsNothing(FilesModel)) then%>
+				<br><br><br>
+				<h2 class="sub_caption"><label></label>File Download</h2>
+				<div class="area_files" style="margin:0px;">
+					<%For each obj in FilesModel.Items%>
+					<div class="row">
+						<label>File</label><span class="file"><%=obj.Name%></span>
+						<button class="white" type="button" onclick="location.href='/Utils/download.asp?pach=/upload/Page/&file=<%=obj.Name%>';">다운로드</button>
+					</div>
+					<%next%>
+				</div>
+			<%end if%>
 			
 		</div>
 	</div>

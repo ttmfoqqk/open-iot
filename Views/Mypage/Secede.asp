@@ -78,7 +78,7 @@
 					</tr>
 				</table>
 				<div style="text-align:center;">
-					<button type="submit" class="blue">탈퇴신청</button>
+					<button type="button" class="blue" onclick="reg_fm()">탈퇴신청</button>
 				</div>
 				</form>
 				
@@ -88,3 +88,11 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+function reg_fm(){
+	if( !$.trim( $('#Pwd').val() ) ){
+		alert('비빌번호를 입력해주세요');return false;
+	}
+	$('#mForm').submit();
+}
+</script>

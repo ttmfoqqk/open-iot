@@ -71,8 +71,8 @@
 												<div class="col-lg-3 col-md-3">
 													<select class="form-control" id="State" name="State">
                                                     	<option value="">선택</option>
-                                                    	<option value="0">인증</option>
-                                                    	<option value="1">미인증</option>
+                                                    	<option value="0" <%=iif(Request("State")="0","selected","")%>>인증</option>
+                                                    	<option value="1" <%=iif(Request("State")="1","selected","")%>>미인증</option>
                                                     </select>
 												</div>
 			
@@ -107,6 +107,7 @@
 														<th class="per10">핸드폰 뒷자리</th>
 														<th class="per10">인증</th>
 														<th class="per15">가입일</th>
+														<th class="per5">로그인</th>
 													</tr>
 												</thead>
 												<tbody>
@@ -124,7 +125,7 @@
 													<tr>
 														<td>
 															<div class="checkbox-custom">
-																<input id="no" name="no" class="check" type="checkbox" value="<%=obj.No%>">
+																<input id="No" name="No" class="check" type="checkbox" value="<%=obj.No%>">
 																<label for="check"></label>
 															</div>
 														</td>
@@ -133,6 +134,7 @@
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.Phone3%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=iif(obj.State=0,"인증","<p class=""text-danger"">미인증</p>")%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.Indate%></a></td>
+														<td><button type="button" class="btn btn-sm btn-danger btn-alt" onclick="window.open('?controller=User&action=MemberLogin&partial=True&No=<%=obj.No%>','','');">로그인</button></td>
 													</tr>
 												<%
 													Next

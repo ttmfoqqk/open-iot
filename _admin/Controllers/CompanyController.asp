@@ -5,6 +5,7 @@ class CompanyController
 	Dim ParamData
 
 	private sub Class_Initialize()
+		admin_checkLogin()
 		Set ViewData = Server.CreateObject("Scripting.Dictionary")
 		Set ParamData = Server.CreateObject("Scripting.Dictionary")
 	end sub
@@ -78,7 +79,7 @@ class CompanyController
 			next
 		end if
 		
-		ViewData.add "pagination" ,printPageList(pTotCount, pageNo, rows, pageUrl & "&pageNo=__PAGE__")
+		ViewData.add "pagination" ,printPageList(pTotCount, cint(ParamData("pageNo")), rows, pageUrl & "&pageNo=__PAGE__")
 		ViewData.add "ActionRegiste","?controller=Company&action=Member&mode=Registe" & ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		ViewData.add "ActionForm","?controller=Company&action=MemberPost&partial=True"
 		ViewData.add "Params", ParamData("url") & "&pageNo=" & ParamData("pageNo")
@@ -159,7 +160,6 @@ class CompanyController
 			call alerts ("수정되었습니다.","?controller=Company&action=Member&mode=List" & Params )
 			
 		elseif ActionType = "DELETE" then
-			response.write No
 			AdminHelper.Delete(No)
 			call alerts ("삭제되었습니다.","?controller=Company&action=Member&mode=List" & Params )
 		else
@@ -167,6 +167,324 @@ class CompanyController
 		end if
 
 	End Sub
+	
+	
+	
+	
+	
+	
+	
+	
+	public Sub Agencies()
+		ParamData.Add "mode"  , iif(Request("mode")="","List",Request("mode"))
+		ParamData.Add "Name"  , iif(Request("Name")="","",Request("Name"))
+		ParamData.Add "pageNo", iif(Request("pageNo")="",1,Request("pageNo"))
+		ParamData.Add "url"   , "&Name=" & ParamData("Name")
+		
+		if ParamData("mode") = "List" then
+			call AgenciesList()
+		elseif ParamData("mode") = "Registe" then
+			call AgenciesRegiste()
+		end if
+	End Sub
+	
+	private Sub AgenciesList()
+		Dim rows    : rows    = 10
+		Dim pageUrl : pageUrl = "?controller=Company&action=Agencies&mode=List" & ParamData("url")
+
+		Dim objs : set objs = new Agencie
+		objs.Name  = ParamData("Name")
+		
+		Dim AgencieHelper : set AgencieHelper = new AgencieHelper
+		set Model = AgencieHelper.SelectAll(objs,ParamData("pageNo"),rows)
+		
+		pTotCount = 0
+		if Not( IsNothing(Model) ) then
+			For each obj in Model.Items
+				pTotCount = obj.tcount
+			next
+		end if
+		
+		ViewData.add "pagination" ,printPageList(pTotCount, cint(ParamData("pageNo")), rows, pageUrl & "&pageNo=__PAGE__")
+		ViewData.add "ActionRegiste","?controller=Company&action=Agencies&mode=Registe" & ParamData("url") & "&pageNo=" & ParamData("pageNo")
+		ViewData.add "ActionForm","?controller=Company&action=AgenciesPost&partial=True"
+		ViewData.add "Params", ParamData("url") & "&pageNo=" & ParamData("pageNo")
+		ViewData.add "ActionType","DELETE"
+		%> <!--#include file="../Views/Company/AgencieList.asp" --> <%
+	End Sub
+	
+	private Sub AgenciesRegiste()
+		Dim No : No = iif(Request("No")="",0,Request("No"))
+		
+		Dim AgencieHelper : set AgencieHelper = new AgencieHelper
+		set Model = AgencieHelper.SelectByField("No",No)
+		
+		Dim ActionType : ActionType = "INSERT"
+		if Not(IsNothing(Model)) then
+			ActionType = "UPDATE"
+		else
+			set Model = new Agencie
+		end if
+		
+		ViewData.add "ActionType",ActionType
+		ViewData.add "ActionList","?controller=Company&action=Agencies&mode=List" & ParamData("url") & "&pageNo=" & ParamData("pageNo")
+		ViewData.add "ActionForm","?controller=Company&action=AgenciesPost&partial=True"
+		ViewData.add "Params", ParamData("url") & "&pageNo=" & ParamData("pageNo")
+		%> <!--#include file="../Views/Company/AgencieRegiste.asp" --> <%
+	End Sub
+	
+	
+	public Sub AgenciesPost()
+		Dim uploadPath : uploadPath = "/upload/Agencie/"
+		Dim savePath   : savePath   = server.mapPath( uploadPath ) & "/"
+		
+		Set UPLOAD__FORM = Server.CreateObject("DEXT.FileUpload") 
+		UPLOAD__FORM.AutoMakeFolder = True 
+		UPLOAD__FORM.CodePage = 65001
+		UPLOAD__FORM.DefaultPath = savePath
+		UPLOAD__FORM.MaxFileLen	= 500 * 1024 * 1024 '500메가
+		
+		Dim ActionType : ActionType = UPLOAD__FORM("ActionType")
+		Dim Params     : Params     = UPLOAD__FORM("Params")
+		
+		Dim No       : No       = Trim( iif(UPLOAD__FORM("No")="",0,UPLOAD__FORM("No")) )
+		Dim Name    : Name    = TagEncode( Trim(UPLOAD__FORM("Name")) )
+		Dim Url : Url = Trim(UPLOAD__FORM("Url"))
+		Dim OrderNo : OrderNo = Trim( iif(UPLOAD__FORM("OrderNo")="",0,UPLOAD__FORM("OrderNo")) )
+		
+		Dim Images     : Images      = Trim(UPLOAD__FORM("Images"))
+		Dim oldImages  : oldImages = Trim(UPLOAD__FORM("oldImages"))
+		Dim dellImages : dellImages  = Trim(UPLOAD__FORM("dellImages"))
+		
+
+		Dim AgencieHelper : set AgencieHelper = new AgencieHelper
+		Dim obj : set obj = new Agencie
+		
+		if ActionType = "INSERT" then
+			if Name = "" then 
+				call alerts ("이름을 입력해주세요.","")
+			end if
+
+			Images = fileUpload_proc(UPLOAD__FORM,savePath, Images , "Images" , oldImages , dellImages )
+
+			obj.Name = Name
+			obj.Url = Url
+			obj.Images = Images
+			obj.OrderNo = OrderNo
+
+			AgencieHelper.Insert(obj)
+			call alerts ("등록되었습니다.","?controller=Company&action=Agencies&mode=List")
+		
+		elseif ActionType = "UPDATE" then
+			if Name = "" then 
+				call alerts ("이름을 입력해주세요.","")
+			end if
+
+			Images = fileUpload_proc(UPLOAD__FORM,savePath, Images , "Images" , oldImages , dellImages )
+			
+			obj.No = No
+			obj.Name = Name
+			obj.Url = Url
+			obj.Images = Images
+			obj.OrderNo = OrderNo
+
+			AgencieHelper.Update(obj)
+			call alerts ("수정되었습니다.","?controller=Company&action=Agencies&mode=List" & Params )
+		elseif ActionType = "DELETE" then
+			AgencieHelper.Delete(No)
+			call alerts ("삭제되었습니다.","?controller=Company&action=Agencies&mode=List" & Params )
+		else
+			call alerts ("잘못된 경로입니다.","")
+		end if
+
+	End Sub
+	
+	
+	
+	
+	
+	'''''''''''''''''''''''''''
+	public Sub AdBanners()
+		ParamData.Add "mode"  , iif(Request("mode")="","List",Request("mode"))
+		ParamData.Add "Name"  , iif(Request("Name")="","",Request("Name"))
+		ParamData.Add "pageNo", iif(Request("pageNo")="",1,Request("pageNo"))
+		ParamData.Add "url"   , "&Name=" & ParamData("Name")
+		
+		'if ParamData("mode") = "List" then
+		'	call AdBannerList()
+		'elseif ParamData("mode") = "Registe" then
+		'	call AdBannerRegiste()
+		'end if
+		
+		call AdBannerRegiste()
+	End Sub
+	
+	private Sub AdBannerList()
+		Dim rows    : rows    = 10
+		Dim pageUrl : pageUrl = "?controller=Company&action=AdBanners&mode=List" & ParamData("url")
+
+		Dim objs : set objs = new AdBanner
+		objs.Name  = ParamData("Name")
+		
+		Dim AdBannerHelper : set AdBannerHelper = new AdBannerHelper
+		set Model = AdBannerHelper.SelectAll(objs,ParamData("pageNo"),rows)
+		
+		pTotCount = 0
+		if Not( IsNothing(Model) ) then
+			For each obj in Model.Items
+				pTotCount = obj.tcount
+			next
+		end if
+		
+		ViewData.add "pagination" ,printPageList(pTotCount, cint(ParamData("pageNo")), rows, pageUrl & "&pageNo=__PAGE__")
+		ViewData.add "ActionRegiste","?controller=Company&action=AdBanners&mode=Registe" & ParamData("url") & "&pageNo=" & ParamData("pageNo")
+		ViewData.add "ActionForm","?controller=Company&action=AdBannerPost&partial=True"
+		ViewData.add "Params", ParamData("url") & "&pageNo=" & ParamData("pageNo")
+		ViewData.add "ActionType","DELETE"
+		%> <!--#include file="../Views/Company/AdBannerList.asp" --> <%
+	End Sub
+	
+	private Sub AdBannerRegiste()
+		'Dim No : No = iif(Request("No")="",0,Request("No"))
+		Dim No : No = 1
+		
+		Dim AdBannerHelper : set AdBannerHelper = new AdBannerHelper
+		set Model = AdBannerHelper.SelectByField("No",No)
+		
+		Dim ActionType : ActionType = "INSERT"
+		if Not(IsNothing(Model)) then
+			ActionType = "UPDATE"
+		else
+			set Model = new AdBanner
+		end if
+		
+		ViewData.add "ActionType",ActionType
+		ViewData.add "ActionList","?controller=Company&action=AdBanners&mode=List" & ParamData("url") & "&pageNo=" & ParamData("pageNo")
+		ViewData.add "ActionForm","?controller=Company&action=AdBannerPost&partial=True"
+		ViewData.add "Params", ParamData("url") & "&pageNo=" & ParamData("pageNo")
+		%> <!--#include file="../Views/Company/AdBannerRegiste.asp" --> <%
+	End Sub
+	
+	
+	public Sub AdBannerPost()
+		Dim uploadPath : uploadPath = "/upload/AdBanner/"
+		Dim savePath   : savePath   = server.mapPath( uploadPath ) & "/"
+		
+		Set UPLOAD__FORM = Server.CreateObject("DEXT.FileUpload") 
+		UPLOAD__FORM.AutoMakeFolder = True 
+		UPLOAD__FORM.CodePage = 65001
+		UPLOAD__FORM.DefaultPath = savePath
+		UPLOAD__FORM.MaxFileLen	= 500 * 1024 * 1024 '500메가
+		
+		Dim ActionType : ActionType = UPLOAD__FORM("ActionType")
+		Dim Params     : Params     = UPLOAD__FORM("Params")
+		
+		Dim No      : No      = Trim( iif(UPLOAD__FORM("No")="",0,UPLOAD__FORM("No")) )
+		Dim Position: Position= Trim(UPLOAD__FORM("Position"))
+		Dim Name    : Name    = TagEncode( Trim(UPLOAD__FORM("Name")) )
+		Dim Url     : Url     = Trim(UPLOAD__FORM("Url"))
+		Dim OrderNo : OrderNo = Trim( iif(UPLOAD__FORM("OrderNo")="",0,UPLOAD__FORM("OrderNo")) )
+		
+		Dim Image     : Image      = Trim(UPLOAD__FORM("Image"))
+		Dim oldImage  : oldImage = Trim(UPLOAD__FORM("oldImage"))
+		Dim dellImage : dellImage  = Trim(UPLOAD__FORM("dellImage"))
+		
+
+		Dim AdBannerHelper : set AdBannerHelper = new AdBannerHelper
+		Dim obj : set obj = new AdBanner
+		
+		if ActionType = "INSERT" then
+			if Name = "" then 
+				call alerts ("이름을 입력해주세요.","")
+			end if
+
+			Image = fileUpload_proc(UPLOAD__FORM,savePath, Image , "Image" , oldImage , dellImage )
+			
+			obj.Position = Position
+			obj.Name = Name
+			obj.Url = Url
+			obj.Image = Image
+			obj.OrderNo = OrderNo
+
+			AdBannerHelper.Insert(obj)
+			call alerts ("등록되었습니다.","?controller=Company&action=AdBanners&mode=List")
+		
+		elseif ActionType = "UPDATE" then
+			if Name = "" then 
+				call alerts ("이름을 입력해주세요.","")
+			end if
+
+			Image = fileUpload_proc(UPLOAD__FORM,savePath, Image , "Image" , oldImage , dellImage )
+			
+			obj.Position = Position
+			obj.No = No
+			obj.Name = Name
+			obj.Url = Url
+			obj.Image = Image
+			obj.OrderNo = OrderNo
+
+			AdBannerHelper.Update(obj)
+			call alerts ("수정되었습니다.","?controller=Company&action=AdBanners&mode=List" & Params )
+		elseif ActionType = "DELETE" then
+			BoardHelper.Delete(No)
+			call alerts ("삭제되었습니다.","?controller=Company&action=AdBanners&mode=List" & Params )
+		else
+			call alerts ("잘못된 경로입니다.","")
+		end if
+
+	End Sub
+	
+	
+	
+	
+	
+	
+	
+	
+	function fileUpload_proc( UPLOAD__FORM ,savePath , file , input , oldFile , delfg )
+		dim return_fileName
+		If file <>"" Then 
+			If UPLOAD__FORM.MaxFileLen >= UPLOAD__FORM(input).FileLen Then 
+				return_fileName = DextFileUpload(UPLOAD__FORM(input),savePath,true)
+			Else
+				call alerts ("파일의 크기는 50MB 를 넘길수 없습니다.","")
+			End If
+
+			If oldFile <> "" Then
+				Set FSO = Server.CreateObject("DEXT.FileUpload")
+					If (FSO.FileExists(savePath & oldFile)) Then
+						fso.deletefile(savePath & oldFile)
+					End If
+					If (FSO.FileExists(savePath & "m_" & oldFile)) Then
+						fso.deletefile(savePath & "m_" & oldFile)
+					End If
+					If (FSO.FileExists(savePath & "s_" & oldFile)) Then
+						fso.deletefile(savePath & "s_" & oldFile)
+					End If
+				set FSO = Nothing
+			End If
+		Else
+			If delfg = "1" Then 
+				If oldFile <> "" Then
+					Set FSO = Server.CreateObject("DEXT.FileUpload")
+						If (FSO.FileExists(savePath & oldFile)) Then
+							fso.deletefile(savePath & oldFile)
+						End If
+						If (FSO.FileExists(savePath & "m_" & oldFile)) Then
+							fso.deletefile(savePath & "m_" & oldFile)
+						End If
+						If (FSO.FileExists(savePath & "s_" & oldFile)) Then
+							fso.deletefile(savePath & "s_" & oldFile)
+						End If
+					set FSO = Nothing
+				End If
+				return_fileName = ""
+			else
+				return_fileName = oldFile
+			End If		
+		End If
+		fileUpload_proc = return_fileName
+	end function
 
 End Class
 %>

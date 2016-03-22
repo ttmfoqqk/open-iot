@@ -1,10 +1,5 @@
 <%
 class User
-
-	private mMetadata
-
-	'=============================
-	'Private properties
 	private mRowNum
 	private mtcount
 	private mNo
@@ -20,15 +15,16 @@ class User
 	private mEdate
 
 	private sub Class_Initialize()
-		mMetadata = Array( "RowNum" , "tcount", "No" , "Id" , "Pwd" , "Name" , "Phone3" , "Indate" , "State" , "DelFg" )
+		mId  = ""
+		mName = ""
+		mPhone3 = ""
+		mSdate = ""
+		mEdate = ""
 	end sub
 
 	private sub Class_Terminate()
 	end sub
 
-	'=============================
-	'public properties
-	
 	public property get RowNum()
 		RowNum = mRowNum
 	end property
@@ -115,11 +111,7 @@ class User
 		mEdate = val
 	end property
 
-	public property get metadata()
-		metadata = mMetadata
-	end property
-
-end class 'User
+end class
 
 class UserHelper
 
@@ -186,7 +178,23 @@ class UserHelper
 		Else
 			ChangeId = false
 		End If
- 
+	end function
+	
+	public function ChangeName(obj)
+		Dim strSQL
+		strSQL= "Update [User] set [Name]=? Where [No] = ? " 
+		set objCommand=Server.CreateObject("ADODB.command") 
+		objCommand.ActiveConnection=DbOpenConnection()
+		objCommand.NamedParameters = False
+		objCommand.CommandText = strSQL
+		objCommand.CommandType = adCmdText
+
+		if DbAddParameters(objCommand, Array(obj.Name, obj.No)) then
+			objCommand.Execute
+			ChangeName = true
+		Else
+			ChangeName = false
+		End If
 	end function
 	
 	public function updatePwd(obj)
@@ -210,37 +218,55 @@ class UserHelper
 	
 	public function Update(obj)
 		Dim strSQL
-		strSQL= "Update [User] set [Pwd] = pwdencrypt(?) , [Phone3] = ? Where [No] = ? " 
+		strSQL= "Update [User] set [Phone3] = ?,[State] = ? Where [No] = ? " 
 		set objCommand=Server.CreateObject("ADODB.command") 
 		objCommand.ActiveConnection=DbOpenConnection()
 		objCommand.NamedParameters = False
 		objCommand.CommandText = strSQL
 		objCommand.CommandType = adCmdText
 
-		if DbAddParameters(objCommand, Array(obj.Pwd, obj.Phone3, obj.No)) then
+		if DbAddParameters(objCommand, Array(obj.Phone3, obj.State, obj.No)) then
 			objCommand.Execute
 			Update = true
 		Else
 			Update = false
 		End If
- 
-	end function
+ 	end function
   
-	' Delete the User
 	public function Delete(No)
 		Dim strSQL
-		strSQL= "Update [User] set [DelFg] = 1 WHERE No = ?"
-		set objCommand=Server.CreateObject("ADODB.command")
-		objCommand.ActiveConnection=DbOpenConnection()
-		objCommand.NamedParameters = False
-		objCommand.CommandText = strSQL
-		objCommand.CommandType = adCmdText
-		if DbAddParameters(objCommand, array(No)) Then
-			objCommand.Execute
-			Delete = true
-		else
-			Delete = false
-		End If
+		strSQL = "" &_
+		" SET NOCOUNT ON;  " &_
+		
+		" DECLARE @No VARCHAR(MAX); " &_
+		" SET @No = ?; " &_
+		
+		" DECLARE @S VARCHAR (MAX); " &_
+		" DECLARE @T TABLE(T_INT INT); " &_
+		" SET @S = @No; " &_
+		
+		" WHILE CHARINDEX(',',@S)<>0 " &_
+		"	BEGIN " &_
+		"	INSERT INTO @T(T_INT) VALUES( SUBSTRING(@S,1,CHARINDEX(',',@S)-1) ) " &_
+		"	SET @S=SUBSTRING(@S,CHARINDEX(',',@S)+1,LEN(@S))  " &_
+		" END " &_
+		" IF CHARINDEX(',',@S)=0 " &_
+		"	BEGIN " &_
+		"	INSERT INTO @T(T_INT) VALUES( SUBSTRING(@S,1,LEN(@S)) ) " &_
+		" END " &_
+		
+		" Update [User] set [DelFg] = 1 WHERE No in(SELECT T_INT FROM @T); "
+		
+		set objCommand=Server.CreateObject("ADODB.command") 
+		With objCommand
+			.ActiveConnection=DbOpenConnection()
+			.prepared = true
+			.CommandType = adCmdText
+			.CommandText = strSQL
+			.Parameters.Append .CreateParameter( "@No" ,adVarChar , adParamInput , 8000 , No )
+			.Execute
+		End With
+		Delete = true
 	end function
 
 	public function SelectByField(fieldName, value)
@@ -248,7 +274,7 @@ class UserHelper
 		set objCommand=Server.CreateObject("ADODB.command")
 		objCommand.ActiveConnection=DbOpenConnection()
 		objCommand.NamedParameters = False
-		objCommand.CommandText = selectSQL + " Where " & fieldName & "=? and DelFg = 0 order by No desc"
+		objCommand.CommandText = selectSQL + " Where " & fieldName & "=? "
 		objCommand.CommandType = adCmdText
 
 		If DbAddParameters(objCommand, array(value)) Then
@@ -305,27 +331,22 @@ class UserHelper
 		if objs.Id <> "" then
 			whereSql = whereSql & " and [Id] like '%'+@Id+'%' "
 		end if
-		
 		if objs.Name <> "" then
 			whereSql = whereSql & " and [Name] like '%'+@Name+'%' "
 		end if
-		
 		if objs.Phone3 <> "" then
 			whereSql = whereSql & " and [Phone3] like '%'+@Phone3+'%' "
 		end if
-		
 		if objs.State <> "" then
 			whereSql = whereSql & " and [State] = @State "
 		end if
-		
 		if objs.Sdate <> "" then
-			whereSql = whereSql & " and [Indate] >= @Sdate "
+			whereSql = whereSql & " and CONVERT(VARCHAR,[Indate],23) >= @Sdate "
+		end if
+		if objs.Edate <> "" then
+			whereSql = whereSql & " and CONVERT(VARCHAR,[Indate],23) <= @Edate "
 		end if
 		
-		if objs.Edate <> "" then
-			whereSql = whereSql & " and [Indate] <= @Edate "
-		end if
-
 		selectSQL = "" &_
 		" SET NOCOUNT ON;  " &_
 		" DECLARE @Id VARCHAR(320) ,@Name VARCHAR(320),@Phone3 VARCHAR(4),@State INT; " &_
@@ -338,16 +359,17 @@ class UserHelper
 		" SET @Sdate = ?; " &_
 		" SET @Edate = ?; " &_
 
-		" SELECT * FROM ( " &_
+		" WITH LIST AS ( " &_
 				" SELECT " &_
-				"  ROW_NUMBER() OVER (order by [No] DESC) AS RowNum " &_
+				"  ROW_NUMBER() OVER (order by [No] ASC) AS RowNum " &_
 				" ,count(*) over () as [tcount] " &_
 				" ,* " &_
 			" FROM [User] " &_
 			" WHERE [DelFg] = 0 " &_
 			whereSql &_
-		" ) AS List " &_
-		" WHERE RowNum BETWEEN " & ((pageNo - 1) * rows) + 1 & " AND " & ((pageNo - 1) * rows) + rows & " "
+		" ) SELECT L.* FROM LIST L " &_
+		" WHERE (tcount-rownum+1) BETWEEN " & ((pageNo - 1) * rows) + 1 & " AND " & ((pageNo - 1) * rows) + rows & " "&_
+		" ORDER BY rownum desc "
 		
 		set objCommand=Server.CreateObject("ADODB.command")
 		With objCommand

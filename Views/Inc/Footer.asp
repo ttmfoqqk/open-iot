@@ -6,12 +6,12 @@
 						<h3>IoT OpenLab</h3>
 						<ul>
 							<li><a href="?controller=IoTOpenLab&action=About">About OpenLab</a></li>
-							<li><a href="?controller=IoTOpenLab&action=facility">facility</a></li>
-							<li><a href="?controller=IoTOpenLab&action=Reservation">OpenLab Reservation</a></li>
+							<li><a href="?controller=IoTOpenLab&action=Facility">Facility</a></li>
+							<li><a href="?controller=IoTOpenLab&action=Reservations">OpenLab Reservation</a></li>
 						</ul>
 					</div>
 					<div class="item">
-						<h3>Developer Support</h3>
+						<h3>Dev Support</h3>
 						<ul>
 							<li><a href="?controller=DeveloperSupport&action=Device">Device Developer</a></li>
 							<li><a href="?controller=DeveloperSupport&action=App">App Developer</a></li>
@@ -21,17 +21,17 @@
 						<h3>Devices & Apps</h3>
 						<ul>
 							
-							<li><a href="?controller=DevicesApps">Devices</a></li>
-							<li><a href="?controller=DevicesApps">Apps</a></li>
+							<li><a href="?controller=DevicesApps&action=DevicesList">Devices</a></li>
+							<li><a href="?controller=DevicesApps&action=AppsList">Apps</a></li>
 						</ul>
 					</div>
 					<div class="item">
 						<h3>Community</h3>
 						<ul>
-							<li><a href="?controller=Community">Notice</a></li>
-							<li><a href="?controller=Community">1:1 Inquiry</a></li>
-							<li><a href="?controller=Community">News</a></li>
-							<li><a href="?controller=Community">Forum</a></li>
+							<li><a href="?controller=Community&action=List&Board=Notice">Notice</a></li>
+							<li><a href="?controller=Community&action=List&Board=Inquiry">1:1 Inquiry</a></li>
+							<li><a href="?controller=Community&action=List&Board=News">News</a></li>
+							<li><a href="?controller=Community&action=List&Board=Forum">Forum</a></li>
 						</ul>
 					</div>
 					<div class="item">
@@ -48,9 +48,9 @@
 			<div class="max_width_wrap">
 				<h1 class="logo"><span class="blind">OPEN-IOT</span></h1>
 				<div class="menu">
-					<a href="#">회사소개</a><span class="bar">|</span>
-					<a href="#">이용약관</a><span class="bar">|</span>
-					<a href="#">개인정보취급방침</a>
+					<a href="?controller=Company&action=Index">사이트소개</a><span class="bar">|</span>
+					<a href="?controller=Company&action=Use">이용약관</a><span class="bar">|</span>
+					<a href="?controller=Company&action=Policy">개인정보취급방침</a>
 					
 					<div class="addr">
 						463-816 경기도 성남시 분당구 새나리로 25 (야탑동)<span class="bar">|</span>TEL 031.789.7586

@@ -1,7 +1,5 @@
 <%
 class Admin
-
-	private mMetadata
 	private mRowNum
 	private mtcount
 	private mNo
@@ -15,7 +13,10 @@ class Admin
 	private mEdate
 
 	private sub Class_Initialize()
-		mMetadata = Array("RowNum","tcount","No","Id","Pwd","Name","Indate","DelFg")
+		mId  = ""
+		mName = ""
+		mSdate = ""
+		mEdate = ""
 	end sub
 
 	private sub Class_Terminate()
@@ -91,11 +92,6 @@ class Admin
 	public property let Edate(val)
 		mEdate = val
 	end property
-
-	public property get metadata()
-		metadata = mMetadata
-	end property
-
 end class
 
 class AdminHelper
@@ -215,17 +211,14 @@ class AdminHelper
 		if objs.Id <> "" then
 			whereSql = whereSql & " and [Id] like '%'+@Id+'%' "
 		end if
-		
 		if objs.Name <> "" then
 			whereSql = whereSql & " and [Name] like '%'+@Name+'%' "
 		end if
-		
 		if objs.Sdate <> "" then
-			whereSql = whereSql & " and [Indate] >= @Sdate "
+			whereSql = whereSql & " and CONVERT(VARCHAR,[Indate],23) >= @Sdate "
 		end if
-		
 		if objs.Edate <> "" then
-			whereSql = whereSql & " and [Indate] <= @Edate "
+			whereSql = whereSql & " and CONVERT(VARCHAR,[Indate],23) <= @Edate "
 		end if
 
 		selectSQL = "" &_
@@ -238,16 +231,17 @@ class AdminHelper
 		" SET @Sdate = ?; " &_
 		" SET @Edate = ?; " &_
 
-		" SELECT * FROM ( " &_
+		" WITH LIST AS ( " &_
 				" SELECT " &_
-				"  ROW_NUMBER() OVER (order by [No] DESC) AS RowNum " &_
+				"  ROW_NUMBER() OVER (order by [No] ASC) AS RowNum " &_
 				" ,count(*) over () as [tcount] " &_
 				" ,* " &_
 			" FROM [Admin] " &_
 			" WHERE DelFg = 0 " &_
 			whereSql &_
-		" ) AS List " &_
-		" WHERE RowNum BETWEEN " & ((pageNo - 1) * rows) + 1 & " AND " & ((pageNo - 1) * rows) + rows & " "
+		" ) SELECT L.* FROM LIST L " &_
+		" WHERE (tcount-rownum+1) BETWEEN " & ((pageNo - 1) * rows) + 1 & " AND " & ((pageNo - 1) * rows) + rows & " " &_
+		" ORDER BY rownum desc "
 		
 		set objCommand=Server.CreateObject("ADODB.command") 
 		With objCommand

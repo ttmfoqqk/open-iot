@@ -1,10 +1,10 @@
         <!-- / #wrapper -->
-        <div id="footer" class="clearfix sidebar-page">
-            <!-- Start #footer  -->
+        <!--div id="footer" class="clearfix sidebar-page">
+            <!-- Start #footer  ->
             <p class="pull-left">
                 KETI © 2014 ALL RIGHTS RESERVED
             </p>
-        </div>
+        </div-->
         <!-- End #footer  -->
         <!-- Back to top -->
         <div id="back-to-top"><a href="#">Back to Top</a>

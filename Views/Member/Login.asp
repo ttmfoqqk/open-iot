@@ -1,4 +1,4 @@
-<div class="max_width_wrap">
+<div class="max_width_wrap login_wrap">
 	
 	<div class="sub_contents_full">
 		<div class="inner">
@@ -16,7 +16,7 @@
 						<a href="<%=ViewData("ActionRegeste")%>" class="line">회원가입 바로가기</a>
 					</div>
 					
-					<form name="mForm" id="mForm" method="POST" action="<%=ViewData("ActionForm")%>">
+					<form name="mForm" id="mForm" method="POST" action="<%=ViewData("ActionForm")%>" onsubmit="return reg_fm();">
 					<input type="hidden" name="goUrl" value="<%=ViewData("GoUrl")%>">
 					<div class="form_box">
 						<div class="rows">
@@ -49,3 +49,15 @@
 		</div>
 	</div>
 </div>
+
+
+<script type="text/javascript">
+function reg_fm(){
+	if( !$.trim( $('#Id').val() ) ){
+		alert('아이디를 입력해주세요');return false;
+	}
+	if( !$.trim( $('#Pwd').val() ) ){
+		alert('비밀번호를 입력해주세요');return false;
+	}
+}
+</script>

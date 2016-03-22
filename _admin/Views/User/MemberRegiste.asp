@@ -35,29 +35,37 @@
                                             <div class="form-group">
                                                 <label class="col-lg-2 col-md-3 control-label" for="">아이디</label>
                                                 <div class="col-lg-10 col-md-9">
-                                                    <p class="form-control-static"><%=Model.Id%></p>
+                                                	<input type="text" class="form-control" id="Id" name="Id" value="<%=Model.Id%>" placeholder="아이디" maxlength="320">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-2 col-md-3 control-label" for="">이름</label>
+                                                <div class="col-lg-10 col-md-9">
+                                                	<input type="text" class="form-control" id="Name" name="Name" value="<%=Model.Name%>" placeholder="이름" maxlength="50">
                                                 </div>
                                             </div>
                                             <!-- End .form-group  -->
                                             <div class="form-group">
                                                 <label class="col-lg-2 col-md-3 control-label" for="">비밀번호</label>
                                                 <div class="col-lg-10 col-md-9 form-inline">
-                                                    <input type="text" class="form-control input-xlarge" id="Pwd" name="Pwd" value="" placeholder="비밀번호">
+                                                    <input type="password" class="form-control input-xlarge" id="Pwd" name="Pwd" value="" placeholder="비밀번호">
                                                     <span class="text-danger"> * 변경시 작성</span>
                                                 </div>
                                             </div>
-                                            <!-- End .form-group  -->
-                                            <div class="form-group">
-                                                <label class="col-lg-2 col-md-3 control-label" for="">이름</label>
-                                                <div class="col-lg-10 col-md-9">
-                                                   <input type="text" class="form-control" id="Name" name="Name" value="<%=Model.Name%>" placeholder="이름">
-                                                </div>
-                                            </div>
-                                            
+
                                             <div class="form-group">
                                                 <label class="col-lg-2 col-md-3 control-label" for="">핸드폰 뒷자리</label>
                                                 <div class="col-lg-10 col-md-9">
-                                                    <input type="text" class="form-control input-mini" id="Phone3" name="Phone3" value="<%=Model.Phone3%>">
+                                                    <input type="text" class="form-control input-medium" id="Phone3" name="Phone3" value="<%=Model.Phone3%>" maxlength="4">
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-lg-2 col-md-3 control-label" for="">이메일 인증</label>
+                                                <div class="col-lg-10 col-md-9">
+                                                	<select class="form-control input-medium" id="State" name="State">
+                                                    	<option value="0" <%=iif(Model.State="0","selected","")%>>인증</option>
+                                                    	<option value="1" <%=iif(Model.State="1","selected","")%>>미인증</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                             
@@ -88,13 +96,22 @@
 			<!-- / page-content -->
         </div>
 <script type="text/javascript">
+var _reg_mail = /^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,10}$/i;
+
 function reg_fm(){
 	if( !$.trim( $('#Id').val() ) ){
-		alert('아이디를 입력해주세요');return false;
+		alert('아이디를 입력해주세요.');return false;
 	}
+	
+	if( !_reg_mail.test( $('#Id').val() ) ){
+		alert('잘못된 이메일 형식 입니다.');return false;
+	}
+	
 	if( !$.trim( $('#Name').val() ) ){
-		alert('이름을 입력해주세요');return false;
+		alert('이름을 입력해주세요.');return false;
 	}
+	
+	
 	if( !$.trim( $('#Phone3').val() ) ){
 		alert('핸드폰 뒷자리를 입력해주세요');return false;
 	}
@@ -106,4 +123,5 @@ function del_fm(){
 		$('#mForm').submit();
 	}
 }
+</script>
 <!--#include file="../inc/footer.asp" -->

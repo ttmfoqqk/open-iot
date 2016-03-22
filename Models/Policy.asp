@@ -1,26 +1,19 @@
 <%
 class Policys
 
-	private mMetadata
-
-	'=============================
-	'Private properties
 	private mPolicy1
 	private mPolicy2
 
 	private sub Class_Initialize()
-		mMetadata = Array("Policy1",  "Policy2")
+		
 	end sub
 
 	private sub Class_Terminate()
 	end sub
 
-	'=============================
-	'public properties
 	public property get Policy1()
 		Policy1 = mPolicy1
 	end property
-
 	public property let Policy1(val)
 		mPolicy1 = val
 	end property
@@ -28,15 +21,9 @@ class Policys
 	public property get Policy2()
 		Policy2 = mPolicy2
 	end property
-
 	public property let Policy2(val)
 		mPolicy2 = val
 	end property
-
-	public property get metadata()
-		metadata = mMetadata
-	end property
-
 end class
 
 class PolicyHelper

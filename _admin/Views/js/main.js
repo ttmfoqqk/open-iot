@@ -219,3 +219,14 @@ var getUrlParameter = function getUrlParameter(sParam) {
         }
     }
 };
+
+
+function readImage(input,img) {
+	if ( input.files && input.files[0] ) {
+		var FR= new FileReader();
+		FR.onload = function(e) {
+			img.attr( "src", e.target.result );
+		};       
+		FR.readAsDataURL( input.files[0] );
+	}
+}

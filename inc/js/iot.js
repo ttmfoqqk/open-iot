@@ -21,9 +21,9 @@ $(function(){
 	 * 백그라운드 이미지, 백그라운드 색상 적용때문임
 	 */
 	var middle = $('#middle');
-	middle.height($(document).height()-415);
+	//middle.height($(document).height()-415);
 	$(window).resize(function(){
-		middle.height($(document).height()-415);
+		//middle.height($(document).height()-415);
 	});
 
 	/**
@@ -85,8 +85,8 @@ function top_line_move(t){
 function call_pop_registe(){
 	html = ''+
 	'<div class="pop_registe">'+
-		'<button onclick="location.href=\'?controller=DevicesApps&action=Registe\';" class="active marginBottom">Device 등록</button><br>'+
-		'<button onclick="location.href=\'?controller=DevicesApps&action=Registe\';">App 등록</button>'+
+		'<button onclick="location.href=\'?controller=DevicesApps&action=DevicesRegiste\';" class="active marginBottom">Device 등록</button><br>'+
+		'<button onclick="location.href=\'?controller=DevicesApps&action=AppsRegiste\';">App 등록</button>'+
 	'</div>';
 	pop_open(html);
 }
@@ -96,12 +96,12 @@ function call_pop_registe(){
  * plugins fullcalendar-2.5.0
  * events, 클릭 모션 추가 작성요망
  */
-function call_pop_calendar(){
+function call_pop_calendar(m){
 	html = ''+
 		'<div class="pop_calendar">'+
 			'<div class="tab">'+
-				'<button class="active">판교</button>'+
-				'<button>송도</button>'+
+				'<button type="button" onclick="call_calendar_data(1)" class="'+(m==1?'active':'')+'">판교</button>'+
+				'<button type="button" onclick="call_calendar_data(2)" class="'+(m==2?'active':'')+'">송도</button>'+
 			'</div>'+
 			'<table class="layout">'+
 				'<tr>'+
@@ -109,12 +109,10 @@ function call_pop_calendar(){
 						'<div class="calendar_base" id="calendar_base" style="width:692px;"></div>'+
 					'</td>'+
 					'<td class="cell02">'+
-						'<div class="detail_base">'+
+						'<div class="detail_base" id="detail_base">'+
 							'<div class="inner">'+
-								'<h4 class="title">2015.09.14 <판교></h4>'+
-								'<ul>'+
-									'<li>Connecting the dots<br><span>14:00 ~ 18:00</span></li>'+
-								'</ul>'+
+								'<h4 class="title"></h4>'+
+								'<ul class="list"></ul>'+
 							'</div>'+
 						'</div>'+
 					'</td>'+
@@ -122,7 +120,15 @@ function call_pop_calendar(){
 			'</table>'+
 		'</div>';
 	pop_open(html);
+	call_calendar_data(m);
+}
+
+function call_calendar_data(m){
+	var btn = $('.pop_calendar .tab button');
+	btn.removeClass('active');
+	btn.filter(':eq('+(m-1)+')').addClass('active');
 	
+	$('#calendar_base').fullCalendar('destroy');
 	$('#calendar_base').fullCalendar({
 		header: {
 			left  : '',
@@ -130,20 +136,58 @@ function call_pop_calendar(){
 			right : ''
 		},
 		editable: false,		
-		events: [
-			{
-				title: '시설 : 2건',
-				start: '2015-12-03',
-				url  : 'javascript:void(alert("준비"));',
-				color: 'transparent'
-			},
-			{
-				title: '시설 : 2건',
-				start: '2015-12-04',
-				url  : 'javascript:void(alert("준비"));',
-				color: 'transparent'
+		events: {
+			url: '?controller=IoTOpenLab&action=AjaxCalendarList&partial=True&Location='+m,
+			error: function() {
+				alert('error');
 			}
-		]
+		}
+	});
+	call_calendar_detail(m,'');
+}
+
+function call_calendar_detail(m,date){
+	
+	var today = new Date();
+	var dd = today.getDate();
+	var mm = today.getMonth()+1; //January is 0!
+	var yyyy = today.getFullYear();
+
+	if(dd<10) {
+	    dd='0'+dd;
+	} 
+
+	if(mm<10) {
+	    mm='0'+mm;
+	} 
+	InDate = !date? (yyyy+'-'+mm+'-'+dd) : date ;
+	
+	var detail_base = $('#detail_base');
+	var location
+	if( m=='1' ){
+		location = ' <판교>';
+	}else if( m=='2' ){
+		location = ' <송도>';
+	}
+	
+	detail_base.find('h4.title').html(InDate+location);
+	
+	$.ajax({
+		url : "?controller=IoTOpenLab&action=AjaxCalendarDetail&partial=True&Location="+m+'&InDate='+InDate,
+		type : "GET",
+		error : function(jqxhr, status, errorMsg){
+			alert("잠시 후 다시 시도해 주세요.");
+			console.log(jqxhr);
+		},
+		success : function(json){
+			var json = JSON.parse(json);
+			var html = '';
+
+			$.each(json, function(key, value){
+				html += '<li>'+value.title+'<br><span>'+value.time+'</span></li>';
+			});
+			detail_base.find('.list').html(html);
+		}
 	});
 }
 
@@ -192,7 +236,32 @@ function pop_close(){
  * datepicker
  */
 function noBefore(date){
-	if (date < new Date())
+	if (date < new Date()){
 		return [false];
-	return [true];
+	}else{
+		return noWeekendsOrHolidays(date);
+	}
+}
+
+//주말(토, 일요일) 선택 막기
+function noWeekendsOrHolidays(date) {
+	var noWeekend = jQuery.datepicker.noWeekends(date);
+	return noWeekend[0] ? [true] : noWeekend;
+}
+
+
+function readImage(input,img) {
+	if ( input.files && input.files[0] ) {
+		var FR= new FileReader();
+		FR.onload = function(e) {
+			img.attr( "src", e.target.result );
+		};       
+		FR.readAsDataURL( input.files[0] );
+	}
+}
+
+
+
+function number_filter(str_value){
+	return str_value.replace(/[^0-9]/gi, ""); 
 }

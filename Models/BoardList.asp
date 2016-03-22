@@ -1,45 +1,43 @@
 <%
 class BoardList
-
-	private mMetadata
-
-	'=============================
-	'Private properties
 	private mNo
-	private mType
+	private mCode
+	private mTypes
 	private mName
 	private mOrder
 	private mDelFg
 
 	private sub Class_Initialize()
-		mMetadata = Array( "mNo" , "mType" , "mName" , "mOrder" , "mDelFg" )
+		
 	end sub
 
 	private sub Class_Terminate()
 	end sub
 
-	'=============================
-	'public properties
 	public property get No()
 		No = mNo
 	end property
-
 	public property let No(val)
 		mNo = val
 	end property
 	
-	public property get Types()
-		Types = mType
+	public property get Code()
+		Code = mCode
 	end property
-
+	public property let Code(val)
+		mCode = val
+	end property
+	
+	public property get Types()
+		Types = mTypes
+	end property
 	public property let Types(val)
-		mType = val
+		mTypes = val
 	end property
 	
 	public property get Name()
 		Name = mName
 	end property
-
 	public property let Name(val)
 		mName = val
 	end property
@@ -47,7 +45,6 @@ class BoardList
 	public property get Order()
 		Order = mOrder
 	end property
-
 	public property let Order(val)
 		Order = val
 	end property
@@ -55,13 +52,8 @@ class BoardList
 	public property get DelFg()
 		DelFg = mDelFg
 	end property
-
 	public property let DelFg(val)
 		DelFg = val
-	end property
-
-	public property get metadata()
-		metadata = mMetadata
 	end property
 
 end class 
@@ -129,6 +121,7 @@ class BoardListHelper
 			set obj = new BoardList
 	        
 			obj.No    = record("No")
+			obj.Code  = record("Code")
 			obj.Types = record("Type")
 			obj.Name  = record("Name")
 			obj.Order = record("Order")

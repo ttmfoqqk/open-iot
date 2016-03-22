@@ -1,0 +1,29 @@
+.max_width_wrap{max-width:1316px;}
+
+/* 상단 네비 */
+header #header nav{width:700px;}
+
+/* 메인 상품 */
+.main_contents{max-width:1296px;}
+.main_contents .products{width:984px;}
+/*.main_contents .products .DevicesApps_list ul li{width:33.333%;}*/
+/* 메인 로고 */
+.main_contents .logos .items ul li{width:150px;padding-right:26px;}
+
+/* 상품리스트 */
+.DevicesApps_list{width:1316px;margin:0px auto;}
+/*.DevicesApps_list ul li{width:25%;}*/
+
+/* 마이페이지 상품 */
+.mypage .DevicesApps_list{width:972px;}
+/*.mypage .DevicesApps_list ul li{width:33.333%;}*/
+
+/* 게시판 - 겔러리 */
+.bbs_list .gallery ul li{width:33.333%;}
+
+/* 상품상세 관련 디바이스/앱 */
+.Detail_full .area_related .caption .items .list li{float:left;width:273px;height:350px;padding-right:22px;text-align:center;}
+
+
+/* 시설안내 임시 */
+.facility_photo{width:966px;}

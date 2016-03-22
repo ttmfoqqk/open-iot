@@ -1,16 +1,11 @@
 <%
 class Page
-
-	private mMetadata
-
-	'=============================
-	'Private properties
 	private mNo
 	private mName
 	private mContents
 
 	private sub Class_Initialize()
-		mMetadata = Array( "mNo" , "mName" , "mContents" )
+		
 	end sub
 
 	private sub Class_Terminate()
@@ -19,7 +14,6 @@ class Page
 	public property get No()
 		No = mNo
 	end property
-
 	public property let No(val)
 		mNo = val
 	end property
@@ -27,7 +21,6 @@ class Page
 	public property get Name()
 		Name = mName
 	end property
-
 	public property let Name(val)
 		mName = val
 	end property
@@ -35,7 +28,6 @@ class Page
 	public property get Contents()
 		Contents = mContents
 	end property
-
 	public property let Contents(val)
 		mContents = val
 	end property

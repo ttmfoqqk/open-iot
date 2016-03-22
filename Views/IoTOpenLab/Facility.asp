@@ -3,21 +3,22 @@
 	<div class="sub_contents">
 		<div class="inner">
 			<h2 class="sub_title_blue">Facility</h2>
-			<div class="sub_title_description">오픈IoT의 <b>오픈랩 시설안내</b></div>
+			<div class="sub_title_description"><b>오픈랩 시설안내</b></div>
 			<span class="sub_navigation">IoT OpenLab <span class="bar">></span> <b>Facility</b></span>
 			
 			<div class="sub_description">
 				
 				<div class="facility_tab">
-					<a href="#" class="item active">판교</a>
-					<a href="#" class="item">송도</a>
-					<a href="javascript:;" onclick="call_pop_calendar();" class="reservation">예약현황</a>
+					<a href="1" class="item active">판교</a>
+					<a href="2" class="item">송도</a>
+					<a href="javascript:;" class="reservation">예약현황</a>
 				</div>
 				
 				
 				<!-- * Daum 지도 - 지도퍼가기 -->
 				<!-- 1. 지도 노드 -->
 				<div id="daumRoughmapContainer1448443470157" class="root_daum_roughmap root_daum_roughmap_landing" style="height:350px;margin-bottom:50px;"></div>
+				<div id="daumRoughmapContainer1453543721047" class="root_daum_roughmap root_daum_roughmap_landing" style="height:350px;margin-bottom:50px;"></div>
 				<!--
 					2. 설치 스크립트
 					* 지도 퍼가기 서비스를 2개 이상 넣을 경우, 설치 스크립트는 하나만 삽입합니다.
@@ -32,9 +33,50 @@
 						"mapWidth" : map_w,
 						"mapHeight" : "350"
 					}).render();
+					
+					new daum.roughmap.Lander({
+						"timestamp" : "1453543721047",
+						"key" : "89zk",
+						"mapWidth" : map_w,
+						"mapHeight" : "350"
+					}).render();
 				</script>
 				
-				<%=Model.Contents%>
+				
+				
+				<div class="Contents">
+					<%=Model.Contents%>
+					
+					<%if Not(IsNothing(FilesModel1)) then%>
+						<br><br><br>
+						<h2 class="sub_caption"><label></label>File Download</h2>
+						<div class="area_files" style="margin:0px;">
+							<%For each obj in FilesModel1.Items%>
+							<div class="row">
+								<label>File</label><span class="file"><%=obj.Name%></span>
+								<button class="white" type="button" onclick="location.href='/Utils/download.asp?pach=/upload/Page/&file=<%=obj.Name%>';">다운로드</button>
+							</div>
+							<%next%>
+						</div>
+					<%end if%>
+					
+				</div>
+				<div class="Contents" style="display:none;">
+					<%=Model2.Contents%>
+					
+					<%if Not(IsNothing(FilesModel2)) then%>
+						<br><br><br>
+						<h2 class="sub_caption"><label></label>File Download</h2>
+						<div class="area_files" style="margin:0px;">
+							<%For each obj in FilesModel2.Items%>
+							<div class="row">
+								<label>File</label><span class="file"><%=obj.Name%></span>
+								<button class="white" type="button" onclick="location.href='/Utils/download.asp?pach=/upload/Page/&file=<%=obj.Name%>';">다운로드</button>
+							</div>
+							<%next%>
+						</div>
+					<%end if%>
+				</div>
 				
 				
 				
@@ -95,3 +137,29 @@
 		</div>
 	</div>
 </div>
+
+<script type="text/javascript">
+$('.facility_tab .item').click(function(e){
+	e.preventDefault();
+	var t = $(this).index();
+	var m = $('.root_daum_roughmap');
+	var c = $('.Contents');
+	m.hide();
+	m.filter(':eq('+t+')').show();
+	
+	c.hide();
+	c.filter(':eq('+t+')').show();
+	
+	$(this).siblings().removeClass('active');
+	$(this).addClass('active');
+});
+$('.facility_tab .reservation').click(function(e){
+	e.preventDefault();
+	var t = $('.facility_tab .item.active').attr('href');
+	call_pop_calendar(t);
+});
+
+$(window).load(function(){
+	$('#daumRoughmapContainer1453543721047').hide();
+})
+</script>

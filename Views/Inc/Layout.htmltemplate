@@ -12,6 +12,8 @@
 <meta name="application-name" content="OPEN-IOT" />
 
 <link rel="stylesheet"  href="inc/css/iot.css" rel="stylesheet" type="text/css" />
+<link rel="stylesheet"  href="inc/css/iot_1350px.css" rel="stylesheet" type="text/css" media="only screen and (min-width : 1326px)"/>
+<link rel="stylesheet"  href="inc/css/iot_1700px.css" rel="stylesheet" type="text/css" media="only screen and (min-width : 1650px)"/>
 <link rel="stylesheet"  href="inc/js/plugins/icheck-1.x/skins/all.css" rel="stylesheet" type="text/css" />
 <link rel="stylesheet"  href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
 <link rel="stylesheet"  href='inc/js/plugins/fullcalendar-2.5.0/fullcalendar.css' rel='stylesheet' />
@@ -24,6 +26,8 @@
 <script type="text/javascript" src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <script src="http://code.jquery.com/ui/1.10.4/jquery-ui.js"></script>
+
+<script type="text/javascript" src="/Utils/SE2.8.2.O12056/js/HuskyEZCreator.js" charset="utf-8"></script>
 </head>
 
 <body>
@@ -36,6 +40,7 @@
 </div>
 
 <script type="text/javascript" src="inc/js/iot.js"></script>
+<script type="text/javascript" src="inc/js/fn_rollToEx.js"></script>
 <script type="text/javascript" src="inc/js/plugins/jquery.greensock-js/src/minified/TweenMax.min.js"></script>
 <script type="text/javascript" src="inc/js/plugins/jquery.backgroundSize/jquery.backgroundSize.js"></script>
 <script type="text/javascript" src="inc/js/plugins/icheck-1.x/icheck.min.js"></script>
@@ -43,5 +48,9 @@
 <script type="text/javascript" src='inc/js/plugins/fullcalendar-2.5.0/lib/moment.min.js'></script>
 <script type="text/javascript" src="inc/js/plugins/fullcalendar-2.5.0/fullcalendar.js"></script>
 <script type="text/javascript" src='inc/js/plugins/fullcalendar-2.5.0/lang/ko.js'></script>
+
+<script type="text/javascript" src='inc/js/plugins/respond/respond.min.js'></script>
+
+<script type="text/javascript" src='inc/js/plugins/jquery.rotate/jquery.rotate.js'></script>
 </body>
 </html>

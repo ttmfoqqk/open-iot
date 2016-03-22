@@ -10,6 +10,7 @@
 				<h2 class="sub_caption"><label></label>기본정보</h2>
 				
 				<form name="mForm" id="mForm" method="POST" action="<%=ViewData("ActionForm")%>">
+				<input type="hidden" name="State" value="<%=Model.State%>">
 				<table class="form">
 					<tr>
 						<td class="title"><span class="red">＊</span>이름</td>
@@ -38,12 +39,12 @@
 					<tr>
 						<td class="title"><span class="red">＊</span>핸드폰 뒷자리 번호 4개</td>
 						<td>
-							<div class="input_wrap"><input type="text" name="Phone3" id="Phone3" maxlength="4" value="<%=Model.Phone3%>"></div>
+							<div class="input_wrap"><input type="text" name="Phone3" id="Phone3" maxlength="4" value="<%=Model.Phone3%>" onkeyup="this.value=number_filter(this.value);"></div>
 						</td>
 					</tr>
 				</table>
 				<div style="text-align:right;">
-					<button type="submit" class="white">수정</button>
+					<button type="button" class="white" onclick="reg_fm()">수정</button>
 				</div>
 				</form>
 				
@@ -53,3 +54,20 @@
 		</div>
 	</div>
 </div>
+<script type="text/javascript">
+function reg_fm(){
+	if( !$.trim( $('#Pwd').val() ) ){
+		alert('비빌번호를 입력해주세요.');return false;
+	}
+	if( !$.trim( $('#PwdConfirm').val() ) ){
+		alert('비빌번호 확인을 입력해주세요.');return false;
+	}
+	if( $.trim( $('#Pwd').val() ) != $.trim( $('#PwdConfirm').val() ) ){
+		alert('비밀번호를 확인해주세요.');return false;
+	}
+	if( !$.trim( $('#Phone3').val() ) ){
+		alert('핸드폰 뒷자리 번호 4개를 입력해주세요.');return false;
+	}
+	$('#mForm').submit();
+}
+</script>

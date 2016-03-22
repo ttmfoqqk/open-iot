@@ -20,7 +20,7 @@
                             <div class="col-lg-12">
                             	
                             	
-                            	<form id="mForm" method="POST" action="<%=ViewData("ActionForm")%>" class="form-horizontal group-border stripped" role="form">
+                            	<form id="mForm" method="POST" action="<%=ViewData("ActionForm")%>" class="form-horizontal group-border stripped" role="form" enctype="multipart/form-data">
                             	<input type="hidden" name="No" value="<%=Model.No%>">
                             	<input type="hidden" name="action" value="<%=action%>">
                                 <div class="panel panel-primary">
@@ -31,9 +31,35 @@
                                     <div class="panel-body pt0 pb0">
                                         <div class="form-group">
                                             <div class="col-lg-12 col-md-12">
-                                                <textarea class="form-control" name="Contents" id="Contents" rows="25"><%=Model.Contents%></textarea>
+                                                <textarea class="form-control" name="Contents" id="Contents" rows="25" style="width:100%;"><%=Model.Contents%></textarea>
                                             </div>
                                         </div>
+                                       
+                                       
+                                        <%if Not(IsNothing(FilesModel)) then %>
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-md-3  control-label" for="">첨부된 파일</label>
+                                            <div class="col-lg-10 col-md-9 ">
+                                            	<%For each obj in FilesModel.Items%>
+                                            	<p class="form-control-static"><a href="/Utils/download.asp?pach=/upload/Page/&file=<%=obj.Name%>"><%=obj.Name%></a> <button type="button" class="btn btn-xs btn-default ml10" onclick="del_file($(this),<%=obj.No%>)">삭제</button></p>
+                                            	<%Next%>
+                                            </div>
+                                        </div>
+                                        <%end if%>
+                                        
+                                        <div class="form-group">
+                                            <label class="col-lg-2 col-md-3  control-label" for="">파일</label>
+                                            <div class="col-lg-10 col-md-9 form-inline" id="file_area">
+                                            	<div class="mb10 file_item">
+                                                	<input type="file" name="files" class="filestyle input-mini" data-buttonText="Find file" data-buttonName="btn-danger" data-iconName="fa fa-plus">
+                                                	<button type="button" class="btn btn-primary" onclick="row_controll($(this),'add')">+</button>
+                                                	<button type="button" class="btn btn-danger" onclick="row_controll($(this),'remove')">-</button>
+                                                </div>
+                                                
+                                            </div>
+                                        </div>
+                                        
+                                        
                                         <div class="form-group">
                                             <div class="col-lg-12 text-center">
                                                 <button class="btn btn-primary btn-lg btn-alt" type="button" onclick="form_submit()"> 등 록 </button>
@@ -56,6 +82,8 @@
             </div>
             <!-- / page-content -->
         </div>
+<!--#include file="../inc/footer.asp" -->
+
 <script type="text/javascript">
 var oEditors = [];
 
@@ -81,5 +109,58 @@ function form_submit(){
 	oEditors.getById["Contents"].exec("UPDATE_CONTENTS_FIELD", []);
 	$('#mForm').submit();
 }
+
+var $new_row = $('#file_area .file_item').clone();
+function row_controll(obj,mode){
+	var len     = $('#file_area .file_item').length;
+	var parent  = obj.parent();
+	var new_row = $new_row.clone();
+	
+	if( mode == 'add' ){
+		$(new_row).insertAfter(parent);
+		// 파일 스타일 적용
+		$(new_row).find('.filestyle').each(function() {
+			var $this = $(this), options = {
+
+				'input' : $this.attr('data-input') === 'false' ? false : true,
+				'icon' : $this.attr('data-icon') === 'false' ? false : true,
+				'buttonBefore' : $this.attr('data-buttonBefore') === 'true' ? true : false,
+				'disabled' : $this.attr('data-disabled') === 'true' ? true : false,
+				'size' : $this.attr('data-size'),
+				'buttonText' : $this.attr('data-buttonText'),
+				'buttonName' : $this.attr('data-buttonName'),
+				'iconName' : $this.attr('data-iconName')
+			};
+			$this.filestyle(options);
+		});
+	}else if( mode == 'remove' ){
+		if(len <= 1){
+			alert('삭제할수 없습니다.');
+			return false;
+		}else{
+			parent.remove();
+		}
+	}
+}
+
+function del_file(obj,No){
+	if( !confirm('첨부파일을 삭제 하시겠습니까?') ){
+		return false;
+	}
+	$.ajax({
+		url : "?controller=Page&action=DelFile",
+		type : "POST",
+		data : {
+			No : No,
+			partial:'True'
+		},
+		error : function(jqxhr, status, errorMsg){
+			alert("실패");
+			console.log(jqxhr);
+		},
+		success : function(res){
+			obj.parent().remove()
+		}
+	});	
+}
 </script>
-<!--#include file="../inc/footer.asp" -->

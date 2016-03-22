@@ -18,7 +18,7 @@ Dim upload_file   : upload_file   = UPLOAD__FORM("Filedata")
 Dim callback_func : callback_func = UPLOAD__FORM("callback_func")
 
 If upload_file <> "" Then
-	upload_file = DextFileUpload("Filedata", savePath , False)
+	upload_file = DextFileUpload(UPLOAD__FORM("Filedata"), savePath , False)
 End If
 
 Dim url : url = uploadPath & upload_file

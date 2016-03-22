@@ -14,7 +14,7 @@ Function DextFileUpload(ByVal ControlName,ByVal sFolderName,ByVal thumb)
 	Dim m_width  : m_width = 300
 	Dim s_width  : s_width = 80
 	
-	Set f = UPLOAD__FORM(ControlName)
+	Set f = ControlName
 	if f <> "" then
 		Dim file_ext : file_ext = mid(f.FileName, InStrRev(f.FileName, ".") + 1)	'파일명에서 확장자만 분리
 		'중복검사
