@@ -11,13 +11,15 @@
 				<div class="tab">
 					
 					<a href="?controller=DevicesApps&action=DevicesList" class="item <%=iif(action="DevicesList","active","")%>">Devices</a>
-					<a href="?controller=DevicesApps&action=AppsList" class="item <%=iif(action="AppsList","active","")%>">Apps</a>
+					<a href="?controller=DevicesApps&action=AppsList" class="item <%=iif(action="AppsList","active","")%>">Services</a>
 					<div class="search">
 						<div class="input_wrap">
 							<input type="text" placeholder="SEARCH" id="Name" name="Name" value="<%=Request("Name")%>">
 						</div>
 						<button class="submit"><span class="blind">검색</span></button>
 					</div>
+					
+					<div id="tab_line" class="line"></div>
 				</div>
 				
 				<div class="other">
@@ -107,6 +109,15 @@ $(function(){
 			TweenLite.to( $(this).find('.photo img'), .4, {scale:1, ease:Quad.easeOut});
 	  }
 	)
+	
+	var item_active = $('.DevicesApps_search a.active');
+	line_move( item_active );
+	$('.DevicesApps_search a.item').mouseover(function(){
+		line_move( $(this) );
+	});
+	$('.DevicesApps_search a.item').mouseout(function(){
+		line_move( item_active );
+	});
 });
 
 function tweenMotion(o){
@@ -135,5 +146,19 @@ function tweenMotion(o){
 			}
 		});
 	});
+}
+
+
+function line_move(t){
+	var t = t;
+	var o = $("#tab_line");
+	if( t.length <= 0 ){
+		TweenMax.to(o, 0.25, {width:0, ease:Sine.easeOut});
+		return false;
+	}
+	o.show();
+	var w = t.width();
+	var p = t.position().left;	
+	TweenMax.to(o, 0.25, {width:w, x:p , ease:Sine.easeOut});
 }
 </script>

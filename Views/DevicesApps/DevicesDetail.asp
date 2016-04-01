@@ -86,7 +86,7 @@
 				<%end if%>
 				
 				<%if Not(IsNothing(RelationModel)) then%>
-				<div class="rows">
+				<div class="rows" style="border-bottom:0px solid;">
 					<div class="area_related" id="slider1">
 						<h2 class="title">Related Apps</h2>
 						<div class="caption">
@@ -136,6 +136,8 @@
 							<div style="float:left;width:50%;">
 								<a href="FAQ" class="item">FAQ</a>
 							</div>
+							
+							<div id="tab_line" class="line"></div>
 						</div>
 						
 						<div class="lists">
@@ -174,6 +176,15 @@
 </div>
 <script type="text/javascript">
 $(function(){
+	var item_active = $('.area_bbs .tab a.active');
+	line_move( item_active );
+	$('.area_bbs .tab a.item').mouseover(function(){
+		line_move( $(this) );
+	});
+	$('.area_bbs .tab a.item').mouseout(function(){
+		line_move( item_active );
+	});
+	
 	$('.area_bbs .tab a').click(function(e){
 		e.preventDefault();
 
@@ -192,6 +203,11 @@ $(function(){
 		}else{
 			btn.hide();
 		}
+		
+		var item_active = $('.area_bbs .tab a.active');
+		$('.area_bbs .tab a.item').mouseout(function(){
+			line_move( item_active );
+		});
 	});
 	
 	$('.small_img a').click(function(e){
@@ -360,4 +376,18 @@ function callList(Types,pageNo){
 	});
 }
 callList('QNA',1);
+
+
+function line_move(t){
+	var t = t;
+	var o = $("#tab_line");
+	if( t.length <= 0 ){
+		TweenMax.to(o, 0.25, {width:0, ease:Sine.easeOut});
+		return false;
+	}
+	o.show();
+	var w = t.width();
+	var p = t.position().left;	
+	TweenMax.to(o, 0.25, {width:w, x:p , ease:Sine.easeOut});
+}
 </script>

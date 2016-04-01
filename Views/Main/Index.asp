@@ -17,7 +17,7 @@
 		<div class="products">
 			<div class="tab">
 				<a href="#Devices_tab" class="item active">Devices</a>
-				<a href="#Apps_tab" class="item">Apps</a>
+				<a href="#Apps_tab" class="item">Services</a>
 				
 				<a href="?controller=DevicesApps&action=DevicesList" class="more"><span class="blind">more</span></a>
 				<a href="?controller=DevicesApps&action=AppsList" class="more" style="display:none;"><span class="blind">more</span></a>
@@ -25,6 +25,8 @@
 					<a href="#" class="prev"><span class="blind">이전</span></a>
 					<a href="#" class="next"><span class="blind">다음</span></a>
 				</div-->
+				
+				<div id="tab_line" class="line"></div>
 			</div>
 			
 			
@@ -220,6 +222,14 @@
 
 <script type="text/javascript">
 $(function(){
+	var item_active = $('.products .tab a.active');
+	$('.products .tab a.item').mouseover(function(){
+		line_move( $(this) );
+	});
+	$('.products .tab a.item').mouseout(function(){
+		line_move( item_active );
+	});
+	
 	$('.products .tab a.item').click(function(e){
 		e.preventDefault();
 		$('.products .tab a.item').removeClass('active');
@@ -233,6 +243,11 @@ $(function(){
 		var activeDiv = $($(this).attr('href'));
 		$('.DevicesApps_list').hide();
 		activeDiv.show();
+		
+		var item_active = $('.products .tab a.active');
+		$('.products .tab a.item').mouseout(function(){
+			line_move( item_active );
+		});
 	});
 	
 	var slider1_html = $('#slider1').html();
@@ -281,4 +296,22 @@ function slider_setting(containerID,slideID,htmls){
 		});
 	}
 }
+
+
+/*
+ * 상단 메뉴 active bar 모션
+ */
+function line_move(t){
+	var t = t;
+	var o = $("#tab_line");
+	if( t.length <= 0 ){
+		TweenMax.to(o, 0.25, {width:0, ease:Sine.easeOut});
+		return false;
+	}
+	o.show();
+	var w = t.width();
+	var p = t.position().left;	
+	TweenMax.to(o, 0.25, {width:w, x:p , ease:Sine.easeOut});
+}
+
 </script>

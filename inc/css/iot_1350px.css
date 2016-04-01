@@ -2,6 +2,11 @@
 
 /* 상단 네비 */
 header #header nav{width:700px;}
+header #header nav li.item1{width:130px;}
+header #header nav li.item2{width:180px;}
+header #header nav li.item3{width:180px;}
+header #header nav li.item4{width:130px;}
+header #header nav li.item5{width:80px;}
 
 /* 메인 상품 */
 .main_contents{max-width:1296px;}

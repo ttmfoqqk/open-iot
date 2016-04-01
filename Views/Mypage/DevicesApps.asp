@@ -16,7 +16,9 @@
 				<div class="DevicesApps_search">
 					<div class="tab">
 						<a href="?controller=Mypage&action=DevicesApps&mode=Devices" class="item <%=iif(mode="Devices","active","")%>">Devices</a>
-						<a href="?controller=Mypage&action=DevicesApps&mode=Apps" class="item <%=iif(mode="Apps","active","")%>">Apps</a>
+						<a href="?controller=Mypage&action=DevicesApps&mode=Apps" class="item <%=iif(mode="Apps","active","")%>">Services</a>
+						
+						<div id="tab_line" class="line"></div>
 					</div>
 					<div class="other">
 						<select id="MenuNo" name="MenuNo" style="width:353px;">
@@ -109,6 +111,15 @@ $(function(){
 			TweenLite.to( $(this).find('.photo img'), .4, {scale:1, ease:Quad.easeOut});
 	  }
 	)
+	
+	var item_active = $('.DevicesApps_search a.active');
+	line_move( item_active );
+	$('.DevicesApps_search a.item').mouseover(function(){
+		line_move( $(this) );
+	});
+	$('.DevicesApps_search a.item').mouseout(function(){
+		line_move( item_active );
+	});
 });
 
 
@@ -116,5 +127,19 @@ function deleteProduct(No){
 	if( confirm('삭제 하시겠습니까?') ){
 		location.href='<%=ViewData("ActionDelete")%>&No='+No;
 	}
+}
+
+
+function line_move(t){
+	var t = t;
+	var o = $("#tab_line");
+	if( t.length <= 0 ){
+		TweenMax.to(o, 0.25, {width:0, ease:Sine.easeOut});
+		return false;
+	}
+	o.show();
+	var w = t.width();
+	var p = t.position().left;	
+	TweenMax.to(o, 0.25, {width:w, x:p , ease:Sine.easeOut});
 }
 </script>

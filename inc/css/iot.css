@@ -133,14 +133,16 @@ header #header .member a.btn2{background-color:#305c92;}
 
 header #header nav{width:600px;display:block;margin:0px auto;padding-left:100px;}
 header #header nav ul{float:left;width:100%;line-height:100px;}
-header #header nav li{float:left;width:20%;font-size:16px;text-align:center;}
 /*
-header #header nav li.item1{width:135px;}
-header #header nav li.item2{width:170px;}
-header #header nav li.item3{width:140px;}
-header #header nav li.item4{width:130px;}
-header #header nav li.item5{width:60px;/*margin-left:35px;*/}
+header #header nav li{float:left;width:20%;font-size:16px;text-align:center;}
 */
+header #header nav li{float:left;font-size:16px;text-align:center;}
+header #header nav li.item1{width:110px;}
+header #header nav li.item2{width:160px;}
+header #header nav li.item3{width:160px;}
+header #header nav li.item4{width:110px;}
+header #header nav li.item5{width:60px;}
+
 header #header nav li a{display:block;}
 header #header nav li a:hover{color:#305c92;}
 header #header nav li a.active{color:#305c92;}
@@ -246,15 +248,15 @@ aside li a.active{color:#305c92;font-weight:bold;}
 }
 
 .main_contents .products .tab{position:relative;top:0%;left:0%;height:70px;margin-bottom:30px;text-align:center;border-bottom:1px solid #b7b7b7;}
-.main_contents .products .tab a.item{display:block;float:left;width:175px;height:69px;line-height:69px;font-size:18px;color:#b2b2c2;border-top:1px solid #ffffff;border-right:1px solid #b7b7b7;background-color:#ffffff;font-weight:bold;}
+.main_contents .products .tab a.item{display:block;float:left;width:175px;height:69px;line-height:69px;font-size:18px;color:#b2b2c2;border-top:1px solid #ffffff;border-right:0px solid #b7b7b7;background-color:#ffffff;font-weight:bold;}
+.main_contents .products .tab a.item.active{color:#305c92;}
+.main_contents .products .tab a.item:hover{color:#305c92;}
+.main_contents .products .tab .line{position:absolute;top:0%;left:0%;width:175px;height:5px;background-color:#305c92;overflow:hidden;}
 /*
-.main_contents .products .tab a.item.active{border-top:3px solid #305c92;height:68px;line-height:68px;color:#305c92;}
-.main_contents .products .tab a.item:hover{border-top:3px solid #305c92;height:68px;line-height:68px;color:#305c92;}
-*/
-
+.main_contents .products .tab a.item{display:block;float:left;width:175px;height:69px;line-height:69px;font-size:18px;color:#b2b2c2;border-top:1px solid #ffffff;border-right:1px solid #b7b7b7;background-color:#ffffff;font-weight:bold;}
 .main_contents .products .tab a.item.active{width:170px;border-top:5px solid #305c92;border-left:3px solid #010101;border-right:3px solid #010101;height:66px;line-height:66px;color:#305c92;}
 .main_contents .products .tab a.item:hover{width:170px;border-top:5px solid #305c92;border-left:3px solid #010101;border-right:3px solid #010101;height:66px;line-height:66px;color:#305c92;}
-
+*/
 .main_contents .products .tab .arrow{position:absolute;top:0px;right:0px;height:100%;border-left:1px solid #b7b7b7;}
 .main_contents .products .tab .arrow a{display:block;float:left;width:70px;height:100%;}
 .main_contents .products .tab .arrow a.prev{background:url(../../images/btn_arrow_left_off.png) no-repeat center;border-right:1px solid #b7b7b7;}
@@ -454,10 +456,15 @@ table.form .input_wrap{position:relative;margin-right:30px;}
 .area_files .row .file{display:block;margin:0px 150px 0px 0px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;word-wrap:normal;}
 
 
-.facility_tab{position:relative;top:0%;left:0%;height:70px;text-align:center;border-left:1px solid #b7b7b7;border-bottom:1px solid #b7b7b7;margin-bottom:30px;}
-.facility_tab a.item{display:block;float:left;width:175px;height:69px;line-height:69px;font-size:18px;color:#b2b2c2;border-top:1px solid #b7b7b7;border-right:1px solid #b7b7b7;background-color:#ffffff;font-weight:bold;}
+.facility_tab{position:relative;top:0%;left:0%;height:70px;text-align:center;border-left:0px solid #b7b7b7;border-bottom:1px solid #b7b7b7;margin-bottom:30px;}
+.facility_tab a.item{display:block;float:left;width:175px;height:69px;line-height:69px;font-size:18px;color:#b2b2c2;border-top:0px solid #b7b7b7;border-right:0px solid #b7b7b7;background-color:#ffffff;font-weight:bold;}
+.facility_tab a.item.active{color:#305c92;}
+.facility_tab a.item:hover{color:#305c92;}
+.facility_tab .line{position:absolute;top:0%;left:0%;width:175px;height:5px;background-color:#305c92;overflow:hidden;}
+/*
 .facility_tab a.item.active{border-top:3px solid #305c92;height:68px;line-height:68px;color:#305c92;}
 .facility_tab a.item:hover{border-top:3px solid #305c92;height:68px;line-height:68px;color:#305c92;}
+*/
 .facility_tab a.reservation{display:block;position:absolute;top:0px;right:0px;width:98px;height:38px;line-height:38px;border:1px solid #f0f2f4;background-color:#315d92;font-size:14px;color:#ffffff;}
 
 .facility_photo{width:642px;}
@@ -474,9 +481,16 @@ table.form .input_wrap{position:relative;margin-right:30px;}
 
 .DevicesApps_search{position:relative;top:0%;left:0%;height:170px;background-color:#ffffff;margin-bottom:30px;}
 .DevicesApps_search .tab{position:relative;top:0%;left:0%;height:70px;text-align:center;border-bottom:1px solid #b7b7b7;}
+.DevicesApps_search .tab a.item{display:block;float:left;width:175px;height:69px;line-height:69px;font-size:18px;color:#b2b2c2;border-top:0px solid #b7b7b7;border-right:0px solid #b7b7b7;background-color:#ffffff;font-weight:bold;}
+.DevicesApps_search .tab a.item.active{color:#305c92;}
+.DevicesApps_search .tab a.item:hover{color:#305c92;}
+.DevicesApps_search .tab .line{position:absolute;top:0%;left:0%;width:175px;height:5px;background-color:#305c92;overflow:hidden;}
+/*
 .DevicesApps_search .tab a.item{display:block;float:left;width:175px;height:69px;line-height:69px;font-size:18px;color:#b2b2c2;border-top:1px solid #ffffff;border-right:1px solid #b7b7b7;background-color:#ffffff;font-weight:bold;}
 .DevicesApps_search .tab a.item.active{width:170px;border-top:5px solid #305c92;border-left:3px solid #010101;border-right:3px solid #010101;height:66px;line-height:66px;color:#305c92;}
 .DevicesApps_search .tab a.item:hover{width:170px;border-top:5px solid #305c92;border-left:3px solid #010101;border-right:3px solid #010101;height:66px;line-height:66px;color:#305c92;}
+*/
+
 .DevicesApps_search .tab .search{height:100%;margin-left:352px;overflow:hidden;}
 .DevicesApps_search .tab .search .input_wrap{margin-right:72px;height:36px;border-right:1px solid #b7b7b7;margin-top:8px;}
 .DevicesApps_search .tab .search .input_wrap input{border:0px;padding:20px 0px 20px 0px;margin:0px 10px 0px 10px;font-size:13px;}
@@ -563,12 +577,17 @@ table.form .input_wrap{position:relative;margin-right:30px;}
 
 .Detail_full .area_bbs{position:relative;top:0%;left:0%;}
 .Detail_full .area_bbs .tab{position:relative;top:0%;left:0%;height:77px;text-align:center;border-bottom:1px solid #e1e1e1;}
+.Detail_full .area_bbs .tab a.item{display:block;height:77px;line-height:69px;font-size:18px;color:#b2b2c2;border-top:0px solid #b7b7b7;border-right:0px solid #b7b7b7;background-color:#ffffff;font-weight:bold;}
+.Detail_full .area_bbs .tab a.item.active{color:#305c92;}
+.Detail_full .area_bbs .tab a.item:hover{color:#305c92;}
+.Detail_full .area_bbs .tab .line{position:absolute;top:0%;left:0%;width:50%;height:5px;background-color:#305c92;overflow:hidden;}
+/*
 .Detail_full .area_bbs .tab a.item{display:block;height:76px;line-height:76px;font-size:30px;color:#b2b2c2;border-top:0px solid #e1e1e1;background-color:#ffffff;font-weight:bold;}
 .Detail_full .area_bbs .tab a.item.active{border-top:5px solid #305c92;border-left:3px solid #010101;border-right:3px solid #010101;height:73px;line-height:73px;color:#305c92;}
 .Detail_full .area_bbs .tab a.item:hover{border-top:5px solid #305c92;border-left:3px solid #010101;border-right:3px solid #010101;height:73px;line-height:73px;color:#305c92;}
+*/
 
-
-.Detail_full .area_bbs .tab a.item .border{display:block;height:100%;border-right:1px solid #b7b7b7;}
+.Detail_full .area_bbs .tab a.item .border{display:block;height:100%;border-right:0px solid #b7b7b7;}
 .Detail_full .area_bbs .lists{margin:50px 100px 50px 100px;}
 
 .Detail_full .area_registe{position:relative;top:0%;left:0%;margin:70px 100px 70px 100px;}
@@ -585,10 +604,15 @@ table.form .input_wrap{position:relative;margin-right:30px;}
 .Detail_full .area_member .tab a.item.active{border-top:3px solid #305c92;height:68px;line-height:68px;color:#305c92;}
 .Detail_full .area_member .tab a.item:hover{border-top:3px solid #305c92;height:68px;line-height:68px;color:#305c92;}
 
-.mypage .DevicesApps_search .tab{border-left:1px solid #b7b7b7;}
+.mypage .DevicesApps_search .tab{border-left:0px solid #b7b7b7;}
+.mypage .DevicesApps_search .tab a.item.active{color:#305c92;}
+.mypage .DevicesApps_search .tab a.item:hover{color:#305c92;}
+.mypage .DevicesApps_search .tab .line{position:absolute;top:0%;left:0%;width:175px;height:5px;background-color:#305c92;overflow:hidden;}
+/*
 .mypage .DevicesApps_search .tab a.item{border-top:1px solid #b7b7b7;}
 .mypage .DevicesApps_search .tab a.item.active{border-top:5px solid #305c92;}
 .mypage .DevicesApps_search .tab a.item:hover{border-top:5px solid #305c92;}
+*/
 
 .mypage .DevicesApps_search .other select{left:0px;}
 .mypage .DevicesApps_search .other button{right:0px;}
