@@ -115,6 +115,7 @@ class CompanyController
 		Dim Id : Id = Trim(Request.Form("Id"))
 		Dim Pwd : Pwd = Trim(Request.Form("Pwd"))
 		Dim Name : Name = Trim(Request.Form("Name"))
+		Dim Email : Email = Trim(Request.Form("Email"))
 		
 		Dim AdminHelper : set AdminHelper = new AdminHelper
 		Dim obj : set obj = new Admin
@@ -130,6 +131,9 @@ class CompanyController
 			if Name = "" then 
 				call alerts ("이름을 입력해주세요.","")
 			end if
+			if Email = "" then 
+				call alerts ("이메일을 입력해주세요.","")
+			end if
 
 			Set Model = AdminHelper.SelectByField("Id", Id)
 			
@@ -140,6 +144,7 @@ class CompanyController
 			obj.Id = Id
 			obj.Pwd = Pwd
 			obj.Name = Name
+			obj.Email = Email
 			
 			result = AdminHelper.Insert(obj)
 			call alerts ("등록되었습니다.","?controller=Company&action=Member&mode=List")
@@ -155,6 +160,7 @@ class CompanyController
 			obj.No = No
 			obj.Pwd = Pwd
 			obj.Name = Name
+			obj.Email = Email
 			
 			AdminHelper.Update(obj)
 			call alerts ("수정되었습니다.","?controller=Company&action=Member&mode=List" & Params )

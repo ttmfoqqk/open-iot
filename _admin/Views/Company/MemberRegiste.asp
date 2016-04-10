@@ -54,6 +54,13 @@
                                                 </div>
                                             </div>
                                             
+                                            <div class="form-group">
+                                                <label class="col-lg-2 col-md-3 control-label" for="">이메일</label>
+                                                <div class="col-lg-10 col-md-9">
+                                                    <input type="text" class="form-control" id="Email" name="Email" value="<%=Model.Email%>" placeholder="이메일">
+                                                </div>
+                                            </div>
+                                            
                                             <div class="panel-body text-center">
                                             	<button type="button" class="btn btn-default btn-lg btn-alt pull-left" onclick="location.href='<%=ViewData("ActionList")%>';"> 목록 </button>
                                             	
@@ -90,6 +97,9 @@ function reg_fm(){
 	}
 	if( !$.trim( $('#Name').val() ) ){
 		alert('이름을 입력해주세요');return false;
+	}
+	if( !$.trim( $('#Email').val() ) ){
+		alert('이메일을 입력해주세요');return false;
 	}
 	$('#mForm').submit();
 }

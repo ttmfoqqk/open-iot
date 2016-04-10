@@ -246,6 +246,36 @@ class DevicesAppsController
 					resultRelation = DevicesRelationHelper.Insert(DevicesRelation)
 				end if
 			Next
+			
+			
+			'관리자에게 이메일 발송
+			dim Mresult
+			Dim UserHelper : set UserHelper = new UserHelper
+			Dim UserModel  : set UserModel  = UserHelper.SelectByField("No",session("userNo"))
+			
+			Dim Admin : set Admin = new Admin
+			Dim AdminHelper : set AdminHelper = new AdminHelper
+			Dim AdminModel  : set AdminModel  = AdminHelper.SelectAll(Admin,1,1000)
+			
+			Dim strFile : strFile = server.mapPath("/Utils/email/newProducts.html")
+			dim strSubject : strSubject = "새로운 디바이스가 등록되었습니다."
+			dim strBody : strBody = ReadFile(strFile)
+			'dim strTo : strTo = UserModel.Id
+			dim strFrom : strFrom = "OPEN-IOT<no-reply@open-iot.net>"
+			
+			strBody = replace(strBody, "#MODE#" , "디바이스" )
+			strBody = replace(strBody, "#ID#"   , UserModel.Id )
+			strBody = replace(strBody, "#NAME#" , obj.Name )
+			strBody = replace(strBody, "#DATE#" , NOW() )
+			strBody = replace(strBody, "#URL#"  , g_host & "/Utils/email/" )
+			
+			if Not( IsNothing(AdminModel) ) then
+				For each AdminObj in AdminModel.Items
+					if Not( IsNothing(AdminObj.Email) ) then 
+						Mresult = MailSend(strSubject, strBody, AdminObj.Email, strFrom, "")
+					end if
+				next
+			end if
 
 			call alerts ("등록되었습니다.","?controller=Mypage&action=DevicesApps&mode=Devices")
 		elseif ActionType = "UPDATE" then
@@ -536,6 +566,38 @@ class DevicesAppsController
 					resultRelation = AppsRelationHelper.Insert(AppsRelation)
 				end if
 			Next
+			
+			
+			'관리자에게 이메일 발송
+			dim Mresult
+			Dim UserHelper : set UserHelper = new UserHelper
+			Dim UserModel  : set UserModel  = UserHelper.SelectByField("No",session("userNo"))
+			
+			Dim Admin : set Admin = new Admin
+			Dim AdminHelper : set AdminHelper = new AdminHelper
+			Dim AdminModel  : set AdminModel  = AdminHelper.SelectAll(Admin,1,1000)
+			
+			Dim strFile : strFile = server.mapPath("/Utils/email/newProducts.html")
+			dim strSubject : strSubject = "새로운 서비스가 등록되었습니다."
+			dim strBody : strBody = ReadFile(strFile)
+			'dim strTo : strTo = UserModel.Id
+			dim strFrom : strFrom = "OPEN-IOT<no-reply@open-iot.net>"
+			
+			strBody = replace(strBody, "#MODE#" , "서비스" )
+			strBody = replace(strBody, "#ID#"   , UserModel.Id )
+			strBody = replace(strBody, "#NAME#" , obj.Name )
+			strBody = replace(strBody, "#DATE#" , NOW() )
+			strBody = replace(strBody, "#URL#"  , g_host & "/Utils/email/" )
+			
+			if Not( IsNothing(AdminModel) ) then
+				For each AdminObj in AdminModel.Items
+					if Not( IsNothing(AdminObj.Email) ) then 
+						Mresult = MailSend(strSubject, strBody, AdminObj.Email, strFrom, "")
+					end if
+				next
+			end if
+			
+			
 
 			call alerts ("등록되었습니다.","?controller=Mypage&action=DevicesApps&mode=Apps")
 		elseif ActionType = "UPDATE" then

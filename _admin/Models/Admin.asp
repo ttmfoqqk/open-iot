@@ -8,6 +8,7 @@ class Admin
 	private mName
 	private mIndate
 	private mDelFg
+	private mEmail
 	
 	private mSdate
 	private mEdate
@@ -17,6 +18,7 @@ class Admin
 		mName = ""
 		mSdate = ""
 		mEdate = ""
+		mEmail = ""
 	end sub
 
 	private sub Class_Terminate()
@@ -78,6 +80,13 @@ class Admin
 		mDelFg = val
 	end property
 	
+	public property get Email()
+		Email = mEmail
+	end property
+	public property let Email(val)
+		mEmail = val
+	end property
+	
 	' 검색용 추가
 	public property get Sdate()
 		Sdate = mSdate
@@ -108,8 +117,8 @@ class AdminHelper
 
 	public function Insert(ByRef obj)
 		Dim strSQL , execResult
-		strSQL=   " Insert into [Admin] ([Id],[Pwd],[Name],[Indate],[DelFg] ) " &_
-		" Values (?,?,?,GETDATE(),0); " &_
+		strSQL=   " Insert into [Admin] ([Id],[Pwd],[Name],[Indate],[DelFg],[Email] ) " &_
+		" Values (?,?,?,GETDATE(),0,?); " &_
 		" SELECT SCOPE_IDENTITY()  "
 		
 		set objCommand=Server.CreateObject("ADODB.command")
@@ -118,7 +127,7 @@ class AdminHelper
 		objCommand.CommandText = strSQL
 		objCommand.CommandType = adCmdText
 
-		if DbAddParameters(objCommand, Array( obj.Id, obj.Pwd, obj.Name )) then
+		if DbAddParameters(objCommand, Array( obj.Id, obj.Pwd, obj.Name , obj.Email )) then
 			Set execResult = objCommand.Execute
 			Set execResult = execResult.NextRecordSet()
 		End If
@@ -129,14 +138,14 @@ class AdminHelper
 
 	public function Update(obj)
 		Dim strSQL
-		strSQL= "Update [Admin] set [Pwd] = ? , [Name] = ? Where [No] = ? "
+		strSQL= "Update [Admin] set [Pwd] = ? , [Name] = ? , [Email] = ? Where [No] = ? "
 		set objCommand=Server.CreateObject("ADODB.command") 
 		objCommand.ActiveConnection=DbOpenConnection()
 		objCommand.NamedParameters = False
 		objCommand.CommandText = strSQL
 		objCommand.CommandType = adCmdText
 
-		if DbAddParameters(objCommand, Array(obj.Pwd, obj.Name, obj.No)) then
+		if DbAddParameters(objCommand, Array(obj.Pwd, obj.Name, obj.Email, obj.No)) then
 			objCommand.Execute
 			Update = true
 		Else
@@ -307,6 +316,7 @@ class AdminHelper
 			obj.Name    = record("Name")
 			obj.Indate  = record("Indate")
 			obj.DelFg   = record("DelFg")
+			obj.Email   = record("Email")
 			set PopulateObjectFromRecord = obj
 		end if
 	end function

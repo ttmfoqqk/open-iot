@@ -84,6 +84,7 @@
 														</th>
 														<th>아이디</th>
 														<th>이름</th>
+														<th>이메일</th>
 														<th class="per15">등록일자</th>
 													</tr>
 												</thead>
@@ -108,6 +109,7 @@
 														</td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.Id%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.Name%></a></td>
+														<td><a href="<%=anchor%>" class="text-normal"><%=obj.Email%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.Indate%></a></td>
 													</tr>
 												<%
