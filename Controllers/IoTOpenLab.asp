@@ -165,6 +165,41 @@ class IoTOpenLabController
 		obj.Purpose = Purpose
 		
 		ReservationHelper.Insert(obj)
+		
+		'관리자에게 이메일 발송
+		dim Mresult
+		Dim ReservationMenuHelper : set ReservationMenuHelper = new ReservationMenuHelper
+		Dim ReservationMenuModel  : set ReservationMenuModel  = ReservationMenuHelper.SelectByField("No",Facilities)
+		
+		Dim UserHelper : set UserHelper = new UserHelper
+		Dim UserModel  : set UserModel  = UserHelper.SelectByField("No",session("userNo"))
+		
+		Dim Admin : set Admin = new Admin
+		Dim AdminHelper : set AdminHelper = new AdminHelper
+		Dim AdminModel  : set AdminModel  = AdminHelper.SelectAll(Admin,1,1000)
+		
+		Dim strFile : strFile = server.mapPath("/Utils/email/newReservations.html")
+		dim strSubject : strSubject = "새로운 오픈랩 예약이 등록되었습니다."
+		dim strBody : strBody = ReadFile(strFile)
+		dim strFrom : strFrom = "OPEN-IOT<no-reply@open-iot.net>"
+		
+		Dim strName : strName = iif( Location="1","판교","송도" ) & " > " & ReservationMenuModel.Name
+		
+		strBody = replace(strBody, "#ID#"   , UserModel.Id )
+		strBody = replace(strBody, "#NAME#" , strName )
+		strBody = replace(strBody, "#USEDATE#" , UseDate )
+		strBody = replace(strBody, "#DATE#" , NOW() )
+		strBody = replace(strBody, "#URL#"  , g_host & "/Utils/email/" )
+		
+		if Not( IsNothing(AdminModel) ) then
+			For each AdminObj in AdminModel.Items
+				if Not( IsNothing(AdminObj.Email) ) then 
+					Mresult = MailSend(strSubject, strBody, AdminObj.Email, strFrom, "")
+				end if
+			next
+		end if
+		
+		
 		call alerts ("신청되었습니다.","?controller=IoTOpenLab&action=Reservations" )
 
 	End Sub

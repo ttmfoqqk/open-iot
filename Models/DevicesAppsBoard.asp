@@ -400,7 +400,7 @@ class DevicesAppsBoardHelper
 			" LEFT JOIN (SELECT [Devices].* FROM [Devices] AS [Devices] INNER JOIN [User] AS [User] ON([Devices].UserNo = [User].No AND [User].Delfg=0) ) AS [Devices] ON([Board].ProductNo = [Devices].No) " &_
 			" LEFT JOIN (SELECT [Apps].* FROM [Apps] AS [Apps] INNER JOIN [User] AS [User] ON([Apps].UserNo = [User].No AND [User].Delfg=0) ) AS [Apps] ON([Board].ProductNo = [Apps].No) " &_
 			" LEFT JOIN [User] AS [User] ON([Board].UserNo = [User].No and [User].Delfg = 0) " &_
-			" LEFT JOIN [User] AS [User2] ON([Board].AdminNo = [User2].No and [User].Delfg = 0) " &_
+			" LEFT JOIN [User] AS [User2] ON([Board].AdminNo = [User2].No and [User2].Delfg = 0) " &_
 			" LEFT JOIN [Admin] AS [Admin] ON([Board].AdminNo = [Admin].No) " &_
 			" WHERE ([Board].DelFg = 0 OR ([Board].DelFg = 1 AND [Board].ReplyCnt > 0) ) AND ([Devices].No is not null OR [Apps].No is not null) " &_
 			whereSql &_

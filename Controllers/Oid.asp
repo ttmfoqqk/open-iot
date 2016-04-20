@@ -90,6 +90,20 @@ class OidController
 		Dim obj : set obj = new Oids
 		Dim result
 		
+		
+		dim Mresult
+		Dim UserHelper : set UserHelper = new UserHelper
+		Dim UserModel  : set UserModel  = UserHelper.SelectByField("No",session("userNo"))
+		
+		Dim Admin : set Admin = new Admin
+		Dim AdminHelper : set AdminHelper = new AdminHelper
+		Dim AdminModel  : set AdminModel  = AdminHelper.SelectAll(Admin,1,1000)
+		
+		Dim strFile : strFile = server.mapPath("/Utils/email/newOid.html")
+		dim strSubject : strSubject = "새로운 OID요청이 등록되었습니다."
+		dim strBody : strBody = ReadFile(strFile)
+		dim strFrom : strFrom = "OPEN-IOT<no-reply@open-iot.net>"
+		
 		if ActionType = "UPDATE" then
 			if Hphone1 = "" or Hphone2 = "" or Hphone3 = "" then
 				call alerts ("핸드폰 번호를 입력해주세요.","")
@@ -147,6 +161,26 @@ class OidController
 			obj.Url = Url
 			
 			OidHelper.Update(obj)
+			
+			
+			if State = "2" then 
+				'관리자에게 이메일 발송
+				strBody = replace(strBody, "#ID#"   , UserModel.Id )
+				strBody = replace(strBody, "#NAME#" , obj.Name )
+				strBody = replace(strBody, "#DATE#" , NOW() )
+				strBody = replace(strBody, "#URL#"  , g_host & "/Utils/email/" )
+				
+				if Not( IsNothing(AdminModel) ) then
+					For each AdminObj in AdminModel.Items
+						if Not( IsNothing(AdminObj.Email) ) then 
+							Mresult = MailSend(strSubject, strBody, AdminObj.Email, strFrom, "")
+						end if
+					next
+				end if
+			end if
+			
+			
+			
 
 			call alerts ("수정되었습니다.","?controller=Oid&action=Registe" )
 			
@@ -212,6 +246,22 @@ class OidController
 			obj.Url = Url
 			
 			OidHelper.INSERT(obj)
+			
+			'관리자에게 이메일 발송
+			strBody = replace(strBody, "#ID#"   , UserModel.Id )
+			strBody = replace(strBody, "#NAME#" , obj.Name )
+			strBody = replace(strBody, "#DATE#" , NOW() )
+			strBody = replace(strBody, "#URL#"  , g_host & "/Utils/email/" )
+			
+			if Not( IsNothing(AdminModel) ) then
+				For each AdminObj in AdminModel.Items
+					if Not( IsNothing(AdminObj.Email) ) then 
+						Mresult = MailSend(strSubject, strBody, AdminObj.Email, strFrom, "")
+					end if
+				next
+			end if
+			
+			
 
 			call alerts ("신청되었습니다.","?controller=Oid&action=Registe" )
 		else
