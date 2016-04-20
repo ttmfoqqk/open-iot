@@ -51,6 +51,8 @@
 										<input type="hidden" id="ActionType" name="ActionType" value="<%=ViewData("ActionType")%>">
                                         <input type="hidden" id="Params" name="Params" value="<%=ViewData("Params")%>">
 											
+											<a href="<%=ViewData("ActionExcel")%>" class="btn btn-primary mr5 mb10">엑셀 다운로드</a>
+											
 											<table class="table table-bordered" id="tabletools">
 												<thead>
 													<tr>
@@ -68,7 +70,7 @@
 												<tbody>
 												<%if IsNothing(Model) then %>
 													<tr>
-														<td colspan="3">등록된 내용이 없습니다.</td>
+														<td colspan="4">등록된 내용이 없습니다.</td>
 													</tr>
 												<%else
 													For each obj in Model.Items

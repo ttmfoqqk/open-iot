@@ -93,6 +93,8 @@
 										<input type="hidden" id="ActionType" name="ActionType" value="<%=ViewData("ActionType")%>">
                                         <input type="hidden" id="Params" name="Params" value="<%=ViewData("Params")%>">
 											
+											<a href="<%=ViewData("ActionExcel")%>" class="btn btn-primary mr5 mb10">엑셀 다운로드</a>
+											
 											<table class="table table-bordered" id="tabletools">
 												<thead>
 													<tr>

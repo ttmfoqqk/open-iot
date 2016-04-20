@@ -67,9 +67,9 @@
 												<div class="col-lg-3 col-md-3">
 													<select class="form-control" name="MenuNo">
 														<option value="">선택</option>
-														<%if Not(IsNothing(DevicesMenuModel)) then
+														<%if Not(IsNothing(AppsMenuModel)) then
 															Dim MenuItem
-															For each MenuItem in DevicesMenuModel.Items
+															For each MenuItem in AppsMenuModel.Items
 														%>
                                                     	<option value="<%=MenuItem.No%>" <%=iif(Request("MenuNo")=Cstr(MenuItem.No),"selected","")%>><%=MenuItem.Name%></option>
                                                     	<%
@@ -105,6 +105,7 @@
 										<input type="hidden" id="ActionType" name="ActionType" value="<%=ViewData("ActionType")%>">
                                         <input type="hidden" id="Params" name="Params" value="<%=ViewData("Params")%>">
 											
+											<a href="<%=ViewData("ActionExcel")%>" class="btn btn-primary mr5 mb10">엑셀 다운로드</a>
 											<table class="table table-bordered" id="tabletools">
 												<thead>
 													<tr>

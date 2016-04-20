@@ -34,6 +34,8 @@ class UserController
 			call MemberList()
 		elseif ParamData("mode") = "Registe" then
 			call MemberRegiste()
+		elseif ParamData("mode") = "Excel" then
+			call MemberExcel()
 		end if
 	End Sub
 	
@@ -64,7 +66,67 @@ class UserController
 		ViewData.add "ActionForm","?controller=User&action=MemberPost&partial=True"
 		ViewData.add "Params", ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		ViewData.add "ActionType","DELETE"
+		ViewData.add "ActionExcel","?controller=User&action=Member&mode=Excel&partial=True" & ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		%> <!--#include file="../Views/User/MemberList.asp" --> <%
+	End Sub
+	
+	
+	private Sub MemberExcel()
+		Session.Timeout = 600
+		Server.ScriptTimeOut = 60*60*60 '초
+		
+		Dim objs : set objs = new User
+		objs.Sdate  = ParamData("sDate")
+		objs.Edate  = ParamData("eDate")
+		objs.Id     = ParamData("Id")
+		objs.Name   = ParamData("Name")
+		objs.Phone3 = ParamData("Phone3")
+		objs.State  = ParamData("State")
+		
+		Dim UserHelper : set UserHelper = new UserHelper
+		set Model = UserHelper.SelectAll(objs,1,100000000)
+		
+		
+		Dim tmp_html : tmp_html = "" &_
+		"<?xml version=""1.0"" encoding=""utf-8""?>" &_
+		"<Workbook xmlns=""urn:schemas-microsoft-com:office:spreadsheet"" xmlns:o=""urn:schemas-microsoft-com:office:office"" xmlns:x=""urn:schemas-microsoft-com:office:excel"" xmlns:ss=""urn:schemas-microsoft-com:office:spreadsheet"" xmlns:html=""http://www.w3.org/TR/REC-html40"">" &_
+		"<Worksheet ss:Name=""회원 관리""> " &_
+		"<Table> " &_
+		"	<Column ss:Width='300'/> " &_
+		"	<Column ss:Width='200'/> " &_
+		"	<Column ss:Width='100'/> " &_
+		"	<Column ss:Width='100'/> " &_
+		"	<Column ss:Width='200'/> " &_
+		"	<Row> "&_
+		"		<Cell><Data ss:Type=""String"">아이디</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">이름</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">핸드폰 뒷자리</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">인증</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">가입일</Data></Cell> "&_
+		"	</Row> "
+		
+		if Not( IsNothing(Model) ) then
+			For each obj in Model.Items
+				tmp_html = tmp_html & "" &_
+				"	<Row> "&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Id & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Name & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Phone3 & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & iif(obj.State=0,"인증","미인증") & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Indate & "</Data></Cell>"&_
+				"	</Row> "
+			next
+		else
+			tmp_html = tmp_html & "<Row><Cell><Data ss:Type=""String"">등록된 내용이 없습니다.</Data></Cell></Row>"
+		end if
+		tmp_html = tmp_html & "</Table></Worksheet></Workbook>"
+		Response.write tmp_html
+		
+		Response.Buffer = True
+		Response.ContentType = "appllication/vnd.ms-excel" '// 엑셀로 지정
+		Response.CacheControl = "public"
+		Response.AddHeader "Content-Disposition","attachment; filename=회원 관리 " & Now() & ".xls"
+		
 	End Sub
 	
 	private Sub MemberRegiste()
@@ -186,6 +248,8 @@ class UserController
 			call OidList()
 		elseif ParamData("mode") = "Registe" then
 			call OidRegiste()
+		elseif ParamData("mode") = "Excel" then
+			call OidExcel()
 		end if
 	End Sub
 
@@ -218,7 +282,93 @@ class UserController
 		ViewData.add "ActionForm","?controller=User&action=OidPost&partial=True"
 		ViewData.add "Params", ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		ViewData.add "ActionType","DELETE"
+		ViewData.add "ActionExcel","?controller=User&action=Oid&mode=Excel&partial=True" & ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		%> <!--#include file="../Views/User/OidList.asp" --> <%
+	End Sub
+	
+	private Sub OidExcel()
+		Session.Timeout = 600
+		Server.ScriptTimeOut = 60*60*60 '초
+		
+		Dim objs : set objs = new Oids
+		objs.Sdate    = ParamData("sDate")
+		objs.Edate    = ParamData("eDate")
+		objs.UserId   = ParamData("UserId")
+		objs.UserName = ParamData("UserName")
+		objs.Oid      = ParamData("Oid")
+		objs.Name     = ParamData("Name")
+		objs.Email    = ParamData("Email")
+		objs.State    = ParamData("State")
+		
+		Dim OidHelper : set OidHelper = new OidHelper
+		set Model = OidHelper.SelectAll(objs,1,100000000)
+		
+		Dim tmp_html : tmp_html = "" &_
+		"<?xml version=""1.0"" encoding=""utf-8""?>" &_
+		"<Workbook xmlns=""urn:schemas-microsoft-com:office:spreadsheet"" xmlns:o=""urn:schemas-microsoft-com:office:office"" xmlns:x=""urn:schemas-microsoft-com:office:excel"" xmlns:ss=""urn:schemas-microsoft-com:office:spreadsheet"" xmlns:html=""http://www.w3.org/TR/REC-html40"">" &_
+		"<Worksheet ss:Name=""기업-OID 관리""> " &_
+		"<Table> " &_
+		"	<Column ss:Width='100'/> " &_
+		"	<Column ss:Width='200'/> " &_
+		"	<Column ss:Width='100'/> " &_
+		"	<Column ss:Width='100'/> " &_
+		"	<Column ss:Width='150'/> " &_
+		"	<Column ss:Width='200'/> " &_
+		"	<Column ss:Width='200'/> " &_
+		"	<Column ss:Width='100'/> " &_
+		"	<Column ss:Width='80'/>  " &_
+		"	<Column ss:Width='200'/> " &_
+		"	<Row> "&_
+		"		<Cell><Data ss:Type=""String"">OID</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">아이디</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">이름</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">핸드폰</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">기업명</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">회사메일</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">주소</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">회사연락처</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">상태</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">신청일</Data></Cell> "&_
+		"	</Row> "
+		
+		if Not( IsNothing(Model) ) then
+			For each obj in Model.Items
+				Hphone = obj.Hphone1 &"-"& obj.Hphone2 &"-"& obj.Hphone3
+				Phone  = obj.Phone1 &"-"& obj.Phone2 &"-"& obj.Phone3
+				
+				if obj.State = "0" then
+					State = "발급"
+				elseif obj.State = "1" then
+					State = "미발급"
+				elseif obj.State = "2" then
+					State = "기업"
+				end if
+			
+				tmp_html = tmp_html & "" &_
+				"	<Row> "&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Oid & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.UserId & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.UserName & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & Hphone & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Name & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Email & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Addr & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & Phone & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & State & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.InDate & "</Data></Cell>"&_
+				"	</Row> "
+			next
+		else
+			tmp_html = tmp_html & "<Row><Cell><Data ss:Type=""String"">등록된 내용이 없습니다.</Data></Cell></Row>"
+		end if
+		tmp_html = tmp_html & "</Table></Worksheet></Workbook>"
+		Response.write tmp_html
+		
+		Response.Buffer = True
+		Response.ContentType = "appllication/vnd.ms-excel" '// 엑셀로 지정
+		Response.CacheControl = "public"
+		Response.AddHeader "Content-Disposition","attachment; filename=기업-OID 관리 " & Now() & ".xls"
+		
 	End Sub
 	
 	private Sub OidRegiste()

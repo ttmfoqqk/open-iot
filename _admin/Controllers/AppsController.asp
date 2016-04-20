@@ -36,6 +36,8 @@ class AppsController
 			call AppsList()
 		elseif ParamData("mode") = "Registe" then
 			call AppsRegiste()
+		elseif ParamData("mode") = "Excel" then
+			call AppsExcel()
 		end if
 	End Sub
 	
@@ -76,9 +78,75 @@ class AppsController
 		ViewData.add "ActionForm","?controller=Apps&action=AppsPost&partial=True"
 		ViewData.add "Params", ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		ViewData.add "ActionType","DELETE"
-		
+		ViewData.add "ActionExcel","?controller=Apps&action=Index&mode=Excel&partial=True" & ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		%> <!--#include file="../Views/DevicesApps/AppsList.asp" --> <%
 	End Sub
+	
+	
+	private Sub AppsExcel()
+		Session.Timeout = 600
+		Server.ScriptTimeOut = 60*60*60 '초
+		
+		Dim objs : set objs = new Apps
+
+		objs.UserId   = ParamData("UserId")
+		objs.UserName = ParamData("UserName")
+		objs.Name     = ParamData("Name")
+		objs.MenuNo   = ParamData("MenuNo")
+		objs.Sdate    = ParamData("sDate")
+		objs.Edate    = ParamData("eDate")
+		objs.State    = ParamData("State")
+		
+		Dim AppsHelper : set AppsHelper = new AppsHelper
+		set Model = AppsHelper.SelectAll(objs,1,100000000)
+		
+		
+		Dim tmp_html : tmp_html = "" &_
+		"<?xml version=""1.0"" encoding=""utf-8""?>" &_
+		"<Workbook xmlns=""urn:schemas-microsoft-com:office:spreadsheet"" xmlns:o=""urn:schemas-microsoft-com:office:office"" xmlns:x=""urn:schemas-microsoft-com:office:excel"" xmlns:ss=""urn:schemas-microsoft-com:office:spreadsheet"" xmlns:html=""http://www.w3.org/TR/REC-html40"">" &_
+		"<Worksheet ss:Name=""Apps 관리""> " &_
+		"<Table> " &_
+		"	<Column ss:Width='200'/> " &_
+		"	<Column ss:Width='200'/> " &_
+		"	<Column ss:Width='200'/> " &_
+		"	<Column ss:Width='150'/> " &_
+		"	<Column ss:Width='150'/> " &_
+		"	<Column ss:Width='80'/> " &_
+		"	<Row> "&_
+		"		<Cell><Data ss:Type=""String"">분류</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">Apps명</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">아이디</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">이름</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">등록일</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">상태</Data></Cell> "&_
+		"	</Row> "
+		
+		if Not( IsNothing(Model) ) then
+			For each obj in Model.Items
+				tmp_html = tmp_html & "" &_
+				"	<Row> "&_
+				"		<Cell><Data ss:Type=""String"">" & obj.MenuName & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Name & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.UserId & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.UserName & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Indate & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & iif(obj.State="0","승인","미승인") & "</Data></Cell>"&_
+				"	</Row> "
+			next
+		else
+			tmp_html = tmp_html & "<Row><Cell><Data ss:Type=""String"">등록된 내용이 없습니다.</Data></Cell></Row>"
+		end if
+		tmp_html = tmp_html & "</Table></Worksheet></Workbook>"
+		Response.write tmp_html
+		
+		Response.Buffer = True
+		Response.ContentType = "appllication/vnd.ms-excel" '// 엑셀로 지정
+		Response.CacheControl = "public"
+		Response.AddHeader "Content-Disposition","attachment; filename=Apps 관리 " & Now() & ".xls"
+		
+	End Sub
+	
+	
 	
 	public sub AjaxAppsList()
 		Dim MenuNo : MenuNo = iif(Request("MenuNo")="","0",Request("MenuNo"))
@@ -319,6 +387,8 @@ class AppsController
 			call MenuList()
 		elseif ParamData("mode") = "Registe" then
 			call MenuRegiste()
+		elseif ParamData("mode") = "Excel" then
+			call MenuExcel()
 		end if
 	End Sub
 	
@@ -345,8 +415,51 @@ class AppsController
 		ViewData.add "ActionForm","?controller=Apps&action=MenuPost&partial=True"
 		ViewData.add "Params", ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		ViewData.add "ActionType","DELETE"
-		
+		ViewData.add "ActionExcel","?controller=Apps&action=Menu&mode=Excel&partial=True" & ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		%> <!--#include file="../Views/DevicesApps/AppsMenuList.asp" --> <%
+	End Sub
+	
+	private Sub MenuExcel()
+		Session.Timeout = 600
+		Server.ScriptTimeOut = 60*60*60 '초
+		
+		Dim objs : set objs = new DevicesMenu
+		objs.Name = ParamData("Name")
+
+		Dim AppsMenuHelper : set AppsMenuHelper = new AppsMenuHelper
+		set Model = AppsMenuHelper.SelectAll(objs,1,100000000)
+		
+		Dim tmp_html : tmp_html = "" &_
+		"<?xml version=""1.0"" encoding=""utf-8""?>" &_
+		"<Workbook xmlns=""urn:schemas-microsoft-com:office:spreadsheet"" xmlns:o=""urn:schemas-microsoft-com:office:office"" xmlns:x=""urn:schemas-microsoft-com:office:excel"" xmlns:ss=""urn:schemas-microsoft-com:office:spreadsheet"" xmlns:html=""http://www.w3.org/TR/REC-html40"">" &_
+		"<Worksheet ss:Name=""Apps 분류 관리""> " &_
+		"<Table> " &_
+		"	<Column ss:Width='200'/> " &_
+		"	<Column ss:Width='80'/> " &_
+		"	<Row> "&_
+		"		<Cell><Data ss:Type=""String"">이름</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">순서</Data></Cell> "&_
+		"	</Row> "
+		
+		if Not( IsNothing(Model) ) then
+			For each obj in Model.Items
+				tmp_html = tmp_html & "" &_
+				"	<Row> "&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Name & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.OrderNo & "</Data></Cell>"&_
+				"	</Row> "
+			next
+		else
+			tmp_html = tmp_html & "<Row><Cell><Data ss:Type=""String"">등록된 내용이 없습니다.</Data></Cell></Row>"
+		end if
+		tmp_html = tmp_html & "</Table></Worksheet></Workbook>"
+		Response.write tmp_html
+		
+		Response.Buffer = True
+		Response.ContentType = "appllication/vnd.ms-excel" '// 엑셀로 지정
+		Response.CacheControl = "public"
+		Response.AddHeader "Content-Disposition","attachment; filename=Apps 분류 관리 " & Now() & ".xls"
+		
 	End Sub
 	
 	private Sub MenuRegiste()

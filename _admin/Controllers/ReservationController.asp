@@ -36,6 +36,8 @@ class ReservationController
 			call List()
 		elseif ParamData("mode") = "Registe" then
 			call Registe()
+		elseif ParamData("mode") = "Excel" then
+			call Excel()
 		end if
 	End Sub
 	
@@ -69,8 +71,86 @@ class ReservationController
 		ViewData.add "ActionForm","?controller=Reservation&action=Post&partial=True"
 		ViewData.add "Params", ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		ViewData.add "ActionType","DELETE"
-		
+		ViewData.add "ActionExcel","?controller=Reservation&action=Index&mode=Excel&partial=True" & ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		%> <!--#include file="../Views/Reservation/List.asp" --> <%
+	End Sub
+	
+	
+	private Sub Excel()
+		Session.Timeout = 600
+		Server.ScriptTimeOut = 60*60*60 '초
+		
+		Dim objs : set objs = new Reservation
+		objs.Sdate      = ParamData("sDate")
+		objs.Edate      = ParamData("eDate")
+		objs.SRdate     = ParamData("sRDate")
+		objs.ERdate     = ParamData("eRDate")
+		objs.UserId     = ParamData("UserId")
+		objs.UserName   = ParamData("UserName")
+		objs.Location   = ParamData("Location")
+		objs.Facilities = ParamData("Facilities")
+		objs.State      = ParamData("State")
+		
+		Dim ReservationHelper : set ReservationHelper = new ReservationHelper
+		set Model = ReservationHelper.SelectAll(objs,1,100000000)
+		
+		Dim tmp_html : tmp_html = "" &_
+		"<?xml version=""1.0"" encoding=""utf-8""?>" &_
+		"<Workbook xmlns=""urn:schemas-microsoft-com:office:spreadsheet"" xmlns:o=""urn:schemas-microsoft-com:office:office"" xmlns:x=""urn:schemas-microsoft-com:office:excel"" xmlns:ss=""urn:schemas-microsoft-com:office:spreadsheet"" xmlns:html=""http://www.w3.org/TR/REC-html40"">" &_
+		"<Worksheet ss:Name=""예약 관리""> " &_
+		"<Table> " &_
+		"	<Column ss:Width='200'/> " &_
+		"	<Column ss:Width='100'/> " &_
+		"	<Column ss:Width='100'/> " &_
+		"	<Column ss:Width='150'/> " &_
+		"	<Column ss:Width='100'/> " &_
+		"	<Column ss:Width='100'/> " &_
+		"	<Column ss:Width='80'/> " &_
+		"	<Column ss:Width='150'/> " &_
+		"	<Row> "&_
+		"		<Cell><Data ss:Type=""String"">아이디</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">이름</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">구분</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">시설</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">핸드폰</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">사용 희망일</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">상태</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">작성일</Data></Cell> "&_
+		"	</Row> "
+		
+		if Not( IsNothing(Model) ) then
+			For each obj in Model.Items
+				phone  = obj.Hphone1 &"-"& obj.Hphone2 &"-"& obj.Hphone3
+				
+				if obj.Location = "1" then
+					Location = "판교"
+				elseif obj.Location = "2" then
+					Location = "송도" 
+				end if
+			
+				tmp_html = tmp_html & "" &_
+				"	<Row> "&_
+				"		<Cell><Data ss:Type=""String"">" & obj.UserId & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.UserName & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & Location & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.FacilitiesName & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & phone & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.UseDate & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & iif(obj.State=0,"완료","신청") & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.InDate & "</Data></Cell>"&_
+				"	</Row> "
+			next
+		else
+			tmp_html = tmp_html & "<Row><Cell><Data ss:Type=""String"">등록된 내용이 없습니다.</Data></Cell></Row>"
+		end if
+		tmp_html = tmp_html & "</Table></Worksheet></Workbook>"
+		Response.write tmp_html
+		
+		Response.Buffer = True
+		Response.ContentType = "appllication/vnd.ms-excel" '// 엑셀로 지정
+		Response.CacheControl = "public"
+		Response.AddHeader "Content-Disposition","attachment; filename=예약 관리 " & Now() & ".xls"
+		
 	End Sub
 	
 	private Sub Registe()
@@ -192,12 +272,14 @@ class ReservationController
 		ParamData.Add "Location" , iif(Request("Location")="","",Request("Location"))
 		ParamData.Add "pageNo"   , iif(Request("pageNo")="",1,Request("pageNo"))
 		ParamData.Add "No"       , iif(Request("No")="",0,Request("No"))
-		ParamData.Add "url"      , "&Name=" & ParamData("Name")
+		ParamData.Add "url"      , "&Location=" & ParamData("Location") & "&Name=" & ParamData("Name")
 		 
 		if ParamData("mode") = "List" then
 			call MenuList()
 		elseif ParamData("mode") = "Registe" then
 			call MenuRegiste()
+		elseif ParamData("mode") = "Excel" then
+			call MenuExcel()
 		end if
 	End Sub
 	
@@ -225,9 +307,66 @@ class ReservationController
 		ViewData.add "ActionForm","?controller=Reservation&action=MenuPost&partial=True"
 		ViewData.add "Params", ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		ViewData.add "ActionType","DELETE"
+		ViewData.add "ActionExcel","?controller=Reservation&action=Menu&mode=Excel&partial=True" & ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		
 		%> <!--#include file="../Views/Reservation/ReservationMenuList.asp" --> <%
 	End Sub
+	
+	
+	private Sub MenuExcel()
+		Session.Timeout = 600
+		Server.ScriptTimeOut = 60*60*60 '초
+		
+		Dim objs : set objs = new ReservationMenu
+		objs.Name = ParamData("Name")
+		objs.Location = ParamData("Location")
+
+		Dim ReservationMenuHelper : set ReservationMenuHelper = new ReservationMenuHelper
+		set Model = ReservationMenuHelper.SelectAll(objs,1,100000000)
+		
+		Dim tmp_html : tmp_html = "" &_
+		"<?xml version=""1.0"" encoding=""utf-8""?>" &_
+		"<Workbook xmlns=""urn:schemas-microsoft-com:office:spreadsheet"" xmlns:o=""urn:schemas-microsoft-com:office:office"" xmlns:x=""urn:schemas-microsoft-com:office:excel"" xmlns:ss=""urn:schemas-microsoft-com:office:spreadsheet"" xmlns:html=""http://www.w3.org/TR/REC-html40"">" &_
+		"<Worksheet ss:Name=""시설 관리""> " &_
+		"<Table> " &_
+		"	<Column ss:Width='100'/> " &_
+		"	<Column ss:Width='200'/> " &_
+		"	<Column ss:Width='100'/> " &_
+		"	<Row> "&_
+		"		<Cell><Data ss:Type=""String"">구분</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">이름</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">순서</Data></Cell> "&_
+		"	</Row> "
+		
+		if Not( IsNothing(Model) ) then
+			For each obj in Model.Items
+
+				if obj.Location = "1" then
+					Location = "판교"
+				elseif obj.Location = "2" then
+					Location = "송도" 
+				end if
+			
+				tmp_html = tmp_html & "" &_
+				"	<Row> "&_
+				"		<Cell><Data ss:Type=""String"">" & Location & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Name & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.OrderNo & "</Data></Cell>"&_
+				"	</Row> "
+			next
+		else
+			tmp_html = tmp_html & "<Row><Cell><Data ss:Type=""String"">등록된 내용이 없습니다.</Data></Cell></Row>"
+		end if
+		tmp_html = tmp_html & "</Table></Worksheet></Workbook>"
+		Response.write tmp_html
+		
+		Response.Buffer = True
+		Response.ContentType = "appllication/vnd.ms-excel" '// 엑셀로 지정
+		Response.CacheControl = "public"
+		Response.AddHeader "Content-Disposition","attachment; filename=시설 관리 " & Now() & ".xls"
+		
+	End Sub
+	
 	
 	public Sub AjaxMenuList()
 		Dim Location : Location = iif( Request("Location")="","0",Request("Location") )

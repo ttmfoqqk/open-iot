@@ -191,6 +191,8 @@ class CompanyController
 			call AgenciesList()
 		elseif ParamData("mode") = "Registe" then
 			call AgenciesRegiste()
+		elseif ParamData("mode") = "Excel" then
+			call AgenciesExcel()
 		end if
 	End Sub
 	
@@ -216,7 +218,61 @@ class CompanyController
 		ViewData.add "ActionForm","?controller=Company&action=AgenciesPost&partial=True"
 		ViewData.add "Params", ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		ViewData.add "ActionType","DELETE"
+		ViewData.add "ActionExcel","?controller=Company&action=Agencies&mode=Excel&partial=True" & ParamData("url") & "&pageNo=" & ParamData("pageNo")
 		%> <!--#include file="../Views/Company/AgencieList.asp" --> <%
+	End Sub
+	
+	private Sub AgenciesExcel()
+		Session.Timeout = 600
+		Server.ScriptTimeOut = 60*60*60 '초
+		
+		Dim objs : set objs = new Agencie
+		objs.Name  = ParamData("Name")
+		
+		Dim AgencieHelper : set AgencieHelper = new AgencieHelper
+		set Model = AgencieHelper.SelectAll(objs,1,100000000)
+		
+		pTotCount = 0
+		if Not( IsNothing(Model) ) then
+			For each obj in Model.Items
+				pTotCount = obj.tcount
+			next
+		end if
+		
+		Dim tmp_html : tmp_html = "" &_
+		"<?xml version=""1.0"" encoding=""utf-8""?>" &_
+		"<Workbook xmlns=""urn:schemas-microsoft-com:office:spreadsheet"" xmlns:o=""urn:schemas-microsoft-com:office:office"" xmlns:x=""urn:schemas-microsoft-com:office:excel"" xmlns:ss=""urn:schemas-microsoft-com:office:spreadsheet"" xmlns:html=""http://www.w3.org/TR/REC-html40"">" &_
+		"<Worksheet ss:Name=""관련 기관 관리""> " &_
+		"<Table> " &_
+		"	<Column ss:Width='300'/> " &_
+		"	<Column ss:Width='400'/> " &_
+		"	<Column ss:Width='80'/> " &_
+		"	<Row> "&_
+		"		<Cell><Data ss:Type=""String"">이름</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">URL</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">순서</Data></Cell> "&_
+		"	</Row> "
+		
+		if Not( IsNothing(Model) ) then
+			For each obj in Model.Items
+				tmp_html = tmp_html & "" &_
+				"	<Row> "&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Name & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Url & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & iif(obj.OrderNo="" or IsNothing(obj.OrderNo),"0",obj.OrderNo) & "</Data></Cell>"&_
+				"	</Row> "
+			next
+		else
+			tmp_html = tmp_html & "<Row><Cell><Data ss:Type=""String"">등록된 내용이 없습니다.</Data></Cell></Row>"
+		end if
+		tmp_html = tmp_html & "</Table></Worksheet></Workbook>"
+		Response.write tmp_html
+		
+		Response.Buffer = True
+		Response.ContentType = "appllication/vnd.ms-excel" '// 엑셀로 지정
+		Response.CacheControl = "public"
+		Response.AddHeader "Content-Disposition","attachment; filename=관련 기관 관리 " & Now() & ".xls"
+		
 	End Sub
 	
 	private Sub AgenciesRegiste()

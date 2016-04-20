@@ -92,7 +92,7 @@ class AppsMenuHelper
 		rows   = iif( rows="",10,rows )
 
 		if objs.Name <> "" then
-			whereSql = whereSql & " and Name like '%@Name%' "
+			whereSql = whereSql & " and Name like '%'+@Name+'%' "
 		end if
 
 		selectSQL = "" &_
