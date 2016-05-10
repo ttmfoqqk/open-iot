@@ -61,6 +61,18 @@
                                                 </div>
                                             </div>
                                             
+                                             <div class="form-group">
+                                                <label class="col-lg-2 col-md-3 control-label" for="">권한</label>
+                                                <div class="col-lg-10 col-md-9">
+                                                    <select class="form-control input-xlarge" id="Level" name="Level">
+                                                    	<option value="">선택</option>
+                                                    	<option value="0" <%=iif(Model.Level="0","selected","")%>>전체 관리</option>
+                                                    	<option value="1" <%=iif(Model.Level="1","selected","")%>>판교 관리</option>
+                                                    	<option value="2" <%=iif(Model.Level="2","selected","")%>>송도 관리</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
                                             <div class="panel-body text-center">
                                             	<button type="button" class="btn btn-default btn-lg btn-alt pull-left" onclick="location.href='<%=ViewData("ActionList")%>';"> 목록 </button>
                                             	
@@ -100,6 +112,9 @@ function reg_fm(){
 	}
 	if( !$.trim( $('#Email').val() ) ){
 		alert('이메일을 입력해주세요');return false;
+	}
+	if( !$.trim( $('#Level').val() ) ){
+		alert('권한을 선택해주세요');return false;
 	}
 	$('#mForm').submit();
 }

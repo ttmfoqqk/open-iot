@@ -559,6 +559,7 @@ class MypageController
 		Dim UserModel  : set UserModel  = UserHelper.SelectByField("No",session("userNo"))
 		
 		Dim Admin : set Admin = new Admin
+		Admin.Level = "0"
 		Dim AdminHelper : set AdminHelper = new AdminHelper
 		Dim AdminModel  : set AdminModel  = AdminHelper.SelectAll(Admin,1,1000)
 		

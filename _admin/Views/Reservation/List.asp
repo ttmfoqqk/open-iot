@@ -71,10 +71,10 @@
 											<div class="form-group col-lg-12 col-md-12">
 												<label class="col-lg-2 col-md-2 control-label" for="">구분</label>
 												<div class="col-lg-3 col-md-3">
-													<select class="form-control" id="Location" name="Location">
+													<select class="form-control" id="Location" name="Location" <%=iif(AdminModel.Level="0","","disabled")%>>
                                                     	<option value="">선택</option>
-                                                    	<option value="1" <%=iif(Request("Location")="1","selected","")%>>판교</option>
-                                                    	<option value="2" <%=iif(Request("Location")="2","selected","")%>>송도</option>
+                                                    	<option value="1" <%=iif(ParamData("Location")="1","selected","")%>>판교</option>
+                                                    	<option value="2" <%=iif(ParamData("Location")="2","selected","")%>>송도</option>
                                                     </select>
 												</div>
 			

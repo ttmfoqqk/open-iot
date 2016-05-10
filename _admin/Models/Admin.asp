@@ -9,6 +9,7 @@ class Admin
 	private mIndate
 	private mDelFg
 	private mEmail
+	private mLevel
 	
 	private mSdate
 	private mEdate
@@ -19,6 +20,7 @@ class Admin
 		mSdate = ""
 		mEdate = ""
 		mEmail = ""
+		mLevel = ""
 	end sub
 
 	private sub Class_Terminate()
@@ -87,6 +89,13 @@ class Admin
 		mEmail = val
 	end property
 	
+	public property get Level()
+		Level = mLevel
+	end property
+	public property let Level(val)
+		mLevel = val
+	end property
+	
 	' 검색용 추가
 	public property get Sdate()
 		Sdate = mSdate
@@ -117,8 +126,8 @@ class AdminHelper
 
 	public function Insert(ByRef obj)
 		Dim strSQL , execResult
-		strSQL=   " Insert into [Admin] ([Id],[Pwd],[Name],[Indate],[DelFg],[Email] ) " &_
-		" Values (?,?,?,GETDATE(),0,?); " &_
+		strSQL=   " Insert into [Admin] ([Id],[Pwd],[Name],[Indate],[DelFg],[Email],[Level] ) " &_
+		" Values (?,?,?,GETDATE(),0,?,?); " &_
 		" SELECT SCOPE_IDENTITY()  "
 		
 		set objCommand=Server.CreateObject("ADODB.command")
@@ -127,7 +136,7 @@ class AdminHelper
 		objCommand.CommandText = strSQL
 		objCommand.CommandType = adCmdText
 
-		if DbAddParameters(objCommand, Array( obj.Id, obj.Pwd, obj.Name , obj.Email )) then
+		if DbAddParameters(objCommand, Array( obj.Id, obj.Pwd, obj.Name , obj.Email , obj.Level )) then
 			Set execResult = objCommand.Execute
 			Set execResult = execResult.NextRecordSet()
 		End If
@@ -138,14 +147,14 @@ class AdminHelper
 
 	public function Update(obj)
 		Dim strSQL
-		strSQL= "Update [Admin] set [Pwd] = ? , [Name] = ? , [Email] = ? Where [No] = ? "
+		strSQL= "Update [Admin] set [Pwd] = ? , [Name] = ? , [Email] = ? , [Level] = ? Where [No] = ? "
 		set objCommand=Server.CreateObject("ADODB.command") 
 		objCommand.ActiveConnection=DbOpenConnection()
 		objCommand.NamedParameters = False
 		objCommand.CommandText = strSQL
 		objCommand.CommandType = adCmdText
 
-		if DbAddParameters(objCommand, Array(obj.Pwd, obj.Name, obj.Email, obj.No)) then
+		if DbAddParameters(objCommand, Array(obj.Pwd, obj.Name, obj.Email, obj.Level, obj.No)) then
 			objCommand.Execute
 			Update = true
 		Else
@@ -229,16 +238,43 @@ class AdminHelper
 		if objs.Edate <> "" then
 			whereSql = whereSql & " and CONVERT(VARCHAR,[Indate],23) <= @Edate "
 		end if
+		if objs.Level <> "" then
+			whereSql = whereSql & " and [Level] in(SELECT T_INT FROM @T) "
+		end if
+		
+		if objs.Email <> "" then
+			whereSql = whereSql & " and [Email] like '%'+@Email+'%' "
+		end if
 
 		selectSQL = "" &_
 		" SET NOCOUNT ON;  " &_
 		" DECLARE @Id VARCHAR(320) ,@Name VARCHAR(320); " &_
 		" DECLARE @Sdate VARCHAR(10) ,@Edate VARCHAR(10); " &_
+		" DECLARE @Level VARCHAR(MAX) , @Email VARCHAR(320); " &_
 		
 		" SET @Id = ?; " &_
 		" SET @Name = ?; " &_
 		" SET @Sdate = ?; " &_
 		" SET @Edate = ?; " &_
+		" SET @Level = ?; " &_
+		" SET @Email = ?; " &_
+		
+		
+		" DECLARE @S VARCHAR (MAX); " &_
+		" DECLARE @T TABLE(T_INT INT); " &_
+		" SET @S = @Level; " &_
+		
+		" WHILE CHARINDEX(',',@S)<>0 " &_
+		"	BEGIN " &_
+		"	INSERT INTO @T(T_INT) VALUES( SUBSTRING(@S,1,CHARINDEX(',',@S)-1) ) " &_
+		"	SET @S=SUBSTRING(@S,CHARINDEX(',',@S)+1,LEN(@S))  " &_
+		" END " &_
+		" IF CHARINDEX(',',@S)=0 " &_
+		"	BEGIN " &_
+		"	INSERT INTO @T(T_INT) VALUES( SUBSTRING(@S,1,LEN(@S)) ) " &_
+		" END; " &_
+		
+		
 
 		" WITH LIST AS ( " &_
 				" SELECT " &_
@@ -258,10 +294,12 @@ class AdminHelper
 			.prepared = true
 			.CommandType = adCmdText
 			.CommandText = selectSQL
-			.Parameters.Append .CreateParameter( "@Id"   ,adVarChar , adParamInput , 320 , objs.Id )
-			.Parameters.Append .CreateParameter( "@Name" ,adVarChar , adParamInput , 320 , objs.Name )
+			.Parameters.Append .CreateParameter( "@Id"    ,adVarChar , adParamInput , 320 , objs.Id )
+			.Parameters.Append .CreateParameter( "@Name"  ,adVarChar , adParamInput , 320 , objs.Name )
 			.Parameters.Append .CreateParameter( "@Sdate" ,adVarChar , adParamInput , 10 , objs.Sdate )
 			.Parameters.Append .CreateParameter( "@Edate" ,adVarChar , adParamInput , 10 , objs.Edate )
+			.Parameters.Append .CreateParameter( "@Level" ,adVarChar , adParamInput , 8000 , objs.Level )
+			.Parameters.Append .CreateParameter( "@Email" ,adVarChar , adParamInput , 320 , objs.Email )
 		End With
   		
   		set records = objCommand.Execute
@@ -317,6 +355,7 @@ class AdminHelper
 			obj.Indate  = record("Indate")
 			obj.DelFg   = record("DelFg")
 			obj.Email   = record("Email")
+			obj.Level   = record("Level")
 			set PopulateObjectFromRecord = obj
 		end if
 	end function

@@ -35,10 +35,10 @@
 											<div class="form-group col-lg-12 col-md-12">
 												<label class="col-lg-2 col-md-2 control-label" for="">구분</label>
 												<div class="col-lg-3 col-md-3">
-													<select class="form-control" name="Location">
+													<select class="form-control" name="Location" <%=iif(AdminModel.Level="0","","disabled")%>>
                                                     	<option value="">선택</option>
-                                                    	<option value="1" <%=iif(Request("Location")="1","selected","")%>>판교</option>
-                                                    	<option value="2" <%=iif(Request("Location")="2","selected","")%>>송도</option>
+                                                    	<option value="1" <%=iif(ParamData("Location")="1","selected","")%>>판교</option>
+                                                    	<option value="2" <%=iif(ParamData("Location")="2","selected","")%>>송도</option>
                                                     </select>
 												</div>
 			
@@ -78,7 +78,7 @@
 
 												<%if IsNothing(Model) then %>
 													<tr>
-														<td colspan="3">등록된 내용이 없습니다.</td>
+														<td colspan="4">등록된 내용이 없습니다.</td>
 													</tr>
 												<%else
 													Dim obj,anchor

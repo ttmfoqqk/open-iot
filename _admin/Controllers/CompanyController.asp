@@ -47,6 +47,8 @@ class CompanyController
 		ParamData.Add "eDate" , iif(Request("eDate")="","",Request("eDate"))
 		ParamData.Add "Id"    , iif(Request("Id")="","",Request("Id"))
 		ParamData.Add "Name"  , iif(Request("Name")="","",Request("Name"))
+		ParamData.Add "Email"  , iif(Request("Email")="","",Request("Email"))
+		ParamData.Add "Level"  , iif(Request("Level")="","",Request("Level"))
 		ParamData.Add "pageNo", iif(Request("pageNo")="",1,Request("pageNo"))
 		ParamData.Add "url"   , "&sDate=" & ParamData("sDate") & "&eDate=" & ParamData("eDate") & "&Id=" & ParamData("Id") & "&Name=" & ParamData("Name")
 		
@@ -68,6 +70,8 @@ class CompanyController
 		objs.Edate = ParamData("eDate")
 		objs.Id    = ParamData("Id")
 		objs.Name  = ParamData("Name")
+		objs.Email = ParamData("Email")
+		objs.Level = ParamData("Level")
 		
 		Dim AdminHelper : set AdminHelper = new AdminHelper
 		set Model = AdminHelper.SelectAll(objs,ParamData("pageNo"),rows)
@@ -116,6 +120,7 @@ class CompanyController
 		Dim Pwd : Pwd = Trim(Request.Form("Pwd"))
 		Dim Name : Name = Trim(Request.Form("Name"))
 		Dim Email : Email = Trim(Request.Form("Email"))
+		Dim Level : Level = Trim(Request.Form("Level"))
 		
 		Dim AdminHelper : set AdminHelper = new AdminHelper
 		Dim obj : set obj = new Admin
@@ -134,6 +139,9 @@ class CompanyController
 			if Email = "" then 
 				call alerts ("이메일을 입력해주세요.","")
 			end if
+			if Level = "" then 
+				call alerts ("권한을 입력해주세요.","")
+			end if
 
 			Set Model = AdminHelper.SelectByField("Id", Id)
 			
@@ -145,6 +153,7 @@ class CompanyController
 			obj.Pwd = Pwd
 			obj.Name = Name
 			obj.Email = Email
+			obj.Level = Level
 			
 			result = AdminHelper.Insert(obj)
 			call alerts ("등록되었습니다.","?controller=Company&action=Member&mode=List")
@@ -161,6 +170,7 @@ class CompanyController
 			obj.Pwd = Pwd
 			obj.Name = Name
 			obj.Email = Email
+			obj.Level = Level
 			
 			AdminHelper.Update(obj)
 			call alerts ("수정되었습니다.","?controller=Company&action=Member&mode=List" & Params )

@@ -42,6 +42,15 @@ class ReservationController
 	End Sub
 	
 	private Sub List()
+		Dim AdminHelper : set AdminHelper = new AdminHelper
+		Dim AdminModel  : set AdminModel = AdminHelper.SelectByField("No",session("adminNo"))
+		
+		if AdminModel.Level = "1" then 
+			ParamData("Location") = 1
+		elseif AdminModel.Level = "2" then
+			ParamData("Location") = 2
+		end if
+	
 		Dim rows    : rows    = 10
 		Dim pageUrl : pageUrl = "?controller=Reservation&action=Index&mode=List" & ParamData("url")
 		
@@ -79,6 +88,15 @@ class ReservationController
 	private Sub Excel()
 		Session.Timeout = 600
 		Server.ScriptTimeOut = 60*60*60 '초
+		
+		Dim AdminHelper : set AdminHelper = new AdminHelper
+		Dim AdminModel  : set AdminModel = AdminHelper.SelectByField("No",session("adminNo"))
+		
+		if AdminModel.Level = "1" then 
+			ParamData("Location") = 1
+		elseif AdminModel.Level = "2" then
+			ParamData("Location") = 2
+		end if
 		
 		Dim objs : set objs = new Reservation
 		objs.Sdate      = ParamData("sDate")
@@ -154,6 +172,10 @@ class ReservationController
 	End Sub
 	
 	private Sub Registe()
+		Dim AdminHelper : set AdminHelper = new AdminHelper
+		Dim AdminModel  : set AdminModel = AdminHelper.SelectByField("No",session("adminNo"))
+
+	
 		Dim No : No = iif(Request("No")="",0,Request("No"))
 		
 		Dim ReservationHelper : set ReservationHelper = new ReservationHelper
@@ -285,6 +307,15 @@ class ReservationController
 	
 	
 	private Sub MenuList()
+		Dim AdminHelper : set AdminHelper = new AdminHelper
+		Dim AdminModel  : set AdminModel = AdminHelper.SelectByField("No",session("adminNo"))
+		
+		if AdminModel.Level = "1" then 
+			ParamData("Location") = 1
+		elseif AdminModel.Level = "2" then
+			ParamData("Location") = 2
+		end if
+	
 		Dim rows    : rows    = 10
 		Dim pageUrl : pageUrl = "?controller=Reservation&action=Menu&mode=List" & ParamData("url")
 		
@@ -316,6 +347,15 @@ class ReservationController
 	private Sub MenuExcel()
 		Session.Timeout = 600
 		Server.ScriptTimeOut = 60*60*60 '초
+		
+		Dim AdminHelper : set AdminHelper = new AdminHelper
+		Dim AdminModel  : set AdminModel = AdminHelper.SelectByField("No",session("adminNo"))
+		
+		if AdminModel.Level = "1" then 
+			ParamData("Location") = 1
+		elseif AdminModel.Level = "2" then
+			ParamData("Location") = 2
+		end if
 		
 		Dim objs : set objs = new ReservationMenu
 		objs.Name = ParamData("Name")
@@ -394,6 +434,9 @@ class ReservationController
 	End Sub
 	
 	private Sub MenuRegiste()
+		Dim AdminHelper : set AdminHelper = new AdminHelper
+		Dim AdminModel  : set AdminModel = AdminHelper.SelectByField("No",session("adminNo"))
+		
 		Dim ReservationMenuHelper : set ReservationMenuHelper = new ReservationMenuHelper
 		set Model = ReservationMenuHelper.SelectByField("No",ParamData("No"))
 		

@@ -60,6 +60,23 @@
 												<div class="col-lg-3 col-md-3">
 													<input type="text" class="form-control" id="Name" name="Name" placeholder="이름" value="<%=Request("Name")%>">
 												</div>
+											</div>
+											
+											<div class="form-group col-lg-12 col-md-12">
+												<label class="col-lg-2 col-md-2 control-label" for="">이메일</label>
+												<div class="col-lg-3 col-md-3">
+													<input type="text" class="form-control" id="Email" name="Email" placeholder="이메일" value="<%=Request("Email")%>">
+												</div>
+			
+												<label class="col-lg-2 col-md-2 control-label" for="">권한</label>
+												<div class="col-lg-3 col-md-3">
+													<select class="form-control" name="Level">
+                                                    	<option value="">선택</option>
+                                                    	<option value="0" <%=iif(Request("Level")="0","selected","")%>>전체 관리</option>
+                                                    	<option value="1" <%=iif(Request("Level")="1","selected","")%>>판교 관리</option>
+                                                    	<option value="2" <%=iif(Request("Level")="2","selected","")%>>송도 관리</option>
+                                                    </select>
+												</div>
 												
 												<div class="col-lg-2 col-md-2">
 													<button type="submit" class="btn btn-primary btn-alt mr5 mb10">검 색</button>
@@ -85,6 +102,7 @@
 														<th>아이디</th>
 														<th>이름</th>
 														<th>이메일</th>
+														<th>권한</th>
 														<th class="per15">등록일자</th>
 													</tr>
 												</thead>
@@ -92,13 +110,23 @@
 
 												<%if IsNothing(Model) then %>
 													<tr>
-														<td colspan="5">등록된 내용이 없습니다.</td>
+														<td colspan="6">등록된 내용이 없습니다.</td>
 													</tr>
 												<%else
 													Dim obj,anchor
 													For each obj in Model.Items
 													
 													anchor = ViewData("ActionRegiste") & "&No=" & obj.No
+													
+													if obj.Level = "0" then
+														Level = "전체"
+													elseif obj.Level = "1" then 
+														Level = "판교"
+													elseif obj.Level = "2" then
+														Level = "송도"
+													else
+														Level = " "
+													end if
 												%>
 													<tr>
 														<td>
@@ -110,6 +138,7 @@
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.Id%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.Name%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.Email%></a></td>
+														<td><a href="<%=anchor%>" class="text-normal"><%=Level%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.Indate%></a></td>
 													</tr>
 												<%

@@ -37,8 +37,14 @@
                                                 <div class="col-lg-10 col-md-9">
                                                     <select class="form-control input-xlarge" id="Location" name="Location">
                                                     	<option value="">선택</option>
+                                                    	<%if AdminModel.Level = "1" then %>
+                                                    	<option value="1" <%=iif(Model.Location="1","selected","")%>>판교</option>
+                                                    	<%elseif AdminModel.Level = "2" then %>
+                                                    	<option value="2" <%=iif(Model.Location="2","selected","")%>>송도</option>
+                                                    	<%else%>
                                                     	<option value="1" <%=iif(Model.Location="1","selected","")%>>판교</option>
                                                     	<option value="2" <%=iif(Model.Location="2","selected","")%>>송도</option>
+                                                    	<%end if%>
                                                     </select>
                                                 </div>
                                             </div>

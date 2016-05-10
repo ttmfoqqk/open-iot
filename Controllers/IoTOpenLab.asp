@@ -175,6 +175,13 @@ class IoTOpenLabController
 		Dim UserModel  : set UserModel  = UserHelper.SelectByField("No",session("userNo"))
 		
 		Dim Admin : set Admin = new Admin
+		Admin.Level = "0"
+		if Location = "1" then
+			Admin.Level = Admin.Level & ",1"
+		elseif Location = "2" then
+			Admin.Level = Admin.Level & ",2"
+		end if
+		
 		Dim AdminHelper : set AdminHelper = new AdminHelper
 		Dim AdminModel  : set AdminModel  = AdminHelper.SelectAll(Admin,1,1000)
 		
