@@ -29,6 +29,17 @@
 							Location = "판교"
 						elseif obj.Location = "2" then
 							Location = "송도" 
+						elseif obj.Location = "3" then
+							Location = "TTA IoT 시험소" 
+						end if
+						
+						
+						if obj.State = "0" then
+							State = "지원완료"
+						elseif obj.State = "1" then
+							State = "<span style=""color:red"">예약</span>" 
+						elseif obj.State = "2" then
+							State = "확정" 
 						end if
 						
 					%>
@@ -37,9 +48,10 @@
 							<td style="border-right: 1px solid #f0f2f4;"><%=obj.FacilitiesName%></td>
 							<td style="border-right: 1px solid #f0f2f4;">
 								<%=obj.UseDate%>
-								<%=iif(obj.State=0,"&nbsp;&nbsp;&nbsp;" & left( obj.Stime,5 ) &"~"& left( obj.Etime,5 ) ,"")%>
+								<%=iif(obj.UseEndDate="" or IsNothing(obj.UseEndDate) ,""," ~ " & obj.UseEndDate)%>
+								<%'=iif(obj.State=0,"&nbsp;&nbsp;&nbsp;" & left( obj.Stime,5 ) &"~"& left( obj.Etime,5 ) ,"")%>
 							</td>
-							<td><%=iif(obj.State=0,"완료","<span style=""color:red"">신청</span>")%></td>
+							<td><%=State%></td>
 						</tr>
 					<%
 						Next

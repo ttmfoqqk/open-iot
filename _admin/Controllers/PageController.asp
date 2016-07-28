@@ -67,6 +67,23 @@ class PageController
 		%> <!--#include file="../Views/Page/Registe.asp" --> <%
 	End Sub
 	
+	public Sub Facility3()
+		Dim PageHelper : set PageHelper = new PageHelper
+		set Model = PageHelper.SelectByField("Name", "Facility3")
+		
+		if IsNothing(Model) Then
+			call alerts ("잘못된 경로 입니다.","")
+		end if
+		
+		'파일
+		Dim FilesHelper : set FilesHelper = new PageFilesHelper
+		Dim FilesModel  : set FilesModel = FilesHelper.SelectByField("ParentName","Facility3")
+		
+		ViewData.add "PageName","Facility - TTA IoT 시험소"
+		ViewData.add "ActionForm","?controller=Page&action=RegistePost&partial=True"
+		%> <!--#include file="../Views/Page/Registe.asp" --> <%
+	End Sub
+	
 	public Sub DeviceDeveloper()
 		Dim PageHelper : set PageHelper = new PageHelper
 		set Model = PageHelper.SelectByField("Name", "DeviceDeveloper")

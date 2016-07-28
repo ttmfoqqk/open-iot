@@ -28,6 +28,7 @@
                                         <li><a href="?controller=Page&action=AboutOpenLab" data-menu="Page-AboutOpenLab"><span class="txt">About OpenLab</span></a></li>
                                         <li><a href="?controller=Page&action=Facility1" data-menu="Page-Facility1"><span class="txt">Facility - 판교</span></a></li>
                                         <li><a href="?controller=Page&action=Facility2" data-menu="Page-Facility2"><span class="txt">Facility - 송도</span></a></li>
+                                        <li><a href="?controller=Page&action=Facility3" data-menu="Page-Facility3"><span class="txt">Facility - TTA IoT</span></a></li>
                                         <li><a href="?controller=Page&action=DeviceDeveloper" data-menu="Page-DeviceDeveloper"><span class="txt">Device Developer</span></a></li>
                                         <li><a href="?controller=Page&action=AppDeveloper" data-menu="Page-AppDeveloper"><span class="txt">App Developer</span></a></li>
                                         <li><a href="?controller=Page&action=AboutOID" data-menu="Page-AboutOID"><span class="txt">About OID</span></a></li>

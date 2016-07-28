@@ -12,11 +12,13 @@ class Reservation
 	private mHphone2
 	private mHphone3
 	private mUseDate
+	private mUseEndDate
 	private mPurpose
 	private mState
 	private mInDate
 	private mStime
 	private mEtime
+	private mBigo
 	
 	private mSdate
 	private mEdate
@@ -38,6 +40,7 @@ class Reservation
 		mEdate = ""
 		mSRdate = ""
 		mERdate = ""
+		mBigo   = ""
 	end sub
 
 	private sub Class_Terminate()
@@ -127,6 +130,13 @@ class Reservation
 		mUseDate = val
 	end property
 	
+	public property get UseEndDate()
+		UseEndDate = mUseEndDate
+	end property
+	public property let UseEndDate(val)
+		mUseEndDate = val
+	end property
+	
 	public property get Purpose()
 		Purpose = mPurpose
 	end property
@@ -190,6 +200,15 @@ class Reservation
 		mEtime = val
 	end property
 	
+	public property get Bigo()
+		Bigo = mBigo
+	end property
+	public property let Bigo(val)
+		mBigo = val
+	end property
+	
+	
+	
 	public property get FacilitiesName()
 		FacilitiesName = mFacilitiesName
 	end property
@@ -215,8 +234,8 @@ class ReservationHelper
 	
 	public function Insert(ByRef obj)
 		Dim strSQL , execResult
-		strSQL= " Insert into [Reservation] (UserNo,Location,Facilities,Hphone1,Hphone2,Hphone3,UseDate,Purpose,State,InDate)" & _
-		" Values (?,?,?,?,?,?,?,?,1,GETDATE()); " & _
+		strSQL= " Insert into [Reservation] (UserNo,Location,Facilities,Hphone1,Hphone2,Hphone3,UseDate,Purpose,State,Bigo,UseEndDate,InDate)" & _
+		" Values (?,?,?,?,?,?,?,?,1,?,?,GETDATE()); " & _
 		" SELECT SCOPE_IDENTITY()  "
 		set objCommand=Server.CreateObject("ADODB.command")
 		objCommand.ActiveConnection = DbOpenConnection()
@@ -224,7 +243,7 @@ class ReservationHelper
 		objCommand.CommandText = strSQL
 		objCommand.CommandType = adCmdText
 
-		if DbAddParameters(objCommand, Array(obj.UserNo, obj.Location, obj.Facilities, obj.Hphone1, obj.Hphone2, obj.Hphone3, obj.UseDate, obj.Purpose)) then
+		if DbAddParameters(objCommand, Array(obj.UserNo, obj.Location, obj.Facilities, obj.Hphone1, obj.Hphone2, obj.Hphone3, obj.UseDate, obj.Purpose, obj.Bigo,obj.UseEndDate)) then
 			Set execResult = objCommand.Execute
 			Set execResult = execResult.NextRecordSet()
 		End If
@@ -235,14 +254,14 @@ class ReservationHelper
 	
 	public function Update(obj)
 		Dim strSQL
-		strSQL= "Update [Reservation] set [Location]=?,[Facilities]=?,[Hphone1]=?,[Hphone2]=?,[Hphone3]=?,[UseDate]=?,[Purpose]=?,[State]=?,[Stime]=?,[Etime]=? Where [No]=?; "
+		strSQL= "Update [Reservation] set [Location]=?,[Facilities]=?,[Hphone1]=?,[Hphone2]=?,[Hphone3]=?,[UseDate]=?,[UseEndDate]=?,[Purpose]=?,[State]=?,[Stime]=?,[Etime]=?,[Bigo]=? Where [No]=?; "
 		set objCommand=Server.CreateObject("ADODB.command")
 		objCommand.ActiveConnection=DbOpenConnection()
 		objCommand.NamedParameters = False
 		objCommand.CommandText = strSQL
 		objCommand.CommandType = adCmdText
 
-		if DbAddParameters(objCommand, Array(obj.Location, obj.Facilities, obj.Hphone1, obj.Hphone2, obj.Hphone3, obj.UseDate, obj.Purpose, obj.State,obj.Stime,obj.Etime, obj.No)) then
+		if DbAddParameters(objCommand, Array(obj.Location, obj.Facilities, obj.Hphone1, obj.Hphone2, obj.Hphone3, obj.UseDate, obj.UseEndDate, obj.Purpose, obj.State,obj.Stime,obj.Etime, obj.Bigo, obj.No)) then
 			objCommand.Execute
 			Update = true
 		Else
@@ -273,7 +292,7 @@ class ReservationHelper
 			whereSql = whereSql & " and A.Facilities = @Facilities "
 		end if
 		if objs.State <> "" then
-			whereSql = whereSql & " and A.State = @State "
+			whereSql = whereSql & " and A.State in(SELECT T_INT FROM @T) "
 		end if
 		if objs.Sdate <> "" then
 			whereSql = whereSql & " and CONVERT(VARCHAR,A.[InDate],23) >= @Sdate "
@@ -285,7 +304,7 @@ class ReservationHelper
 			whereSql = whereSql & " and CONVERT(VARCHAR,A.[UseDate],23) >= @SRdate "
 		end if
 		if objs.ERdate <> "" then
-			whereSql = whereSql & " and CONVERT(VARCHAR,A.[UseDate],23) <= @SRdate "
+			whereSql = whereSql & " and CONVERT(VARCHAR,A.[UseDate],23) <= @ERdate "
 		end if
 
 		selectSQL = "" &_
@@ -306,6 +325,20 @@ class ReservationHelper
 		" SET @Edate = ?; " &_
 		" SET @SRdate = ?; " &_
 		" SET @ERdate = ?; " &_
+		
+		" DECLARE @S VARCHAR (MAX); " &_
+		" DECLARE @T TABLE(T_INT INT); " &_
+		" SET @S = @State; " &_
+		
+		" WHILE CHARINDEX(',',@S)<>0 " &_
+		"	BEGIN " &_
+		"	INSERT INTO @T(T_INT) VALUES( SUBSTRING(@S,1,CHARINDEX(',',@S)-1) ) " &_
+		"	SET @S=SUBSTRING(@S,CHARINDEX(',',@S)+1,LEN(@S))  " &_
+		" END " &_
+		" IF CHARINDEX(',',@S)=0 " &_
+		"	BEGIN " &_
+		"	INSERT INTO @T(T_INT) VALUES( SUBSTRING(@S,1,LEN(@S)) ) " &_
+		" END ;" &_
 		
 		" WITH LIST AS ( " &_
 				" SELECT " &_
@@ -402,7 +435,7 @@ class ReservationHelper
 			"  count(*) as [tcount] " &_
 			" ,[UseDate] " &_
 		" FROM [Reservation] " &_
-		" WHERE [State] = 0 and [Location] = ? " &_
+		" WHERE ([State] = 0 or [State] = 2) and [Location] = ? " &_
 		" group by [UseDate] "
 		
 		set objCommand=Server.CreateObject("ADODB.command")
@@ -491,11 +524,13 @@ class ReservationHelper
 			obj.Hphone2    = record("Hphone2")
 			obj.Hphone3    = record("Hphone3")
 			obj.UseDate    = record("UseDate")
+			obj.UseEndDate = record("UseEndDate")
 			obj.Purpose    = record("Purpose")
 			obj.State      = record("State")
 			obj.InDate     = record("InDate")
 			obj.Stime      = record("Stime")
 			obj.Etime      = record("Etime")
+			obj.Bigo       = record("Bigo")
 			obj.FacilitiesName = record("FacilitiesName")
 			
 			set PopulateObjectFromRecord = obj

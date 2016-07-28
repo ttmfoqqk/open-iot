@@ -75,6 +75,7 @@
                                                     	<option value="">선택</option>
                                                     	<option value="1" <%=iif(ParamData("Location")="1","selected","")%>>판교</option>
                                                     	<option value="2" <%=iif(ParamData("Location")="2","selected","")%>>송도</option>
+                                                    	<option value="3" <%=iif(ParamData("Location")="3","selected","")%>>TTA IoT 시험소</option>
                                                     </select>
 												</div>
 			
@@ -91,8 +92,9 @@
 												<div class="col-lg-3 col-md-3">
 													<select class="form-control" name="State">
                                                     	<option value="">선택</option>
-                                                    	<option value="1" <%=iif(Request("State")="1","selected","")%>>신청</option>
-                                                    	<option value="0" <%=iif(Request("State")="0","selected","")%>>완료</option>
+                                                    	<option value="1" <%=iif(Request("State")="1","selected","")%>>예약</option>
+                                                    	<option value="2" <%=iif(Request("State")="2","selected","")%>>확정</option>
+                                                    	<option value="0" <%=iif(Request("State")="0","selected","")%>>지원완료</option>
                                                     </select>
 												</div>
 			
@@ -159,6 +161,16 @@
 														Location = "판교"
 													elseif obj.Location = "2" then
 														Location = "송도" 
+													elseif obj.Location = "3" then
+														Location = "TTA IoT 시험소" 
+													end if
+													
+													if obj.State = "0" then
+														State = "지원완료"
+													elseif obj.State = "1" then
+														State = "<p class=""text-danger"">예약</p>" 
+													elseif obj.State = "2" then
+														State = "확정" 
 													end if
 													
 												%>
@@ -174,8 +186,11 @@
 														<td><a href="<%=anchor%>" class="text-normal"><%=Location%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.FacilitiesName%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=phone%></a></td>
-														<td><a href="<%=anchor%>" class="text-normal"><%=obj.UseDate%></a></td>
-														<td><a href="<%=anchor%>" class="text-normal"><%=iif(obj.State=0,"완료","<p class=""text-danger"">신청</p>")%></a></td>
+														<td><a href="<%=anchor%>" class="text-normal">
+															<%=obj.UseDate%> 
+															<%=iif(obj.UseEndDate="" or IsNothing(obj.UseEndDate) ,""," ~ " & obj.UseEndDate)%>
+														</a></td>
+														<td><a href="<%=anchor%>" class="text-normal"><%=State%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.InDate%></a></td>
 													</tr>
 												<%

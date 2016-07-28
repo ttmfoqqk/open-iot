@@ -17,6 +17,8 @@
 							<input type="radio" name="Location" id="Location1" value="1" checked><label for="Location1">판교</label> 
 							
 							<input type="radio" name="Location" id="Location2" value="2"><label for="Location2">송도</label> 
+							
+							<input type="radio" name="Location" id="Location3" value="3"><label for="Location3">TTA IoT 시험소</label>
 						</td>
 					</tr>
 					<tr>
@@ -46,7 +48,8 @@
 					<tr>
 						<td class="title">사용 희망일</td>
 						<td>
-							<div class="input_wrap"><input type="text" class="datepicker" id="UseDate" name="UseDate" readonly></div>
+							<input type="text" class="datepicker" id="UseDate" name="UseDate" readonly style="width:170px;min-width:170px;"> ~
+							<input type="text" class="datepicker" id="UseEndDate" name="UseEndDate" readonly style="width:170px;min-width:170px;">
 						</td>
 					</tr>
 					<tr>
@@ -85,6 +88,9 @@ function reg_fm(){
 		alert('핸드폰을 입력해주세요');return false;
 	}
 	if( !$.trim( $('#UseDate').val() ) ){
+		alert('사용 희망일을 입력해주세요');return false;
+	}
+	if( !$.trim( $('#UseEndDate').val() ) ){
 		alert('사용 희망일을 입력해주세요');return false;
 	}
 	$('#mForm').submit();

@@ -49,6 +49,8 @@ class ReservationController
 			ParamData("Location") = 1
 		elseif AdminModel.Level = "2" then
 			ParamData("Location") = 2
+		elseif AdminModel.Level = "3" then
+			ParamData("Location") = 3
 		end if
 	
 		Dim rows    : rows    = 10
@@ -96,6 +98,8 @@ class ReservationController
 			ParamData("Location") = 1
 		elseif AdminModel.Level = "2" then
 			ParamData("Location") = 2
+		elseif AdminModel.Level = "3" then
+			ParamData("Location") = 3
 		end if
 		
 		Dim objs : set objs = new Reservation
@@ -144,6 +148,16 @@ class ReservationController
 					Location = "판교"
 				elseif obj.Location = "2" then
 					Location = "송도" 
+				elseif obj.Location = "3" then
+					Location = "TTA IoT 시험소" 
+				end if
+				
+				if obj.State = "0" then
+					State = "지원완료"
+				elseif obj.State = "1" then
+					State = "<p class=""text-danger"">예약</p>" 
+				elseif obj.State = "2" then
+					State = "확정" 
 				end if
 			
 				tmp_html = tmp_html & "" &_
@@ -153,8 +167,8 @@ class ReservationController
 				"		<Cell><Data ss:Type=""String"">" & Location & "</Data></Cell>"&_
 				"		<Cell><Data ss:Type=""String"">" & obj.FacilitiesName & "</Data></Cell>"&_
 				"		<Cell><Data ss:Type=""String"">" & phone & "</Data></Cell>"&_
-				"		<Cell><Data ss:Type=""String"">" & obj.UseDate & "</Data></Cell>"&_
-				"		<Cell><Data ss:Type=""String"">" & iif(obj.State=0,"완료","신청") & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.UseDate & iif(obj.UseEndDate="" or IsNothing(obj.UseEndDate) ,""," ~ " & obj.UseEndDate) & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & State & "</Data></Cell>"&_
 				"		<Cell><Data ss:Type=""String"">" & obj.InDate & "</Data></Cell>"&_
 				"	</Row> "
 			next
@@ -223,8 +237,10 @@ class ReservationController
 		Dim Hphone2    : Hphone2    = Trim(Request.Form("Hphone2"))
 		Dim Hphone3    : Hphone3    = Trim(Request.Form("Hphone3"))
 		Dim UseDate    : UseDate    = Trim(Request.Form("UseDate"))
+		Dim UseEndDate : UseEndDate = Trim(Request.Form("UseEndDate"))
 		Dim Purpose    : Purpose    = Trim(Request.Form("Purpose"))
 		Dim State      : State      = Trim(Request.Form("State"))
+		Dim Bigo       : Bigo       = Trim(Request.Form("Bigo"))
 		
 		Dim Stime1      : Stime1    = iif(Request.Form("Stime1")="","00",Request.Form("Stime1"))
 		Dim Stime2      : Stime2    = iif(Request.Form("Stime2")="","00",Request.Form("Stime2"))
@@ -252,6 +268,10 @@ class ReservationController
 				call alerts ("사용 희망일을 입력해주세요.","")
 			end if
 			
+			if UseEndDate = "" then
+				call alerts ("사용 희망일을 입력해주세요.","")
+			end if
+			
 			if State = "" then
 				call alerts ("상태를 선택해주세요.","")
 			end if
@@ -263,10 +283,12 @@ class ReservationController
 			obj.Hphone2 = Hphone2
 			obj.Hphone3 = Hphone3
 			obj.UseDate = UseDate
+			obj.UseEndDate = UseEndDate
 			obj.Purpose = Purpose
 			obj.State = State
 			obj.Stime = Stime1 &":"& Stime2
 			obj.Etime = Etime1 &":"& Etime2
+			obj.Bigo  = Bigo
 			
 			ReservationHelper.Update(obj)
 			call alerts ("수정되었습니다.","?controller=Reservation&action=Index&mode=List" & Params )
@@ -314,6 +336,8 @@ class ReservationController
 			ParamData("Location") = 1
 		elseif AdminModel.Level = "2" then
 			ParamData("Location") = 2
+		elseif AdminModel.Level = "3" then
+			ParamData("Location") = 3
 		end if
 	
 		Dim rows    : rows    = 10
@@ -355,6 +379,8 @@ class ReservationController
 			ParamData("Location") = 1
 		elseif AdminModel.Level = "2" then
 			ParamData("Location") = 2
+		elseif AdminModel.Level = "3" then
+			ParamData("Location") = 3
 		end if
 		
 		Dim objs : set objs = new ReservationMenu
@@ -385,6 +411,8 @@ class ReservationController
 					Location = "판교"
 				elseif obj.Location = "2" then
 					Location = "송도" 
+				elseif obj.Location = "3" then
+					Location = "TTA IoT 시험소" 
 				end if
 			
 				tmp_html = tmp_html & "" &_

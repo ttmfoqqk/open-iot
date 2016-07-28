@@ -39,6 +39,7 @@
                                                     	<option value="">선택</option>
                                                     	<option value="1" <%=iif(ParamData("Location")="1","selected","")%>>판교</option>
                                                     	<option value="2" <%=iif(ParamData("Location")="2","selected","")%>>송도</option>
+                                                    	<option value="3" <%=iif(ParamData("Location")="3","selected","")%>>TTA IoT 시험소</option>
                                                     </select>
 												</div>
 			
@@ -90,6 +91,8 @@
 														Location = "판교"
 													elseif obj.Location = "2" then
 														Location = "송도" 
+													elseif obj.Location = "3" then
+														Location = "TTA IoT 시험소" 
 													end if
 												%>
 													<tr>

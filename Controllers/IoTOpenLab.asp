@@ -30,11 +30,13 @@ class IoTOpenLabController
 		Dim PageHelper : set PageHelper = new PageHelper
 		set Model = PageHelper.SelectByField("Name", "Facility")
 		Dim Model2 : set Model2 = PageHelper.SelectByField("Name", "Facility2")
+		Dim Model3 : set Model3 = PageHelper.SelectByField("Name", "Facility3")
 		
 		'파일
 		Dim FilesHelper  : set FilesHelper = new PageFilesHelper
 		Dim FilesModel1  : set FilesModel1 = FilesHelper.SelectByField("ParentName","Facility")
 		Dim FilesModel2  : set FilesModel2 = FilesHelper.SelectByField("ParentName","Facility2")
+		Dim FilesModel3  : set FilesModel3 = FilesHelper.SelectByField("ParentName","Facility3")
 		
 		
 		%> <!--#include file="../Views/IoTOpenLab/Facility.asp" --> <%
@@ -100,7 +102,7 @@ class IoTOpenLabController
 		Reservation.Location = Location
 		Reservation.SRdate = InDate
 		Reservation.ERdate = InDate
-		Reservation.State = 0
+		Reservation.State = "0,2"
 		
 		set Model = ReservationHelper.SelectAll(Reservation,1,1000)
 
@@ -134,6 +136,7 @@ class IoTOpenLabController
 		Dim Hphone2    : Hphone2    = Trim(Request.Form("Hphone2"))
 		Dim Hphone3    : Hphone3    = Trim(Request.Form("Hphone3"))
 		Dim UseDate    : UseDate    = Trim(Request.Form("UseDate"))
+		Dim UseEndDate : UseEndDate = Trim(Request.Form("UseEndDate"))
 		Dim Purpose    : Purpose    = Trim(Request.Form("Purpose"))
 		
 		Dim ReservationHelper : set ReservationHelper = new ReservationHelper
@@ -155,6 +158,10 @@ class IoTOpenLabController
 			call alerts ("사용 희망일을 입력해주세요.","")
 		end if
 		
+		if UseEndDate = "" then
+			call alerts ("사용 희망일을 입력해주세요.","")
+		end if
+		
 		obj.UserNo = session("userNo")
 		obj.Location = Location
 		obj.Facilities = Facilities
@@ -162,6 +169,7 @@ class IoTOpenLabController
 		obj.Hphone2 = Hphone2
 		obj.Hphone3 = Hphone3
 		obj.UseDate = UseDate
+		obj.UseEndDate = UseEndDate
 		obj.Purpose = Purpose
 		
 		ReservationHelper.Insert(obj)
@@ -178,8 +186,13 @@ class IoTOpenLabController
 		Admin.Level = "0"
 		if Location = "1" then
 			Admin.Level = Admin.Level & ",1"
+			LocationTxt = "판교"
 		elseif Location = "2" then
 			Admin.Level = Admin.Level & ",2"
+			LocationTxt = "송도"
+		elseif Location = "3" then
+			Admin.Level = Admin.Level & ",3"
+			LocationTxt = "TTA IoT 시험소"
 		end if
 		
 		Dim AdminHelper : set AdminHelper = new AdminHelper
@@ -190,11 +203,11 @@ class IoTOpenLabController
 		dim strBody : strBody = ReadFile(strFile)
 		dim strFrom : strFrom = "OPEN-IOT<no-reply@open-iot.net>"
 		
-		Dim strName : strName = iif( Location="1","판교","송도" ) & " > " & ReservationMenuModel.Name
+		Dim strName : strName = LocationTxt & " > " & ReservationMenuModel.Name
 		
 		strBody = replace(strBody, "#ID#"   , UserModel.Id )
 		strBody = replace(strBody, "#NAME#" , strName )
-		strBody = replace(strBody, "#USEDATE#" , UseDate )
+		strBody = replace(strBody, "#USEDATE#" , UseDate & " ~ " & UseEndDate )
 		strBody = replace(strBody, "#DATE#" , NOW() )
 		strBody = replace(strBody, "#URL#"  , g_host & "/Utils/email/" )
 		

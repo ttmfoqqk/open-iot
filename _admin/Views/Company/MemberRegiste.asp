@@ -69,6 +69,7 @@
                                                     	<option value="0" <%=iif(Model.Level="0","selected","")%>>전체 관리</option>
                                                     	<option value="1" <%=iif(Model.Level="1","selected","")%>>판교 관리</option>
                                                     	<option value="2" <%=iif(Model.Level="2","selected","")%>>송도 관리</option>
+                                                    	<option value="3" <%=iif(Model.Level="3","selected","")%>>TTA IoT 시험소 관리</option>
                                                     </select>
                                                 </div>
                                             </div>

@@ -55,9 +55,12 @@
                                                     	<option value="1" <%=iif(Model.Location="1","selected","")%>>판교</option>
                                                     	<%elseif AdminModel.Level = "2" then %>
                                                     	<option value="2" <%=iif(Model.Location="2","selected","")%>>송도</option>
+                                                    	<%elseif AdminModel.Level = "3" then %>
+                                                    	<option value="3" <%=iif(Model.Location="3","selected","")%>>TTA IoT 시험소</option>
                                                     	<%else%>
                                                     	<option value="1" <%=iif(Model.Location="1","selected","")%>>판교</option>
                                                     	<option value="2" <%=iif(Model.Location="2","selected","")%>>송도</option>
+                                                    	<option value="3" <%=iif(Model.Location="3","selected","")%>>TTA IoT 시험소</option>
                                                     	<%end if%>
                                                     </select>
                                                 </div>
@@ -83,12 +86,14 @@
                                             <div class="form-group">
                                                 <label class="col-lg-2 col-md-3 control-label" for="">사용 희망일</label>
                                                 <div class="col-lg-10 col-md-9">
-                                                    <div class="input-daterange">
-														<input type="text" class="form-control input-xlarge" name="UseDate" id="UseDate" value="<%=Model.UseDate%>" />
+                                                    <div class="input-daterange form-inline">
+														<input type="text" class="form-control " name="UseDate" id="UseDate" value="<%=Model.UseDate%>" />
+														~ 
+														<input type="text" class="form-control " name="UseEndDate" id="UseEndDate" value="<%=Model.UseEndDate%>" />
 													</div>
                                                 </div>
                                             </div>
-                                            <div class="form-group">
+                                            <!--div class="form-group">
                                                 <label class="col-lg-2 col-md-3 control-label" for="">사용 시간</label>
                                                 <div class="col-lg-10 col-md-9 form-inline">
 													<select class="form-control input-small" id="Stime1" name="Stime1">
@@ -117,7 +122,7 @@
                                                     	<%next%>
                                                     </select>
                                                 </div>
-                                            </div>
+                                            </div-->
                                             
                                             <div class="form-group">
                                                 <label class="col-lg-2 col-md-3 control-label" for="">이용목적</label>
@@ -127,12 +132,20 @@
                                             </div>
                                             
                                             <div class="form-group">
+                                                <label class="col-lg-2 col-md-3 control-label" for="">비고</label>
+                                                <div class="col-lg-10 col-md-9">
+                                                    <textarea class="form-control" name="Bigo" id="Bigo" rows="5"><%=Model.Bigo%></textarea>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
                                                 <label class="col-lg-2 col-md-3 control-label" for="">상태</label>
                                                 <div class="col-lg-10 col-md-9">
                                                     <select class="form-control input-xlarge" id="State" name="State">
                                                     	<option value="">선택</option>
-                                                    	<option value="1" <%=iif(Model.State="1","selected","")%>>신청</option>
-                                                    	<option value="0" <%=iif(Model.State="0","selected","")%>>완료</option>
+                                                    	<option value="1" <%=iif(Model.State="1","selected","")%>>예약</option>
+                                                    	<option value="2" <%=iif(Model.State="2","selected","")%>>확정</option>
+                                                    	<option value="0" <%=iif(Model.State="0","selected","")%>>지원완료</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -189,15 +202,20 @@ function reg_fm(){
 	if( !$.trim( $('#UseDate').val() ) ){
 		alert('사용 희망일을 입력해주세요');return false;
 	}
+	if( !$.trim( $('#UseEndDate').val() ) ){
+		alert('사용 희망일을 입력해주세요');return false;
+	}
 	if( !$('#State').val() ){
 		alert('상태를 선택해주세요');return false;
 	}
 	
+	/*
 	if( $('#State').val() == '0' ){
 		if( !$('#Stime1').val() || !$('#Stime2').val() || !$('#Etime1').val() || !$('#Etime2').val() ){
 			alert('사용 시간을 선택해주세요');return false;
 		}
 	}
+	*/
 	
 	$('#mForm').submit();
 }

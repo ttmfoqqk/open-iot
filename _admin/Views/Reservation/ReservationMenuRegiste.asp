@@ -41,9 +41,12 @@
                                                     	<option value="1" <%=iif(Model.Location="1","selected","")%>>판교</option>
                                                     	<%elseif AdminModel.Level = "2" then %>
                                                     	<option value="2" <%=iif(Model.Location="2","selected","")%>>송도</option>
+                                                    	<%elseif AdminModel.Level = "3" then %>
+                                                    	<option value="3" <%=iif(Model.Location="3","selected","")%>>TTA IoT 시험소</option>
                                                     	<%else%>
                                                     	<option value="1" <%=iif(Model.Location="1","selected","")%>>판교</option>
                                                     	<option value="2" <%=iif(Model.Location="2","selected","")%>>송도</option>
+                                                    	<option value="3" <%=iif(Model.Location="3","selected","")%>>TTA IoT 시험소</option>
                                                     	<%end if%>
                                                     </select>
                                                 </div>

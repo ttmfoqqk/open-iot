@@ -102,6 +102,7 @@ function call_pop_calendar(m){
 			'<div class="tab">'+
 				'<button type="button" onclick="call_calendar_data(1)" class="'+(m==1?'active':'')+'">판교</button>'+
 				'<button type="button" onclick="call_calendar_data(2)" class="'+(m==2?'active':'')+'">송도</button>'+
+				'<button type="button" onclick="call_calendar_data(3)" class="'+(m==3?'active':'')+'" style="width:50%;">TTA IoT 시험소</button>'+
 			'</div>'+
 			'<table class="layout">'+
 				'<tr>'+
@@ -168,6 +169,8 @@ function call_calendar_detail(m,date){
 		location = ' <판교>';
 	}else if( m=='2' ){
 		location = ' <송도>';
+	}else if( m=='3' ){
+		location = ' &lt;TTA IoT 시험소&gt;';
 	}
 	
 	detail_base.find('h4.title').html(InDate+location);

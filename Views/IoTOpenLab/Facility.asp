@@ -11,9 +11,8 @@
 				<div class="facility_tab">
 					<a href="1" class="item active">판교</a>
 					<a href="2" class="item">송도</a>
+					<a href="3" class="item">TTA IoT 시험소</a>
 					<a href="javascript:;" class="reservation">예약현황</a>
-					
-					<div id="tab_line" class="line"></div>
 				</div>
 				
 				
@@ -21,6 +20,7 @@
 				<!-- 1. 지도 노드 -->
 				<div id="daumRoughmapContainer1448443470157" class="root_daum_roughmap root_daum_roughmap_landing" style="height:350px;margin-bottom:50px;"></div>
 				<div id="daumRoughmapContainer1453543721047" class="root_daum_roughmap root_daum_roughmap_landing" style="height:350px;margin-bottom:50px;"></div>
+				<div id="daumRoughmapContainer1469667613741" class="root_daum_roughmap root_daum_roughmap_landing" style="height:350px;margin-bottom:50px;"></div>
 				<!--
 					2. 설치 스크립트
 					* 지도 퍼가기 서비스를 2개 이상 넣을 경우, 설치 스크립트는 하나만 삽입합니다.
@@ -39,6 +39,13 @@
 					new daum.roughmap.Lander({
 						"timestamp" : "1453543721047",
 						"key" : "89zk",
+						"mapWidth" : map_w,
+						"mapHeight" : "350"
+					}).render();
+					
+					new daum.roughmap.Lander({
+						"timestamp" : "1469667613741",
+						"key" : "c8gz",
 						"mapWidth" : map_w,
 						"mapHeight" : "350"
 					}).render();
@@ -71,6 +78,23 @@
 						<h2 class="sub_caption"><label></label>File Download</h2>
 						<div class="area_files" style="margin:0px;">
 							<%For each obj in FilesModel2.Items%>
+							<div class="row">
+								<label>File</label><span class="file"><%=obj.Name%></span>
+								<button class="white" type="button" onclick="location.href='/Utils/download.asp?pach=/upload/Page/&file=<%=obj.Name%>';">다운로드</button>
+							</div>
+							<%next%>
+						</div>
+					<%end if%>
+				</div>
+				
+				<div class="Contents" style="display:none;">
+					<%=Model3.Contents%>
+					
+					<%if Not(IsNothing(FilesModel3)) then%>
+						<br><br><br>
+						<h2 class="sub_caption"><label></label>File Download</h2>
+						<div class="area_files" style="margin:0px;">
+							<%For each obj in FilesModel3.Items%>
 							<div class="row">
 								<label>File</label><span class="file"><%=obj.Name%></span>
 								<button class="white" type="button" onclick="location.href='/Utils/download.asp?pach=/upload/Page/&file=<%=obj.Name%>';">다운로드</button>
@@ -141,13 +165,6 @@
 </div>
 
 <script type="text/javascript">
-var item_active = $('.facility_tab a.active');
-$('.facility_tab a.item').mouseover(function(){
-	line_move( $(this) );
-});
-$('.facility_tab a.item').mouseout(function(){
-	line_move( item_active );
-});
 
 $('.facility_tab .item').click(function(e){
 	e.preventDefault();
@@ -174,20 +191,10 @@ $('.facility_tab .reservation').click(function(e){
 	call_pop_calendar(t);
 });
 
-function line_move(t){
-	var t = t;
-	var o = $("#tab_line");
-	if( t.length <= 0 ){
-		TweenMax.to(o, 0.25, {width:0, ease:Sine.easeOut});
-		return false;
-	}
-	o.show();
-	var w = t.width();
-	var p = t.position().left;	
-	TweenMax.to(o, 0.25, {width:w, x:p , ease:Sine.easeOut});
-}
+
 
 $(window).load(function(){
 	$('#daumRoughmapContainer1453543721047').hide();
+	$('#daumRoughmapContainer1469667613741').hide();
 })
 </script>
