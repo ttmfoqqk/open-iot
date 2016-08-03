@@ -248,6 +248,11 @@ class ReservationController
 		Dim Etime2      : Etime2    = iif(Request.Form("Etime2")="","00",Request.Form("Etime2"))
 		
 		Dim ReservationHelper : set ReservationHelper = new ReservationHelper
+		set Model = ReservationHelper.SelectByField("No",No)
+		
+		Dim ReservationMenuHelper : set ReservationMenuHelper = new ReservationMenuHelper
+		Dim ReservationMenuModel  : set ReservationMenuModel  = ReservationMenuHelper.SelectByField("No",Facilities)
+		
 		Dim obj : set obj = new Reservation
 		Dim result
 		
@@ -276,6 +281,37 @@ class ReservationController
 				call alerts ("상태를 선택해주세요.","")
 			end if
 			
+			
+			
+			
+			if Location = "1" then
+				LocationTxt = "판교"
+			elseif Location = "2" then
+				LocationTxt = "송도"
+			elseif Location = "3" then
+				LocationTxt = "TTA IoT 시험소"
+			end if
+			
+			
+			Dim strFile : strFile = server.mapPath("/Utils/email/newReservations2.html")
+			dim strSubject : strSubject = "오픈랩 예약이 확정되었습니다."
+			dim strBody : strBody = ReadFile(strFile)
+			dim strFrom : strFrom = "OPEN-IOT<no-reply@open-iot.net>"
+			
+			Dim strName : strName = LocationTxt & " > " & ReservationMenuModel.Name
+			
+			strBody = replace(strBody, "#ID#"   , Model.UserId )
+			strBody = replace(strBody, "#NAME#" , strName )
+			strBody = replace(strBody, "#USEDATE#" , UseDate & " ~ " & UseEndDate )
+			strBody = replace(strBody, "#DATE#" , NOW() )
+			strBody = replace(strBody, "#URL#"  , g_host & "/Utils/email/" )
+			
+			if Model.State <> 2 and State = 2 then
+				Mresult = MailSend(strSubject, strBody, Model.UserId, strFrom, "")
+			end if
+			
+			
+			
 			obj.No = No
 			obj.Location = Location
 			obj.Facilities = Facilities
@@ -291,6 +327,9 @@ class ReservationController
 			obj.Bigo  = Bigo
 			
 			ReservationHelper.Update(obj)
+			
+			
+			
 			call alerts ("수정되었습니다.","?controller=Reservation&action=Index&mode=List" & Params )
 		elseif ActionType = "DELETE" then
 			ReservationHelper.Delete(No)
