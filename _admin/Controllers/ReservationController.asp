@@ -26,6 +26,7 @@ class ReservationController
 		ParamData.Add "Location"   , iif(Request("Location")="","",Request("Location"))
 		ParamData.Add "Facilities" , iif(Request("Facilities")="","",Request("Facilities"))
 		ParamData.Add "State"      , iif(Request("State")="","",Request("State"))
+		ParamData.Add "Company"    , iif(Request("Company")="","",Request("Company"))
 		
 		ParamData.Add "pageNo"     , iif(Request("pageNo")="",1,Request("pageNo"))
 		ParamData.Add "url"        , "&sDate=" & ParamData("sDate") & "&eDate=" & ParamData("eDate") & "&sRDate=" & ParamData("sRDate") & "&eRDate=" & ParamData("eRDate") &_
@@ -66,6 +67,7 @@ class ReservationController
 		objs.Location   = ParamData("Location")
 		objs.Facilities = ParamData("Facilities")
 		objs.State      = ParamData("State")
+		objs.Company    = ParamData("Company")
 		
 		Dim ReservationHelper : set ReservationHelper = new ReservationHelper
 		set Model = ReservationHelper.SelectAll(objs,ParamData("pageNo"),rows)
@@ -112,6 +114,7 @@ class ReservationController
 		objs.Location   = ParamData("Location")
 		objs.Facilities = ParamData("Facilities")
 		objs.State      = ParamData("State")
+		objs.Company    = ParamData("Company")
 		
 		Dim ReservationHelper : set ReservationHelper = new ReservationHelper
 		set Model = ReservationHelper.SelectAll(objs,1,100000000)
@@ -124,18 +127,24 @@ class ReservationController
 		"	<Column ss:Width='200'/> " &_
 		"	<Column ss:Width='100'/> " &_
 		"	<Column ss:Width='100'/> " &_
+		"	<Column ss:Width='100'/> " &_
 		"	<Column ss:Width='150'/> " &_
 		"	<Column ss:Width='100'/> " &_
-		"	<Column ss:Width='100'/> " &_
+		"	<Column ss:Width='170'/> " &_
+		"	<Column ss:Width='200'/> " &_
+		"	<Column ss:Width='200'/> " &_
 		"	<Column ss:Width='80'/> " &_
 		"	<Column ss:Width='150'/> " &_
 		"	<Row> "&_
 		"		<Cell><Data ss:Type=""String"">아이디</Data></Cell> "&_
 		"		<Cell><Data ss:Type=""String"">이름</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">기업명</Data></Cell> "&_
 		"		<Cell><Data ss:Type=""String"">구분</Data></Cell> "&_
 		"		<Cell><Data ss:Type=""String"">시설</Data></Cell> "&_
 		"		<Cell><Data ss:Type=""String"">핸드폰</Data></Cell> "&_
 		"		<Cell><Data ss:Type=""String"">사용 희망일</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">이용목적</Data></Cell> "&_
+		"		<Cell><Data ss:Type=""String"">비고</Data></Cell> "&_
 		"		<Cell><Data ss:Type=""String"">상태</Data></Cell> "&_
 		"		<Cell><Data ss:Type=""String"">작성일</Data></Cell> "&_
 		"	</Row> "
@@ -164,10 +173,13 @@ class ReservationController
 				"	<Row> "&_
 				"		<Cell><Data ss:Type=""String"">" & obj.UserId & "</Data></Cell>"&_
 				"		<Cell><Data ss:Type=""String"">" & obj.UserName & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Company & "</Data></Cell>"&_
 				"		<Cell><Data ss:Type=""String"">" & Location & "</Data></Cell>"&_
 				"		<Cell><Data ss:Type=""String"">" & obj.FacilitiesName & "</Data></Cell>"&_
 				"		<Cell><Data ss:Type=""String"">" & phone & "</Data></Cell>"&_
-				"		<Cell><Data ss:Type=""String"">" & obj.UseDate & iif(obj.UseEndDate="" or IsNothing(obj.UseEndDate) ,""," ~ " & obj.UseEndDate) & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.UseDate & " ~ " & iif(obj.UseEndDate="" or IsNothing(obj.UseEndDate) ,obj.UseDate,obj.UseEndDate) & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Purpose & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.Bigo & "</Data></Cell>"&_
 				"		<Cell><Data ss:Type=""String"">" & State & "</Data></Cell>"&_
 				"		<Cell><Data ss:Type=""String"">" & obj.InDate & "</Data></Cell>"&_
 				"	</Row> "
@@ -241,6 +253,7 @@ class ReservationController
 		Dim Purpose    : Purpose    = Trim(Request.Form("Purpose"))
 		Dim State      : State      = Trim(Request.Form("State"))
 		Dim Bigo       : Bigo       = Trim(Request.Form("Bigo"))
+		Dim Company    : Company    = Trim(Request.Form("Company"))
 		
 		Dim Stime1      : Stime1    = iif(Request.Form("Stime1")="","00",Request.Form("Stime1"))
 		Dim Stime2      : Stime2    = iif(Request.Form("Stime2")="","00",Request.Form("Stime2"))
@@ -263,6 +276,10 @@ class ReservationController
 			
 			if Facilities = "" then
 				call alerts ("시설명을 선택해주세요.","")
+			end if
+			
+			if Company = "" then
+				call alerts ("기업명을 입력해주세요.","")
 			end if
 			
 			if Hphone1 = "" or Hphone2 = "" or Hphone3 = "" then
@@ -325,6 +342,7 @@ class ReservationController
 			obj.Stime = Stime1 &":"& Stime2
 			obj.Etime = Etime1 &":"& Etime2
 			obj.Bigo  = Bigo
+			obj.Company  = Company
 			
 			ReservationHelper.Update(obj)
 			

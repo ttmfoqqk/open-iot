@@ -45,6 +45,7 @@
                                                     <p class="form-control-static"><%=Model.UserName%></p>
                                                 </div>
                                             </div>
+                                            
                                             <!-- End .form-group  -->
                                             <div class="form-group">
                                                 <label class="col-lg-2 col-md-3  control-label" for="">구분</label>
@@ -72,6 +73,13 @@
                                                     <select class="form-control input-xlarge" id="Facilities" name="Facilities">
                                                     	<option value="">구분을 선택하세요.</option>
                                                     </select>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="form-group">
+                                                <label class="col-lg-2 col-md-3 control-label" for="">기업명</label>
+                                                <div class="col-lg-10 col-md-9">
+                                                    <input type="text" class="form-control input-xlarge" id="Company" name="Company" placeholder="기업명" value="<%=Model.Company%>">
                                                 </div>
                                             </div>
                                             
@@ -195,6 +203,9 @@ function reg_fm(){
 	}
 	if( !$.trim( $('#Facilities').val() ) ){
 		alert('시설명을 선택해주세요');return false;
+	}
+	if( !$.trim( $('#Company').val() ) ){
+		alert('기업명을 선택해주세요');return false;
 	}
 	if( !$.trim( $('#Hphone1').val() ) || !$.trim( $('#Hphone2').val() ) || !$.trim( $('#Hphone3').val() ) ){
 		alert('핸드폰을 입력해주세요');return false;

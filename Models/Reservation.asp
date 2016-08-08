@@ -19,6 +19,7 @@ class Reservation
 	private mStime
 	private mEtime
 	private mBigo
+	private mCompany
 	
 	private mSdate
 	private mEdate
@@ -41,6 +42,7 @@ class Reservation
 		mSRdate = ""
 		mERdate = ""
 		mBigo   = ""
+		mCompany = ""
 	end sub
 
 	private sub Class_Terminate()
@@ -207,6 +209,13 @@ class Reservation
 		mBigo = val
 	end property
 	
+	public property get Company()
+		Company = mCompany
+	end property
+	public property let Company(val)
+		mCompany = val
+	end property
+	
 	
 	
 	public property get FacilitiesName()
@@ -234,8 +243,8 @@ class ReservationHelper
 	
 	public function Insert(ByRef obj)
 		Dim strSQL , execResult
-		strSQL= " Insert into [Reservation] (UserNo,Location,Facilities,Hphone1,Hphone2,Hphone3,UseDate,Purpose,State,Bigo,UseEndDate,InDate)" & _
-		" Values (?,?,?,?,?,?,?,?,1,?,?,GETDATE()); " & _
+		strSQL= " Insert into [Reservation] (UserNo,Location,Facilities,Hphone1,Hphone2,Hphone3,UseDate,Purpose,State,Bigo,UseEndDate,Company,InDate)" & _
+		" Values (?,?,?,?,?,?,?,?,1,?,?,?,GETDATE()); " & _
 		" SELECT SCOPE_IDENTITY()  "
 		set objCommand=Server.CreateObject("ADODB.command")
 		objCommand.ActiveConnection = DbOpenConnection()
@@ -243,7 +252,7 @@ class ReservationHelper
 		objCommand.CommandText = strSQL
 		objCommand.CommandType = adCmdText
 
-		if DbAddParameters(objCommand, Array(obj.UserNo, obj.Location, obj.Facilities, obj.Hphone1, obj.Hphone2, obj.Hphone3, obj.UseDate, obj.Purpose, obj.Bigo,obj.UseEndDate)) then
+		if DbAddParameters(objCommand, Array(obj.UserNo, obj.Location, obj.Facilities, obj.Hphone1, obj.Hphone2, obj.Hphone3, obj.UseDate, obj.Purpose, obj.Bigo,obj.UseEndDate,obj.Company)) then
 			Set execResult = objCommand.Execute
 			Set execResult = execResult.NextRecordSet()
 		End If
@@ -254,14 +263,14 @@ class ReservationHelper
 	
 	public function Update(obj)
 		Dim strSQL
-		strSQL= "Update [Reservation] set [Location]=?,[Facilities]=?,[Hphone1]=?,[Hphone2]=?,[Hphone3]=?,[UseDate]=?,[UseEndDate]=?,[Purpose]=?,[State]=?,[Stime]=?,[Etime]=?,[Bigo]=? Where [No]=?; "
+		strSQL= "Update [Reservation] set [Location]=?,[Facilities]=?,[Hphone1]=?,[Hphone2]=?,[Hphone3]=?,[UseDate]=?,[UseEndDate]=?,[Purpose]=?,[State]=?,[Stime]=?,[Etime]=?,[Bigo]=?,[Company]=? Where [No]=?; "
 		set objCommand=Server.CreateObject("ADODB.command")
 		objCommand.ActiveConnection=DbOpenConnection()
 		objCommand.NamedParameters = False
 		objCommand.CommandText = strSQL
 		objCommand.CommandType = adCmdText
 
-		if DbAddParameters(objCommand, Array(obj.Location, obj.Facilities, obj.Hphone1, obj.Hphone2, obj.Hphone3, obj.UseDate, obj.UseEndDate, obj.Purpose, obj.State,obj.Stime,obj.Etime, obj.Bigo, obj.No)) then
+		if DbAddParameters(objCommand, Array(obj.Location, obj.Facilities, obj.Hphone1, obj.Hphone2, obj.Hphone3, obj.UseDate, obj.UseEndDate, obj.Purpose, obj.State,obj.Stime,obj.Etime, obj.Bigo, obj.Company, obj.No)) then
 			objCommand.Execute
 			Update = true
 		Else
@@ -285,6 +294,11 @@ class ReservationHelper
 		if objs.UserName <> "" then
 			whereSql = whereSql & " and B.Name like '%'+@UserName+'%' "
 		end if
+		
+		if objs.Company <> "" then
+			whereSql = whereSql & " and A.Company like '%'+@Company+'%' "
+		end if
+		
 		if objs.Location <> "" then
 			whereSql = whereSql & " and A.Location = @Location "
 		end if
@@ -313,6 +327,7 @@ class ReservationHelper
 		" DECLARE @UserId VARCHAR(320) ,@UserName VARCHAR(320); " &_
 		" DECLARE @Location VARCHAR(10) ,@Facilities VARCHAR(10),@State VARCHAR(10); " &_
 		" DECLARE @Sdate VARCHAR(10) ,@Edate VARCHAR(10),@SRdate VARCHAR(10) ,@ERdate VARCHAR(10); " &_
+		" DECLARE @Company VARCHAR(200) " &_
 		
 		
 		" SET @UserNo = ?; " &_
@@ -325,6 +340,7 @@ class ReservationHelper
 		" SET @Edate = ?; " &_
 		" SET @SRdate = ?; " &_
 		" SET @ERdate = ?; " &_
+		" SET @Company = ?; " &_
 		
 		" DECLARE @S VARCHAR (MAX); " &_
 		" DECLARE @T TABLE(T_INT INT); " &_
@@ -373,6 +389,7 @@ class ReservationHelper
 			.Parameters.Append .CreateParameter( "@Edate"      ,adVarChar , adParamInput , 10  , objs.Edate )
 			.Parameters.Append .CreateParameter( "@SRdate"     ,adVarChar , adParamInput , 10  , objs.SRdate )
 			.Parameters.Append .CreateParameter( "@ERdate"     ,adVarChar , adParamInput , 10  , objs.ERdate )
+			.Parameters.Append .CreateParameter( "@Company"    ,adVarChar , adParamInput , 200 , objs.Company )
 		End With
   		
   		set records = objCommand.Execute
@@ -531,6 +548,7 @@ class ReservationHelper
 			obj.Stime      = record("Stime")
 			obj.Etime      = record("Etime")
 			obj.Bigo       = record("Bigo")
+			obj.Company    = record("Company")
 			obj.FacilitiesName = record("FacilitiesName")
 			
 			set PopulateObjectFromRecord = obj

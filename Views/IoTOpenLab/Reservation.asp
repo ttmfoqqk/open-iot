@@ -34,6 +34,12 @@
 						<td><%=Model.Name%></td>
 					</tr>
 					<tr>
+						<td class="title">기업명</td>
+						<td>
+							<input type="text" id="Company" name="Company" style="width:373px;min-width:373px;">
+						</td>
+					</tr>
+					<tr>
 						<td class="title">핸드폰</td>
 						<td>
 							<input type="text" id="Hphone1" name="Hphone1" style="width:100px;min-width:100px;" maxlength="4" onkeyup="this.value=number_filter(this.value);" value="<%=OidModel.Hphone1%>"> - 
@@ -86,6 +92,9 @@ function reg_fm(){
 	}
 	if( !$.trim( $('#Hphone1').val() ) || !$.trim( $('#Hphone2').val() ) || !$.trim( $('#Hphone3').val() ) ){
 		alert('핸드폰을 입력해주세요');return false;
+	}
+	if( !$.trim( $('#Company').val() ) ){
+		alert('기업명을 입력해주세요');return false;
 	}
 	if( !$.trim( $('#UseDate').val() ) ){
 		alert('사용 희망일을 입력해주세요');return false;

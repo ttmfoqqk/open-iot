@@ -138,6 +138,7 @@ class IoTOpenLabController
 		Dim UseDate    : UseDate    = Trim(Request.Form("UseDate"))
 		Dim UseEndDate : UseEndDate = Trim(Request.Form("UseEndDate"))
 		Dim Purpose    : Purpose    = Trim(Request.Form("Purpose"))
+		Dim Company    : Company    = Trim(Request.Form("Company"))
 		
 		Dim ReservationHelper : set ReservationHelper = new ReservationHelper
 		Dim obj : set obj = new Reservation
@@ -148,6 +149,10 @@ class IoTOpenLabController
 		
 		if Facilities = "" then
 			call alerts ("시설명을 선택해주세요.","")
+		end if
+		
+		if Company = "" then
+			call alerts ("기업명을 입력해주세요.","")
 		end if
 		
 		if Hphone1 = "" or Hphone2 = "" or Hphone3 = "" then
@@ -171,6 +176,7 @@ class IoTOpenLabController
 		obj.UseDate = UseDate
 		obj.UseEndDate = UseEndDate
 		obj.Purpose = Purpose
+		obj.Company = Company
 		
 		ReservationHelper.Insert(obj)
 		

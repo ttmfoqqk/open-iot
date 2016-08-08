@@ -98,7 +98,10 @@
                                                     </select>
 												</div>
 			
-												
+												<label class="col-lg-2 col-md-2 control-label" for="">기업명</label>
+												<div class="col-lg-3 col-md-3">
+													<input type="text" class="form-control" id="Company" name="Company" placeholder="기업명" value="<%=Request("Company")%>">
+												</div>
 											</div>
 											
 											<div class="form-group col-lg-12 col-md-12">
@@ -137,6 +140,7 @@
 														</th>
 														<th>아이디</th>
 														<th>이름</th>
+														<th>기업명</th>
 														<th>구분</th>
 														<th>시설</th>
 														<th>핸드폰</th>
@@ -149,7 +153,7 @@
 
 												<%if IsNothing(Model) then %>
 													<tr>
-														<td colspan="9">등록된 내용이 없습니다.</td>
+														<td colspan="10">등록된 내용이 없습니다.</td>
 													</tr>
 												<%else
 													Dim obj,anchor,phone
@@ -183,12 +187,13 @@
 														</td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.UserId%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.UserName%></a></td>
+														<td><a href="<%=anchor%>" class="text-normal"><%=obj.Company%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=Location%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.FacilitiesName%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=phone%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal">
-															<%=obj.UseDate%> 
-															<%=iif(obj.UseEndDate="" or IsNothing(obj.UseEndDate) ,""," ~ " & obj.UseEndDate)%>
+															<%=obj.UseDate%> ~ 
+															<%=iif(obj.UseEndDate="" or IsNothing(obj.UseEndDate) ,obj.UseDate , obj.UseEndDate)%>
 														</a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=State%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.InDate%></a></td>
