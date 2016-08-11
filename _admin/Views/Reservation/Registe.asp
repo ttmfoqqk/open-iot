@@ -101,7 +101,7 @@
 													</div>
                                                 </div>
                                             </div>
-                                            <!--div class="form-group">
+                                            <div class="form-group">
                                                 <label class="col-lg-2 col-md-3 control-label" for="">사용 시간</label>
                                                 <div class="col-lg-10 col-md-9 form-inline">
 													<select class="form-control input-small" id="Stime1" name="Stime1">
@@ -130,7 +130,7 @@
                                                     	<%next%>
                                                     </select>
                                                 </div>
-                                            </div-->
+                                            </div>
                                             
                                             <div class="form-group">
                                                 <label class="col-lg-2 col-md-3 control-label" for="">이용목적</label>
@@ -220,13 +220,13 @@ function reg_fm(){
 		alert('상태를 선택해주세요');return false;
 	}
 	
-	/*
-	if( $('#State').val() == '0' ){
+	
+	if( $('#State').val() == '0' || $('#State').val() == '2' ){
 		if( !$('#Stime1').val() || !$('#Stime2').val() || !$('#Etime1').val() || !$('#Etime2').val() ){
 			alert('사용 시간을 선택해주세요');return false;
 		}
 	}
-	*/
+	
 	
 	$('#mForm').submit();
 }

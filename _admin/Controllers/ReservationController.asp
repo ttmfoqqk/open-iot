@@ -130,7 +130,7 @@ class ReservationController
 		"	<Column ss:Width='100'/> " &_
 		"	<Column ss:Width='150'/> " &_
 		"	<Column ss:Width='100'/> " &_
-		"	<Column ss:Width='170'/> " &_
+		"	<Column ss:Width='250'/> " &_
 		"	<Column ss:Width='200'/> " &_
 		"	<Column ss:Width='200'/> " &_
 		"	<Column ss:Width='80'/> " &_
@@ -177,7 +177,7 @@ class ReservationController
 				"		<Cell><Data ss:Type=""String"">" & Location & "</Data></Cell>"&_
 				"		<Cell><Data ss:Type=""String"">" & obj.FacilitiesName & "</Data></Cell>"&_
 				"		<Cell><Data ss:Type=""String"">" & phone & "</Data></Cell>"&_
-				"		<Cell><Data ss:Type=""String"">" & obj.UseDate & " ~ " & iif(obj.UseEndDate="" or IsNothing(obj.UseEndDate) ,obj.UseDate,obj.UseEndDate) & "</Data></Cell>"&_
+				"		<Cell><Data ss:Type=""String"">" & obj.UseDate & " ~ " & iif(obj.UseEndDate="" or IsNothing(obj.UseEndDate) ,obj.UseDate,obj.UseEndDate) & iif( obj.State=0 or obj.State=2 , "   " & left(obj.Stime,5) & " ~ " & left(obj.Etime,5) , "" ) & "</Data></Cell>"&_
 				"		<Cell><Data ss:Type=""String"">" & obj.Purpose & "</Data></Cell>"&_
 				"		<Cell><Data ss:Type=""String"">" & obj.Bigo & "</Data></Cell>"&_
 				"		<Cell><Data ss:Type=""String"">" & State & "</Data></Cell>"&_
@@ -320,6 +320,7 @@ class ReservationController
 			strBody = replace(strBody, "#ID#"   , Model.UserId )
 			strBody = replace(strBody, "#NAME#" , strName )
 			strBody = replace(strBody, "#USEDATE#" , UseDate & " ~ " & UseEndDate )
+			strBody = replace(strBody, "#USETIME#" , left(Model.Stime,5) & " ~ " & left(Model.Etime,5) )
 			strBody = replace(strBody, "#DATE#" , NOW() )
 			strBody = replace(strBody, "#URL#"  , g_host & "/Utils/email/" )
 			

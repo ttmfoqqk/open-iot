@@ -194,6 +194,7 @@
 														<td><a href="<%=anchor%>" class="text-normal">
 															<%=obj.UseDate%> ~ 
 															<%=iif(obj.UseEndDate="" or IsNothing(obj.UseEndDate) ,obj.UseDate , obj.UseEndDate)%>
+															<%=iif( obj.State=0 or obj.State=2 , "<br>" & left(obj.Stime,5) & " ~ " & left(obj.Etime,5) , "" ) %>
 														</a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=State%></a></td>
 														<td><a href="<%=anchor%>" class="text-normal"><%=obj.InDate%></a></td>

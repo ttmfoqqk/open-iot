@@ -49,7 +49,7 @@
 							<td style="border-right: 1px solid #f0f2f4;">
 								<%=obj.UseDate%>
 								<%=iif(obj.UseEndDate="" or IsNothing(obj.UseEndDate) ,""," ~ " & obj.UseEndDate)%>
-								<%'=iif(obj.State=0,"&nbsp;&nbsp;&nbsp;" & left( obj.Stime,5 ) &"~"& left( obj.Etime,5 ) ,"")%>
+								<%=iif(obj.State=0 or obj.State=2,"&nbsp;&nbsp;&nbsp;" & left( obj.Stime,5 ) &"~"& left( obj.Etime,5 ) ,"")%>
 							</td>
 							<td><%=State%></td>
 						</tr>
