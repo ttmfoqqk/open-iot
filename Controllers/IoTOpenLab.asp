@@ -72,17 +72,58 @@ class IoTOpenLabController
 
 		sJsonText = sJsonText & "["
 		
+		Dim Dic,UseDate,UseEndDate
+		Set Dic = Server.CreateObject("scripting.Dictionary")
+		
 		if Not( IsNothing(Model) ) then
 			cnt = 1
 			For each obj in Model.Items
-				url = "javascript:void(call_calendar_detail("&Location&",'"&left(obj.UseDate,10)&"'))"
+				UseDate    = left(obj.UseDate,10)
+				UseEndDate = left( iif( IsNothing(obj.UseEndDate) , obj.UseDate , obj.UseEndDate ) ,10)
+				diffDay    = cint(datediff("d", UseDate , UseEndDate))
+				
+				for i=0 to diffDay
+					
+					tempKey = DateAdd("d",i,UseDate)
+					weekDate = weekDay(tempKey)
+					
+					if weekDate <> 1 and weekDate <> 7 then 
+						If Dic.Exists( tempKey ) Then
+							Dic.item( tempKey ) = Dic.item( tempKey ) + 1
+						else
+							Dic.add tempKey,1
+						End If
+					end if
+					
+				next
+				
+				
+				
+				
+				'url = "javascript:void(call_calendar_detail("&Location&",'"&left(obj.UseDate,10)&"'))"
+				'sJsonText = sJsonText & "{"
+				'sJsonText = sJsonText & "'title' : '시설 "& obj.tcount &"건',"
+				'sJsonText = sJsonText & "'start' : '"& left(obj.UseDate,10) &"',"
+				'sJsonText = sJsonText & "'url' : '"& Replace(toJS(url),"""","\""") &"',"
+				'sJsonText = sJsonText & "'color' : 'transparent' "
+				'sJsonText = sJsonText & "}"
+				'sJsonText = sJsonText & iif(cnt=Model.Count,"",",")
+				'cnt = cnt + 1
+				
+			next
+			
+			for each key in Dic
+				'Response.Write "<br>(" & key & "," & Dic(key) & ")<br>"
+				
+				url = "javascript:void(call_calendar_detail("&Location&",'"& key &"'))"
 				sJsonText = sJsonText & "{"
-				sJsonText = sJsonText & "'title' : '시설 "& obj.tcount &"건',"
-				sJsonText = sJsonText & "'start' : '"& left(obj.UseDate,10) &"',"
+				sJsonText = sJsonText & "'title' : '시설 "& Dic(key) &"건',"
+				sJsonText = sJsonText & "'start' : '"& key &"',"
 				sJsonText = sJsonText & "'url' : '"& Replace(toJS(url),"""","\""") &"',"
 				sJsonText = sJsonText & "'color' : 'transparent' "
 				sJsonText = sJsonText & "}"
-				sJsonText = sJsonText & iif(cnt=Model.Count,"",",")
+				sJsonText = sJsonText & iif(cnt=Dic.Count,"",",")
+				
 				cnt = cnt + 1
 			next
 		end if
@@ -99,12 +140,13 @@ class IoTOpenLabController
 		
 		Dim ReservationHelper : set ReservationHelper = new ReservationHelper
 		Dim Reservation : set Reservation = new Reservation
+		
 		Reservation.Location = Location
 		Reservation.SRdate = InDate
 		Reservation.ERdate = InDate
 		Reservation.State = "0,2"
 		
-		set Model = ReservationHelper.SelectAll(Reservation,1,1000)
+		set Model = ReservationHelper.SelectByCalendarDetail(Reservation)
 
 		sJsonText = sJsonText & "["
 		

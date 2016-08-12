@@ -449,11 +449,11 @@ class ReservationHelper
 		selectSQL = "" &_
 
 		" SELECT " &_
-			"  count(*) as [tcount] " &_
+			"  [No] " &_
 			" ,[UseDate] " &_
+			" ,[UseEndDate] " &_
 		" FROM [Reservation] " &_
-		" WHERE ([State] = 0 or [State] = 2) and [Location] = ? " &_
-		" group by [UseDate] "
+		" WHERE ([State] = 0 or [State] = 2) and [Location] = ? "
 		
 		set objCommand=Server.CreateObject("ADODB.command")
 		objCommand.ActiveConnection=DbOpenConnection()
@@ -470,9 +470,10 @@ class ReservationHelper
 				Set results = Server.CreateObject("Scripting.Dictionary")
 				while not records.eof
 					set obj = new Reservation
-					obj.tcount     = records("tcount")
+					obj.No     = records("No")
 					obj.UseDate    = records("UseDate")
-					results.Add obj.UseDate, obj
+					obj.UseEndDate = records("UseEndDate")
+					results.Add obj.No, obj
 					records.movenext
 				wend
 				set SelectByCalendar = results
@@ -483,6 +484,96 @@ class ReservationHelper
 			Set SelectByCalendar = Nothing
 		End If
 	end function
+	
+	
+	
+	public function SelectByCalendarDetail(objs)
+		Dim records,selectSQL
+		dim whereSql : whereSql = ""
+		
+		if objs.Location <> "" then
+			whereSql = whereSql & " and A.Location = @Location "
+		end if
+
+		if objs.State <> "" then
+			whereSql = whereSql & " and A.State in(SELECT T_INT FROM @T) "
+		end if
+
+		if objs.SRdate <> "" then
+			whereSql = whereSql & " and CONVERT(VARCHAR,A.[UseDate],23) <= @SRdate "
+		end if
+		if objs.ERdate <> "" then
+			whereSql = whereSql & " and CONVERT(VARCHAR,A.[UseEndDate],23) >= @ERdate "
+		end if
+
+		selectSQL = "" &_
+		" SET NOCOUNT ON;  " &_
+		
+		" DECLARE @Location VARCHAR(10) ,@State VARCHAR(10); " &_
+		" DECLARE @SRdate VARCHAR(10) ,@ERdate VARCHAR(10); " &_
+		" SET @Location = ?; " &_
+		" SET @State = ?; " &_
+		" SET @SRdate = ?; " &_
+		" SET @ERdate = ?; " &_
+		
+		" DECLARE @S VARCHAR (MAX); " &_
+		" DECLARE @T TABLE(T_INT INT); " &_
+		" SET @S = @State; " &_
+		
+		" WHILE CHARINDEX(',',@S)<>0 " &_
+		"	BEGIN " &_
+		"	INSERT INTO @T(T_INT) VALUES( SUBSTRING(@S,1,CHARINDEX(',',@S)-1) ) " &_
+		"	SET @S=SUBSTRING(@S,CHARINDEX(',',@S)+1,LEN(@S))  " &_
+		" END " &_
+		" IF CHARINDEX(',',@S)=0 " &_
+		"	BEGIN " &_
+		"	INSERT INTO @T(T_INT) VALUES( SUBSTRING(@S,1,LEN(@S)) ) " &_
+		" END ;" &_
+		
+		" SELECT " &_
+			"  ROW_NUMBER() OVER (order by A.[No] DESC) AS RowNum " &_
+			" ,count(*) over () as [tcount] " &_
+			" ,A.* " &_
+			" ,B.[Id] AS UserId " &_
+			" ,B.[Name] AS UserName " &_
+			" ,C.[Name] AS FacilitiesName " &_
+		" FROM [Reservation] AS A " &_
+		" INNER JOIN [User] AS B ON(A.[UserNo]=B.[No] AND B.Delfg=0) " &_
+		" LEFT JOIN [ReservationMenu] AS C ON(A.[Facilities]=C.[No] AND A.[Location]=C.[Location]) " &_
+		" WHERE B.[DelFg] = 0 " &_
+		whereSql &_
+		" ORDER BY rownum "
+		
+		set objCommand=Server.CreateObject("ADODB.command")
+		With objCommand
+			.ActiveConnection=DbOpenConnection()
+			.prepared = true
+			.CommandType = adCmdText
+			.CommandText = selectSQL
+			.Parameters.Append .CreateParameter( "@Location"   ,adVarChar , adParamInput , 10  , objs.Location )
+			.Parameters.Append .CreateParameter( "@State"      ,adVarChar , adParamInput , 10  , objs.State )
+			.Parameters.Append .CreateParameter( "@SRdate"     ,adVarChar , adParamInput , 10  , objs.SRdate )
+			.Parameters.Append .CreateParameter( "@ERdate"     ,adVarChar , adParamInput , 10  , objs.ERdate )
+		End With
+  		
+  		set records = objCommand.Execute
+  		if records.eof then
+			Set SelectByCalendarDetail = Nothing
+		else
+			Dim results, obj, record
+			Set results = Server.CreateObject("Scripting.Dictionary")
+			while not records.eof
+				set obj = PopulateObjectFromRecord(records)
+				results.Add obj.No, obj
+				records.movenext
+			wend
+			set SelectByCalendarDetail = results
+			records.Close
+		End If
+		set records = nothing
+	end function
+	
+	
 	
 	
 	public function Delete(No)
