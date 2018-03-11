@@ -1,5 +1,5 @@
 <div class="max_width_wrap">
-	
+
 	<div class="sub_contents_full">
 		<div class="inner">
 
@@ -28,9 +28,9 @@
 						<h2 class="title"><%=Model.Name%></h2>
 						<div class="caption"><%=Model.Contents1%></div>
 					</div>
-					
+
 					<%if Not(IsNothing(OidModel)) then
-						'if OidModel.State = "0" then 
+						'if OidModel.State = "0" then
 					%>
 					<!-- oid 발급기업 정보 -->
 					<div class="area_oid_box">
@@ -54,23 +54,23 @@
 					<%
 						'end if
 					end if%>
-					
+
 				</div>
-				
+
 				<div class="rows">
 					<div class="area_description">
 						<h2 class="title">App Information</h2>
 						<div class="caption"><%=Model.Contents2%></div>
 					</div>
 				</div>
-				
+
 				<div class="rows">
 					<div class="area_description">
 						<h2 class="title">API Information</h2>
 						<div class="caption"><%=Model.Contents3%></div>
 					</div>
 				</div>
-				
+
 				<%if Not(IsNothing(FilesModel)) then%>
 				<div class="rows">
 					<h2 class="area_files_title">File Download</h2>
@@ -84,7 +84,7 @@
 					</div>
 				</div>
 				<%end if%>
-				
+
 				<%if Not(IsNothing(RelationModel)) then%>
 				<div class="rows" style="border-bottom:0px solid;">
 					<div class="area_related" id="slider1">
@@ -92,7 +92,7 @@
 						<div class="caption">
 							<a href="#" class="prev"><span class="blind">이전</span></a>
 							<a href="#" class="next"><span class="blind">이전</span></a>
-							
+
 							<div class="items">
 								<div class="list">
 									<ul id="sliderList1">
@@ -101,7 +101,7 @@
 										'Images = iif( IsNothing(Images) or Images="",obj.Images2,Images )
 										'Images = iif( IsNothing(Images) or Images="",obj.Images3,Images )
 										'Images = iif( IsNothing(Images) or Images="",obj.Images4,Images )
-										
+
 										Images = obj.ImagesList
 										%>
 										<li>
@@ -125,10 +125,10 @@
 					</div>
 				</div>
 				<%end if%>
-				
+
 				<div class="rows">
 					<div class="area_bbs">
-					
+
 						<div class="tab">
 							<div style="float:left;width:50%;">
 								<a href="QNA" class="item active"><span class="border">Q&A</span></a>
@@ -136,41 +136,41 @@
 							<div style="float:left;width:50%;">
 								<a href="FAQ" class="item">FAQ</a>
 							</div>
-							
+
 							<div id="tab_line" class="line"></div>
 						</div>
-						
+
 						<div class="lists">
-							
+
 							<div class="bbs_search">
 								<div class="input_wrap">
 									<input type="text" id="Title" name="Title" placeholder="SEARCH">
 								</div>
 								<button type="button" class="submit"><span class="blind">검색</span></button>
 							</div>
-							
+
 							<div class="bbs_list">
 								<div id="bbs_lists"></div>
-								
+
 								<div style="margin-top:30px;text-align:right;" id="ActionRegiste">
 									<button class="blue mini" onclick="location.href='?controller=Mypage&action=Qna&mode=Registe&Code=Apps&ProductNo=<%=No%>';">질문하기</button>
 								</div>
-								
+
 								<!--div class="more">
 									<a href="#">MORE</a>
 									<span><b>1</b>/2</span>
 								</div-->
 							</div>
-							
+
 						</div>
-						
+
 					</div>
 				</div>
-				
+
 			</div>
-			
-			
-			
+
+
+
 		</div>
 	</div>
 </div>
@@ -187,47 +187,47 @@ $(function(){
 	$('.area_bbs .tab a.item').mouseout(function(){
 		line_move( item_active );
 	});
-	
+
 	$('.area_bbs .tab a').click(function(e){
 		e.preventDefault();
 
 		var $this = $(this);
 		var Types = $this.attr('href');
-		
+
 		$('#bbs_lists').html('');
 		$('#Title').val('');
 		$('.area_bbs .tab a').removeClass('active');
 		$this.addClass('active');
 		callList(Types,1);
-		
+
 		var btn = $('#ActionRegiste');
 		if( Types == 'QNA' ){
 			btn.show();
 		}else{
 			btn.hide();
 		}
-		
+
 		var item_active = $('.area_bbs .tab a.active');
 		$('.area_bbs .tab a.item').mouseout(function(){
 			line_move( item_active );
 		});
 	});
-	
+
 	$('.small_img a').click(function(e){
 		e.preventDefault();
 		var src = $(this).find('img.thumbnail').attr('src');
 		$('#big_img').attr('src',src);
-		
+
 		$('.small_img a').removeClass('active');
 		$(this).addClass('active');
 	});
-	
+
 	var slider1_html = $('#slider1').html();
 	slider_setting('slider1',"sliderList1",slider1_html);
 	$(window).resize(function(){
 		slider_setting('slider1',"sliderList1",slider1_html);
 	});
-	
+
 	$("#Title").keydown(function (key) {
         if (key.keyCode == 13) {
         	var Types = $('.area_bbs .tab a.active').attr('href');
@@ -237,16 +237,16 @@ $(function(){
 });
 function slider_setting(containerID,slideID,htmls){
 	$('#'+containerID).html(htmls);
-	
+
 	var itemCnt = $('#'+containerID).find('li').length;
 	var limit= 3;
-	
+
 	if(window.innerWidth >= 1650 ){
 		limit= 5;
 	}else if( window.innerWidth >= 1326 && window.innerWidth < 1650 ){
 		limit= 4;
 	}
-	
+
 	if( itemCnt > limit ){
 		fn_rollToEx(containerID,slideID,"",1,false);
 	}else{
@@ -272,21 +272,21 @@ function toggleContetns(obj){
 			$(this).find('.icon .img').animate({'rotate': '180'}, 200, 'linear');
 		}else{
 			$('.bbs_list .rows a.active').find('.icon .img').animate({'rotate': '0'}, 200, 'linear');
-			
+
 			$('.bbs_list .rows a').removeClass('active');
 			$(this).addClass('active');
-			
+
 			$('.bbs_list .rows .bbs_detail').stop().slideUp();
 			$(this).next('.bbs_detail').stop().slideDown().queue(function(){
 				var top=$(this).prev().offset().top;
 				$("html,body").animate({"scrollTop":top-50}, 500);
-				
+
 				$(this).prev().find('.icon .img').animate({'rotate': '135'}, 200, 'linear');
 				$(this).dequeue();
 			});
 		}
 	});
-	
+
 	$('.bbs_list .rows a').hover(
 		function(){
 			if( !$(this).hasClass('active') ){
@@ -313,7 +313,7 @@ function callList(Types,pageNo){
 		success : function(json){
 			var json = JSON.parse(json);
 			var html = '';
-			
+
 			if(json.MSG == 'success'){
 				$.each(json.LIST, function(key, value){
 
@@ -323,7 +323,7 @@ function callList(Types,pageNo){
 					}else if(Types == 'FAQ'){
 						label='faq';
 					}
-					
+
 					file_html = '';
 					$.each(value.files, function(fkey, fvalue){
 						file_html += '<div class="row"><label>File</label><span class="file">'+fvalue.Name+'</span>'+
@@ -332,7 +332,7 @@ function callList(Types,pageNo){
 					if(value.files.length>0){
 						file_html = '<div class="area_files" style="margin:0px;">'+ file_html + '</div>';
 					}
-					
+
 					var nbsp = '';
 					var margin = 0;
 					if(value.DepthNo > 0){
@@ -360,7 +360,7 @@ function callList(Types,pageNo){
 					//$('#bbs_lists').append(html);
 					$('#bbs_lists').html(html);
 				}
-				
+
 				toggleContetns();
 
 				$('.bbs_list').find('.more a').unbind('click').click(function(e){
@@ -390,7 +390,7 @@ function line_move(t){
 	}
 	o.show();
 	var w = t.width();
-	var p = t.position().left;	
+	var p = t.position().left;
 	TweenMax.to(o, 0.25, {width:w, x:p , ease:Sine.easeOut});
 }
 </script>

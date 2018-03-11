@@ -14,7 +14,7 @@ class Apps
 	private mContents3
 	private mIndate
 	private mAdminNo
-	
+
 	private mImages1
 	private mImages2
 	private mImages3
@@ -22,7 +22,7 @@ class Apps
 	private mImagesList
 	private mDelFg
 	private mState
-	
+
 	private mSdate
 	private mEdate
 
@@ -48,161 +48,161 @@ class Apps
 	public property let RowNum(val)
 		mRowNum = val
 	end property
-	
+
 	public property get tcount()
 		tcount = mtcount
 	end property
 	public property let tcount(val)
 		mtcount = val
 	end property
-	
+
 	public property get No()
 		No = mNo
 	end property
 	public property let No(val)
 		mNo = val
 	end property
-	
+
 	public property get UserNo()
 		UserNo = mUserNo
 	end property
 	public property let UserNo(val)
 		mUserNo = val
 	end property
-	
+
 	public property get UserId()
 		UserId = mUserId
 	end property
 	public property let UserId(val)
 		mUserId = val
 	end property
-	
+
 	public property get UserName()
 		UserName = mUserName
 	end property
 	public property let UserName(val)
 		mUserName = val
 	end property
-	
+
 	public property get MenuNo()
 		MenuNo = mMenuNo
 	end property
 	public property let MenuNo(val)
 		mMenuNo = val
 	end property
-	
+
 	public property get MenuName()
 		MenuName = mMenuName
 	end property
 	public property let MenuName(val)
 		mMenuName = val
 	end property
-	
+
 	public property get Name()
 		Name = mName
 	end property
 	public property let Name(val)
 		mName = val
 	end property
-	
+
 	public property get Contents1()
 		Contents1 = mContents1
 	end property
 	public property let Contents1(val)
 		mContents1 = val
 	end property
-	
+
 	public property get Contents2()
 		Contents2 = mContents2
 	end property
 	public property let Contents2(val)
 		mContents2 = val
 	end property
-	
+
 	public property get Contents3()
 		Contents3 = mContents3
 	end property
 	public property let Contents3(val)
 		mContents3 = val
 	end property
-	
+
 	public property get Indate()
 		Indate = mIndate
 	end property
 	public property let Indate(val)
 		mIndate = val
 	end property
-	
+
 	public property get AdminNo()
 		AdminNo = mAdminNo
 	end property
 	public property let AdminNo(val)
 		mAdminNo = val
 	end property
-	
+
 	public property get Images1()
 		Images1 = mImages1
 	end property
 	public property let Images1(val)
 		mImages1 = val
 	end property
-	
+
 	public property get Images2()
 		Images2 = mImages2
 	end property
 	public property let Images2(val)
 		mImages2 = val
 	end property
-	
+
 	public property get Images3()
 		Images3 = mImages3
 	end property
 	public property let Images3(val)
 		mImages3 = val
 	end property
-	
+
 	public property get Images4()
 		Images4 = mImages4
 	end property
 	public property let Images4(val)
 		mImages4 = val
 	end property
-	
+
 	public property get ImagesList()
 		ImagesList = mImagesList
 	end property
 	public property let ImagesList(val)
 		mImagesList = val
 	end property
-	
+
 	public property get DelFg()
 		DelFg = mDelFg
 	end property
 	public property let DelFg(val)
 		mDelFg = val
 	end property
-	
+
 	public property get State()
 		State = mState
 	end property
 	public property let State(val)
 		mState = val
 	end property
-	
+
 	public property get Sdate()
 		Sdate = mSdate
 	end property
 	public property let Sdate(val)
 		mSdate = val
 	end property
-	
+
 	public property get Edate()
 		Edate = mEdate
 	end property
 	public property let Edate(val)
 		mEdate = val
 	end property
-	
+
 end class
 
 
@@ -217,7 +217,7 @@ class AppsHelper
 
 	private sub Class_Terminate()
 	end sub
-	
+
 	public function Insert(ByRef obj)
 		Dim strSQL , execResult
 		strSQL= " Insert into [Apps] (UserNo,MenuNo,Name,Contents1,Contents2,Contents3,InDate,AdminNo,Images1,Images2,Images3,Images4,DelFg,State,ImagesList)" & _
@@ -237,7 +237,7 @@ class AppsHelper
 		Insert = true
 	end function
 
-	
+
 	public function SelectAll(objs,pageNo,rows)
 		Dim records,selectSQL
 		dim whereSql : whereSql = ""
@@ -254,7 +254,7 @@ class AppsHelper
 		if objs.UserName <> "" then
 			whereSql = whereSql & " and ([User].Name like '%' + @UserName + '%' or [Admin].Name like '%' + @UserName + '%') "
 		end if
-		
+
 		if objs.MenuNo <> "" then
 			whereSql = whereSql & " and [Apps].MenuNo = @MenuNo "
 		end if
@@ -267,11 +267,11 @@ class AppsHelper
 		if objs.Edate <> "" then
 			whereSql = whereSql & " and CONVERT(VARCHAR,[Apps].[InDate],23) <= @Edate "
 		end if
-		
+
 		if objs.State <> "" then
 			whereSql = whereSql & " and [Apps].State = @State "
 		end if
-		
+
 
 		selectSQL = "" &_
 		" SET NOCOUNT ON;  " &_
@@ -279,7 +279,7 @@ class AppsHelper
 		" DECLARE @UserId VARCHAR(320), @UserName VARCHAR(50); " &_
 		" DECLARE @Sdate VARCHAR(10) ,@Edate VARCHAR(10); " &_
 		" DECLARE @State INT; " &_
-		
+
 		" SET @UserNo = ?; " &_
 		" SET @UserId = ?; " &_
 		" SET @UserName = ?; " &_
@@ -288,7 +288,7 @@ class AppsHelper
 		" SET @Sdate = ?; " &_
 		" SET @Edate = ?; " &_
 		" SET @State = ?; " &_
-		
+
 		" WITH LIST AS ( " &_
 			" SELECT " &_
 				"  ROW_NUMBER() OVER (order by [Apps].[No] ASC) AS RowNum " &_
@@ -306,9 +306,9 @@ class AppsHelper
 		" ) SELECT L.* FROM LIST L " &_
 		" WHERE (tcount-rownum+1) BETWEEN " & ((pageNo - 1) * rows) + 1 & " AND " & ((pageNo - 1) * rows) + rows & " "&_
 		" ORDER BY rownum desc "
-		
-		
-		set objCommand=Server.CreateObject("ADODB.command") 
+
+
+		set objCommand=Server.CreateObject("ADODB.command")
 		With objCommand
 			.ActiveConnection=DbOpenConnection()
 			.prepared = true
@@ -323,7 +323,7 @@ class AppsHelper
 			.Parameters.Append .CreateParameter( "@Edate"    ,adVarChar , adParamInput , 10 , objs.Edate )
 			.Parameters.Append .CreateParameter( "@State"    ,adVarChar , adParamInput , 10 , objs.State )
 		End With
-  		
+
   		set records = objCommand.Execute
   		if records.eof then
 			Set SelectAll = Nothing
@@ -340,8 +340,8 @@ class AppsHelper
 		End If
 		set records = nothing
 	end function
-	
-	
+
+
 	public function SelectByField(fieldName, value)
 		Dim record,selectSQL
 		selectSQL = "" &_
@@ -378,7 +378,7 @@ class AppsHelper
 	public function Update(obj)
 		Dim strSQL
 		strSQL= "Update [Apps] set [MenuNo] = ?, [Name] = ?, [Contents1] = ?, [Contents2] = ?, [Contents3] = ?,[Images1]=?,[Images2]=?,[Images3]=?,[Images4]=?,[State]=?,[ImagesList]=? Where No = ? "
-		set objCommand=Server.CreateObject("ADODB.command") 
+		set objCommand=Server.CreateObject("ADODB.command")
 		objCommand.ActiveConnection=DbOpenConnection()
 		objCommand.NamedParameters = False
 		objCommand.CommandText = strSQL
@@ -397,14 +397,14 @@ class AppsHelper
 		Dim strSQL
 		strSQL = "" &_
 		" SET NOCOUNT ON;  " &_
-		
+
 		" DECLARE @No VARCHAR(MAX); " &_
 		" SET @No = ?; " &_
-		
+
 		" DECLARE @S VARCHAR (MAX); " &_
 		" DECLARE @T TABLE(T_INT INT); " &_
 		" SET @S = @No; " &_
-		
+
 		" WHILE CHARINDEX(',',@S)<>0 " &_
 		"	BEGIN " &_
 		"	INSERT INTO @T(T_INT) VALUES( SUBSTRING(@S,1,CHARINDEX(',',@S)-1) ) " &_
@@ -414,10 +414,10 @@ class AppsHelper
 		"	BEGIN " &_
 		"	INSERT INTO @T(T_INT) VALUES( SUBSTRING(@S,1,LEN(@S)) ) " &_
 		" END " &_
-		
+
 		" DELETE FROM [Apps] WHERE No in(SELECT T_INT FROM @T); "
-		
-		set objCommand=Server.CreateObject("ADODB.command") 
+
+		set objCommand=Server.CreateObject("ADODB.command")
 		With objCommand
 			.ActiveConnection=DbOpenConnection()
 			.prepared = true
@@ -428,10 +428,10 @@ class AppsHelper
 		End With
 		Delete = true
 	end function
-	
-	
+
+
 	private function PopulateObjectFromRecord(record)
-		if record.eof then 
+		if record.eof then
 			Set PopulateObjectFromRecord = Nothing
 	    else
 			Dim obj
@@ -463,4 +463,3 @@ class AppsHelper
 
 end class
 %>
-    

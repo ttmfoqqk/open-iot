@@ -52,15 +52,15 @@ Function Route ()
 	'Dim vars
 	'set vars    = CollectVariables()
 	Route = False
-	
+
 	If IsEmpty(controller) or IsNull(controller) or (controller="") then
 		controller = defaultController
 	End If
-	
+
 	If IsEmpty(action) or IsNull(action) or (action="") then
 		action = defaultAction
 	End If
-	
+
 	Dim controllerName
 	controllerName = controller + "Controller"
 	if Not (Controllers.Exists(controllerName) ) Then
@@ -69,11 +69,11 @@ Function Route ()
 		Response.Write(response.Status)
 		Response.End
 	End if
-	
-	Dim controllerInstance 
+
+	Dim controllerInstance
 	Set controllerInstance = Eval ( " new " +  controllerName)
-	Dim actionCallString 
-	
+	Dim actionCallString
+
 	'If (Instr(1,action,"Post",1)>0) then
 	'	actionCallString = " controllerInstance." + action + "(Request.Form)"
 	'ElseIf Not (IsNothing(vars)) then
@@ -82,7 +82,7 @@ Function Route ()
 	'	actionCallString = " controllerInstance." + action + "()"
 	'End If
 	actionCallString = " controllerInstance." + action + "()"
-	
+
 	Eval (actionCallString)
 	Route = true
 End Function
@@ -92,10 +92,10 @@ Function RouteDebug ()
 	Dim controller, action , vars
 	controller  = Request.QueryString("controller")
 	action      = Request.QueryString("action")
-	
+
 	Response.Write(controller)
 	Response.Write(action)
-	
+
 	dim key, keyValue
 	for each key in Request.Querystring
 		keyValue = Request.Querystring(key)
@@ -114,12 +114,12 @@ Function CollectVariables
 	    keyValue = Request.Querystring(key)
 	    'ignore service keys
 	    if InStr(1,"controller, action, partial",key,1)=0 Then
-	        results.Add key,keyValue 
+	        results.Add key,keyValue
 	    End If
 	next
 	if results.Count=0 Then
 		Set CollectVariables = Nothing
-	else 
+	else
 		Set CollectVariables = results
 	End If
 End Function
